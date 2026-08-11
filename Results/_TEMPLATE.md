@@ -46,6 +46,12 @@
 
 **Interventions:** `continue` presses: _ · manual bug reports: _ · restarts: _
 
+> ⚠️ `continue` presses are **local-only**. They are driven by the harness output ceiling (16,384 in the workbench; different and unmeasured in Codex Desktop / Claude CLI), so they compare *within* the local roster and not across tiers.
+
+**Scope check** — did it write files the plan did not call for? Completeness is measured against `plan.md`, not page count. List extras here:
+
+- 
+
 **Verdict:** advance to Gate 2 / stop here
 
 ### Compaction log

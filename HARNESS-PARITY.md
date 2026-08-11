@@ -113,6 +113,35 @@ This is checkable now, not a judgment call.
 
 ---
 
+## Fix 6 — generation bounds, and the scoring caveats they create ✅ applied 2026-08-11
+
+`chatStream` sent no `max_tokens` and no timeout, so a prompt asking for output "as long as possible" was answered literally — one replay was still streaming at 500 s and 88,650 chars. Now capped at `EMBER_MAX_TOKENS` (16,384) with a 120 s stream-idle watchdog, and a reply that hits the ceiling is marked `[truncated…]` instead of ending silently.
+
+**Measured exposure in the agentic path: effectively none.**
+
+| | calibration-2 | calibration-3 |
+|---|---|---|
+| Largest single hop | ~2,803 tok | ~1,111 tok |
+| Average hop | ~121 tok | ~107 tok |
+| Hops over 16,384 | **0** | **0** |
+| Largest single file written | 11,212 chars | 4,445 chars |
+
+~6× headroom. The agent loop writes one file per tool call and iterates; it never emits a monolith. The runaway case was pure chat with no tools — the opposite shape.
+
+### Three caveats this creates for scoring
+
+**1. Continue-counts are local-only. Do not compare them across harnesses.**
+The BRIEF counts `continue` presses as an autonomy measure, and the frozen prompt's TOKEN LIMIT OVERFLOW rule explicitly invites them. How often truncation fires is a function of the output ceiling — 16,384 here, unknown and different inside Codex Desktop and Claude CLI. Valid *within* the local roster (one constant, applied identically); meaningless *across* tiers. Score as a local-only column.
+
+**2. A truncation mid-`write_file` fails ugly.**
+Cutting a payload at the ceiling leaves invalid JSON in `tool_calls[].function.arguments` → `ERROR: unparseable tool arguments`. Recoverable — the model retries — but it burns hops and reads like incompetence rather than a harness limit. Low risk at 6× headroom; check for it if a Gate 3 game (TMNT) produces an unusually large single file.
+
+**3. The rubric rewards volume, and volume is a real failure mode.**
+Axis 2 is Code Completeness and the ANTI-LAZY directive pushes toward more output. But the model observed here has no internal sense of *done*: asked for 4 sections it emitted 42 across 12 `continue` presses, and in the calibration it repaired one bug and never re-ran the build. Same gap, both directions. A model can score well on Completeness by writing forty modules nobody asked for.
+**Score "complete" against the plan, not against page count.** A file the plan does not call for is not completeness; it is scope drift, and it belongs in the notes.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:
