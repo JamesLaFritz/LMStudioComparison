@@ -1,0 +1,13 @@
+# Installed dependencies — every run installs its own from the committed
+# lockfile. 172 MB of the project's 173 MB lives here; the lockfile is the
+# reproducible artifact, node_modules is just its output.
+node_modules/
+
+# Build output. `dist/` existing is evidence a build succeeded, but that fact
+# belongs in RUN.md, not in 30 transformed modules.
+dist/
+.vite/
+
+# Generated games are results and ARE tracked — a scored run has to be
+# inspectable later. Nothing under Results/<model>/src, games/, or *.js is
+# ignored on purpose.
