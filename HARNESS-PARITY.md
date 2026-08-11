@@ -131,7 +131,19 @@ This is checkable now, not a judgment call.
 ### Three caveats this creates for scoring
 
 **1. Continue-counts are local-only. Do not compare them across harnesses.**
-The BRIEF counts `continue` presses as an autonomy measure, and the frozen prompt's TOKEN LIMIT OVERFLOW rule explicitly invites them. How often truncation fires is a function of the output ceiling — 16,384 here, unknown and different inside Codex Desktop and Claude CLI. Valid *within* the local roster (one constant, applied identically); meaningless *across* tiers. Score as a local-only column.
+The BRIEF counts `continue` presses as an autonomy measure, and the frozen prompt's TOKEN LIMIT OVERFLOW rule explicitly invites them.
+
+**Ceilings, measured 2026-08-11.** Two different numbers get conflated here:
+
+| | Model max output | Harness per-request `max_tokens` |
+|---|---|---|
+| EmberOS Workbench | model-dependent | **16,384** — `EMBER_MAX_TOKENS`, one constant, we set it |
+| Claude CLI (Opus 5 / Sonnet 5) | **128,000** each | harness default — `CLAUDE_CODE_MAX_OUTPUT_TOKENS` unset locally, value not published |
+| Codex Desktop (GPT-5.6 Sol/Terra) | not published | not published; `~/.codex/config.toml` sets no token limit |
+
+Only the second column decides truncation, and it is unknown for both frontier harnesses. Model ceilings are from the Claude API reference; Haiku 4.5 caps at 64K, every other current Claude model at 128K.
+
+**But the protocol difference settles it regardless of the numbers.** The workbench asks *you* to type `continue` when output truncates, because that is what the frozen directive's TOKEN LIMIT OVERFLOW rule instructs. Claude CLI and Codex both **self-continue across tool calls** — they keep working without a human keystroke. A local model's continue-count therefore partly measures a protocol the frontier harnesses do not participate in. Even with all three ceilings known, the counts would not be comparable. Score as a local-only column.
 
 **2. A truncation mid-`write_file` fails ugly.**
 Cutting a payload at the ceiling leaves invalid JSON in `tool_calls[].function.arguments` → `ERROR: unparseable tool arguments`. Recoverable — the model retries — but it burns hops and reads like incompetence rather than a harness limit. Low risk at 6× headroom; check for it if a Gate 3 game (TMNT) produces an unusually large single file.
