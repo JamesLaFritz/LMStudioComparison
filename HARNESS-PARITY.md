@@ -202,6 +202,32 @@ Ten faults were found by hand, one at a time, several of them only because a cal
 
 ---
 
+## Fix 11 — the idle watchdog killed healthy tool calls ✅ applied 2026-08-20
+
+**Caught live, mid-run, on `qwen3.8-27b-mtp` writing a Space Invaders `plan.md`.** The workbench reported:
+
+> `LM Studio sent nothing for 120s — treating the stream as stalled. Received 20357 chars before the stall.`
+
+LM Studio's own log says the model never stopped working:
+
+| Time | Event |
+|---|---|
+| 02:48:38 | opening `write_file` packet — name set, `arguments: ""` |
+| 02:48:38 → 02:50:36 | **zero packets**, while `n_decoded` climbs **5,162 → 11,261** at **46–49 tok/s** |
+| 02:50:38 | `Client disconnected. Stopping generation` — that is *our* abort |
+
+**Argument payloads are released only when complete.** The model generated ~6,100 tokens of a file during the silence and every one was discarded. `reasoning_tokens: 5054` accounts for the 20,357 chars that *did* stream — reasoning streams normally, tool arguments do not.
+
+The mechanism is inference (the model reports `trained_for_tool_use: true`, so this is not the documented non-native-parser path); **the timing is not** — the 120s gap matches `STREAM_IDLE_MS` exactly.
+
+**Why this would have wrecked the roster.** At ~46 tok/s, 120s of silence is only about **22,000 characters** of payload — an ordinary game source file. Every model writing a substantial file would have been cut off and scored as having hung. It was already close: the calibration's largest single file was **11,212 chars**, roughly 60s, **half the budget**. The `max_tokens` headroom noted under Fix 6 was ~6×; the headroom that actually mattered here was ~2×, and nothing measured it.
+
+**Fix:** the opening `tool_call` packet is the point where silence stops meaning a stall and starts meaning work, so the budget switches there to `EMBER_TOOL_IDLE_MS` (600s). The error now names the call being built rather than claiming a stall.
+
+> **Scoring note.** Any run before 2026-08-20 showing "sent nothing for 120s" was a **harness kill on a working model**. Do not score it. Check the LM Studio log for `n_decoded` climbing across the gap — that is the signature.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:

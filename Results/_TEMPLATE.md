@@ -58,6 +58,8 @@
 
 **Did any command time out?** no / yes → *check it against HARNESS-PARITY Fix 7 before charging it to the model.*
 
+**Did the stream ever report a stall?** no / yes → ⚠️ *pre-2026-08-20 runs: "sent nothing for 120s" was a harness kill on a working model (Fix 11). Confirm against the LM Studio log — `n_decoded` climbing across the gap means the model was generating the whole time. **Do not score that run.***
+
 **Scope check** — did it write files the plan did not call for? Completeness is measured against `plan.md`, not page count. List extras here:
 
 - 
