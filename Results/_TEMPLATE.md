@@ -1,5 +1,10 @@
 # RUN — <Model display name>
 
+> **Local runs: generate the two blocks below, do not type them.**
+> `curl "http://127.0.0.1:4517/api/agent/<session-id>/report?download=1" -o RUN-generated.md`
+> and paste its Configuration / Outcome / Tool usage / Compaction tables in. Hand-transcription
+> has already put three wrong model keys into run folders. Scores stay manual; configuration does not.
+
 ## Configuration (fill BEFORE starting)
 
 | Field | Value |
@@ -44,9 +49,14 @@
 
 -
 
-**Interventions:** `continue` presses: _ · manual bug reports: _ · restarts: _
+**Interventions:** manual `continue` presses: _ · **auto**-continues: _ · manual bug reports: _ · restarts: _
 
-> ⚠️ `continue` presses are **local-only**. They are driven by the harness output ceiling (16,384 in the workbench; different and unmeasured in Codex Desktop / Claude CLI), so they compare *within* the local roster and not across tiers.
+> ⚠️ Since 2026-08-19 the workbench **self-continues** across the output ceiling (bounded at 3), the same way Codex and Claude CLI do — so manual presses should be **0**. If they are not, the auto budget was exhausted first: look for a `bail` with `reason: "output_ceiling"` in the run report and say so here.
+> Auto-continues are a **harness metric, not an autonomy metric** — they count how often the model overran a 16,384-token ceiling. Still local-only (the frontier per-request ceilings are unpublished), so compare *within* the local roster, never across tiers.
+
+**Did it re-run verification after repairing?** yes / no — *the sharpest local-vs-frontier discriminator so far. The calibration model built, found a real bug, fixed it, and stopped without rebuilding, so it never found the identical bug in a second file. One build + one fix + stop is axis 8 = 3, not 5.*
+
+**Did any command time out?** no / yes → *check it against HARNESS-PARITY Fix 7 before charging it to the model.*
 
 **Scope check** — did it write files the plan did not call for? Completeness is measured against `plan.md`, not page count. List extras here:
 

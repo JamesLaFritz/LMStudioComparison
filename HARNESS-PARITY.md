@@ -143,7 +143,13 @@ The BRIEF counts `continue` presses as an autonomy measure, and the frozen promp
 
 Only the second column decides truncation, and it is unknown for both frontier harnesses. Model ceilings are from the Claude API reference; Haiku 4.5 caps at 64K, every other current Claude model at 128K.
 
-**But the protocol difference settles it regardless of the numbers.** The workbench asks *you* to type `continue` when output truncates, because that is what the frozen directive's TOKEN LIMIT OVERFLOW rule instructs. Claude CLI and Codex both **self-continue across tool calls** — they keep working without a human keystroke. A local model's continue-count therefore partly measures a protocol the frontier harnesses do not participate in. Even with all three ceilings known, the counts would not be comparable. Score as a local-only column.
+**The protocol difference settled it regardless of the numbers — so the protocol was changed.** The workbench used to ask *you* to type `continue` when output truncated, per the frozen directive's TOKEN LIMIT OVERFLOW rule. Claude CLI and Codex both **self-continue across tool calls** — they keep working without a human keystroke — so a local model's continue-count partly measured a protocol the frontier harnesses do not participate in. Even with all three ceilings known, the counts would not have been comparable.
+
+**Fix 8 (below) closes this.** As of 2026-08-19 the workbench self-continues too, bounded at 3 and recorded in the transcript. Scoring consequence, and it is a change of meaning, not just of mechanism:
+
+- **Manual `continue` presses should now be ~0** on a correctly configured run. If a run record shows them, the auto-continue budget was exhausted first — check for a `bail` with `reason: "output_ceiling"`.
+- **`autocontinue` events are a harness metric, not an autonomy metric.** They count how often the model overran a 16,384-token ceiling. They are still local-only — the frontier per-request ceilings remain unpublished — but they no longer measure your keystrokes.
+- **Runs recorded before 2026-08-19 used the manual protocol.** Their continue-counts are not comparable to later runs. No local run has been scored yet, so nothing needs re-running.
 
 **2. A truncation mid-`write_file` fails ugly.**
 Cutting a payload at the ceiling leaves invalid JSON in `tool_calls[].function.arguments` → `ERROR: unparseable tool arguments`. Recoverable — the model retries — but it burns hops and reads like incompetence rather than a harness limit. Low risk at 6× headroom; check for it if a Gate 3 game (TMNT) produces an unusually large single file.
@@ -151,6 +157,48 @@ Cutting a payload at the ceiling leaves invalid JSON in `tool_calls[].function.a
 **3. The rubric rewards volume, and volume is a real failure mode.**
 Axis 2 is Code Completeness and the ANTI-LAZY directive pushes toward more output. But the model observed here has no internal sense of *done*: asked for 4 sections it emitted 42 across 12 `continue` presses, and in the calibration it repaired one bug and never re-ran the build. Same gap, both directions. A model can score well on Completeness by writing forty modules nobody asked for.
 **Score "complete" against the plan, not against page count.** A file the plan does not call for is not completeness; it is scope drift, and it belongs in the notes.
+
+---
+
+## Fix 7 — command execution ✅ applied 2026-08-19
+
+Three properties of the executor, each measured, each worth a mis-scored run. All three are provoked specifically by a build-and-verify benchmark, which is the axis being measured.
+
+| Fault | Measured | Why it mis-scores |
+|---|---|---|
+| **stdin was an open pipe** that never reached EOF | `read`-style command: **8 s+ and killed** before, **24 ms** after | `npm init`, an npx *"Ok to proceed? (y)"*, a git credential prompt — each burned the full 600 s timeout and reported as a hang. The model looks like it froze; it was waiting on a prompt nobody could answer. `CI=1` is now set as well |
+| **resolved on `'close'`, not `'exit'`** | surviving grandchild: **exit at 4.0 s, close at 25.1 s** | `close` waits for inherited stdio pipes to drain, and a grandchild that outlives the kill holds them open. For a foreground dev server `close` **never fires** — the tool call parks forever, past its own timeout. A model that runs `npm run dev` to "verify its work" — exactly what this benchmark provokes — hung the harness indefinitely |
+| **the kill did not reach the tree** | grandchild survived SIGTERM to `bash.exe` outright | Killing the shell never killed what the shell started. Orphaned `node.exe` accumulated across a run holding ports; a later game's dev server would then fail to bind for reasons belonging to an earlier model's score. Now `taskkill /T /F` (process group on POSIX) |
+
+Also: the output accumulator was unbounded and `clipOutput` only ran at the end, so a runaway command could exhaust server memory before there was anything to clip. Capped live now, dropping from the head — errors land at the tail.
+
+> **Scoring note.** Any run before 2026-08-19 that shows a 600 s `TIMED OUT`, or a turn that stalled with no error, should be re-read against these three. Do not charge it to the model without checking what the command was.
+
+---
+
+## Fix 8 — auto-continue on the output ceiling ✅ applied 2026-08-19
+
+Truncation is a harness event. The workbench now resumes on its own — bounded at `EMBER_MAX_AUTO_CONTINUE=3`, each resume recorded as an `autocontinue` history event, budget exhaustion recorded as a `bail` with `reason: "output_ceiling"` the same way the hop ceiling is. Tool calls in a truncated turn are dropped rather than executed: their argument JSON is cut mid-string and cannot be parsed, which also retires caveat 2 above as a *silent* failure mode — it is now a visible, counted resume instead of an `ERROR: unparseable tool arguments`.
+
+Set `EMBER_MAX_AUTO_CONTINUE=0` to restore the manual protocol if a run needs to reproduce pre-2026-08-19 conditions.
+
+---
+
+## Fix 9 — run records are generated, not transcribed ✅ applied 2026-08-19
+
+`GET /api/agent/:id/report` (`?download=1` for a `RUN.md` attachment) emits the configuration and outcome block straight from the session: model key **verbatim**, shell, loaded context length, compaction threshold, every ceiling in force, hops used, tokens in/out, auto-continues, the compaction table, and whether the run ended on a harness bail.
+
+This exists because hand-transcription had already put **three wrong model keys** into run folders — two of them identical with the `@q6_k` / `@q8_0` suffix dropped, which would have silently benchmarked the same model twice and reported it as a quantization comparison.
+
+**Fill `Results/<model>/RUN.md` from this endpoint, not from the UI.** Scores stay manual; configuration does not.
+
+---
+
+## Fix 10 — the harness has a regression suite ✅ applied 2026-08-19
+
+`npm test` in the dashboard repo. Node's built-in runner, no dependencies, 18 cases, ~6 s. One case per known fault: shell resolution, tail-preserving clipping, the three `run_command` properties above, the verification and dependency rules actually reaching the composed prompt, the bounds a run report cites, and auto-continue stitching and bounding.
+
+Ten faults were found by hand, one at a time, several of them only because a calibration run behaved strangely. **Run `npm test` before a benchmark session.** A green suite is not proof the harness is correct — it is proof it has not regressed to a state already known to be wrong, which is the cheaper half of the problem.
 
 ---
 
