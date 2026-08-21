@@ -77,6 +77,8 @@ A compacted run measures two systems — the model's context handling *and* the 
 | 1 | | | | | | | |
 | 2 | | | | | | | |
 
+> ⚠️ **Check `summaryChars` first.** A note under ~400 chars for a ~90k-token fold means the summariser failed (Fix 14) and the note was a fragment of unfinished reasoning, not a summary. Before 2026-08-21 this was always the case: **a compacted run from before that date cannot be scored on anything after its first compaction.**
+
 **Post-compaction regressions** — the attribution question. For each, say whether the handoff note actually contained the dropped information (it's in the record, so this is checkable, not a guess):
 
 - [ ] Repeated work already done

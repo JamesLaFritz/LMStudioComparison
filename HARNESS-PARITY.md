@@ -277,6 +277,54 @@ Every value this document pins was environment-only, read at module load, with `
 
 ---
 
+## Fix 14 — the compaction summaries were empty ✅ applied 2026-08-21
+
+**Found only because Fix 12 made compaction record itself.** Session `e5c348f8` is the first run whose compaction log exists. This is what it says:
+
+| # | At turn | Before → After | **Summary chars** |
+|---|---|---|---|
+| 1 | 103 | 94,296 → 7,454 | **83** |
+| 2 | 183 | 93,700 → 5,404 | **158** |
+
+Note #1, verbatim and complete:
+
+> `7. Next steps: 1) read full config.js, MathKit.js, shared APIs; 2) normalize config`
+
+That is the entire handoff for 94,296 tokens of session. It **begins at item 7** of a list whose first six items do not exist, and ends mid-clause. Note #2 is one bullet ending on the word "pure".
+
+**Reproduced deterministically** against the live model, with the run's own 40,000-char transcript and the summariser's real parameters:
+
+| `max_tokens` | finish_reason | content | reasoning_tokens |
+|---|---|---|---|
+| **2048** (shipped) | `length` | **0 chars** | **2047** |
+| 8192 | `stop` | 9,620 chars | 3,711 |
+
+The budget went entirely to `reasoning_content` and the model emitted no content at all. `complete()` then applied its salvage path — take the tail of the reasoning stream, which is *correct* for the HUD router, where a blank answer is never acceptable — and returned an 83-character fragment. That fragment was written over the context it was meant to preserve. `/no_think` is ignored by this model; the token budget is the only lever.
+
+**This inverts the attribution rule in Fix 5.** That rule asks whether a post-compaction regression was the model forgetting or the note dropping it. For every compacted run before 2026-08-21 the answer is now known: **the note dropped everything.** No post-compaction behaviour in those runs is attributable to the model.
+
+**Applied:** `summaryMaxTokens` default **8192**, and — more importantly — `compact()` now **aborts the fold** when the summary comes back under `minSummaryChars` (400), instead of completing it. A turn that then overflows the window is a loud, diagnosable error; silent amnesia is neither. `complete()` gained `salvage: false` so a caller that can handle an empty answer gets one.
+
+> **Scoring rule:** a compacted run before 2026-08-21 cannot be scored on anything after its first compaction. From now on, read `summaryChars` in the compaction log before scoring — a note under ~400 chars for a ~90k-token fold means the summariser failed, and that is a harness property.
+
+---
+
+## Validation — session `e5c348f8`, 2026-08-21
+
+The first run on the fixed harness, and the parity fixes hold up:
+
+| Fix | Result |
+|---|---|
+| 13 — shell disclosure | **Zero** cmd.exe syntax across 40 commands (was `dir`/`type`/`findstr`/`2>nul`). Zero stray `nul` files |
+| 13 — cwd disclosure | **Zero** `cd ..` (was five wasted commands) |
+| 13 — escape warnings | Never fired; nothing escaped |
+| 4 — hop ceiling 250 | **No bail** (bailed at 120 the run before) |
+| 12 — compaction record | 2 compactions recorded, which is how Fix 14 was found |
+
+The model also produced the **first unambiguous axis-8 = 5 behaviour** on this harness: 3 `npm run build` plus 14 `playwright-cli` calls — launching the game in a real browser, reading live state off `window.__NEON_DESCENT__`, starting a run programmatically, sending `keydown Space`, reading the console log, finding that firing did not work, and tracing it into `VFXDirector` / `ParticleManager`. Unprompted, and *after* losing its entire context twice to Fix 14.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:
