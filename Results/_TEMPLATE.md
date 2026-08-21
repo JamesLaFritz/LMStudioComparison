@@ -16,7 +16,7 @@
 | Skill invocation pattern | *(Codex auto-selects · Claude uses `/openai-game-studio` per message)* |
 | **Shell** | *(workbench reports it in the session snapshot — `git-bash` / `cmd` / `powershell`)* |
 | Approval mode | ask / **auto** |
-| **Max tool hops** | *(standardize across the roster; default 48)* |
+| **Max tool hops** | *(standardize across the roster; default **250** as of 2026-08-21 — was 48, then 120)* |
 | Hit the hop ceiling? | no / **yes → harness failure, re-run higher, do not score axis 8** |
 | Command timeout | *(default 600s)* |
 | Vite / Three.js (resolved, not the caret range) | |
@@ -57,6 +57,8 @@
 **Did it re-run verification after repairing?** yes / no — *the sharpest local-vs-frontier discriminator so far. The calibration model built, found a real bug, fixed it, and stopped without rebuilding, so it never found the identical bug in a second file. One build + one fix + stop is axis 8 = 3, not 5.*
 
 **Did any command time out?** no / yes → *check it against HARNESS-PARITY Fix 7 before charging it to the model.*
+
+**Compactions reported as 0?** ⚠️ *pre-2026-08-21 runs: compaction crashed before recording itself (Fix 12), so 0 may be false. Check `messages[1]` in the session JSON for a handoff note — if one is there the run WAS compacted and its regressions cannot be attributed.*
 
 **Did the stream ever report a stall?** no / yes → ⚠️ *pre-2026-08-20 runs: "sent nothing for 120s" was a harness kill on a working model (Fix 11). Confirm against the LM Studio log — `n_decoded` climbing across the gap means the model was generating the whole time. **Do not score that run.***
 

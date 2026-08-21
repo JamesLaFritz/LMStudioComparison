@@ -82,6 +82,8 @@ The failure mode is the damaging one: **the turn ended mid-task looking exactly 
 
 **Applied:** `MAX_HOPS` default **48**, `EMBER_MAX_HOPS` to override. The bail message now names it as a harness limit rather than implying the task was too big, and exhaustion is `#record`'d as `kind: 'bail'` (not merely broadcast) so a scored run can tell it apart from the model stopping on its own. `maxHops` and `cmdTimeoutMs` joined `shell` in the session snapshot.
 
+**Raised to 120 (2026-08-11), then to 250 (2026-08-21).** 48 was still not enough: session `982e1cb3` bailed at **120 hops with the repair one hop from done** — it had edited the offending file and was cut off before it could re-run the build. Scored naively that reads as "repairs but never re-verifies", which is the conclusion drawn about a *different* model and false here. One mid-tier game (Space Invaders) took 150 tool calls across 120 hops.
+
 > **Scoring rule:** a run that ends on `kind: 'bail'` is a **harness failure, not a model failure**. Do not score axis 8 from it — re-run at a higher ceiling, and note the original hop count in `RUN.md`. Standardize on one value for the whole roster; changing it mid-benchmark invalidates comparisons the same way an unpinned toolchain does.
 
 ---
@@ -225,6 +227,53 @@ The mechanism is inference (the model reports `trained_for_tool_use: true`, so t
 **Fix:** the opening `tool_call` packet is the point where silence stops meaning a stall and starts meaning work, so the budget switches there to `EMBER_TOOL_IDLE_MS` (600s). The error now names the call being built rather than claiming a stall.
 
 > **Scoring note.** Any run before 2026-08-20 showing "sent nothing for 120s" was a **harness kill on a working model**. Do not score it. Check the LM Studio log for `n_decoded` climbing across the gap — that is the signature.
+
+---
+
+## Fix 12 — compaction had been crashing silently, always ✅ applied 2026-08-21
+
+Session `982e1cb3`'s report said **"Compactions: 0 — the run stayed inside the window."** Its `messages[1]` held a compaction handoff note. The context *had* been folded.
+
+`compact()` still referenced `userIdxs`, a local that the `#cutPoint()` refactor (`7ec09b5`, Fix 6-era) had removed. Reproduced in isolation:
+
+```
+THREW: ReferenceError: userIdxs is not defined
+messages folded anyway? 14
+history compacted records: 0
+```
+
+It folds the messages, **then throws before recording anything** — no history entry, no broadcast, no session log, no persist. `.sessions/logs/` has never existed on this machine, which is the corroborating evidence. And `#maybeCompact` swallowed the throw into a broadcast, which nothing reads after the fact.
+
+**This killed Fix 5 outright.** The entire model-vs-summary attribution method — *"did it forget, or was it never told?"* — depends on that record. Every compacted run since the refactor has reported zero compactions.
+
+> **Scoring rule:** a run recorded before 2026-08-21 that reports `Compactions: 0` proves nothing. Check `messages[1]` for a handoff note; if one is there, the run **was** compacted and its post-compaction regressions cannot be attributed. Auto-compaction failures are now recorded as `kind: 'compact_failed'`.
+
+---
+
+## Fix 13 — the model was never told its shell ✅ applied 2026-08-21
+
+Fix 2 settled *which* shell runs. Nothing told the model. It guessed — and `982e1cb3` guessed cmd.exe, emitting `dir`, `type`, `findstr` and `2>nul` into Git Bash across five commands.
+
+`2>nul` is the expensive one: in bash it does not discard output, it **creates a file named `nul`**. Two now exist on disk, and one is *outside the workspace*:
+
+```
+C:/Data/AI/Projects/Test/games/space-invaders/nul   (0 bytes)
+C:/Data/AI/Projects/nul                             (121 bytes)
+```
+
+Under the template's own scope check — *"did it write files the plan did not call for?"* — those count against the model. They are ours.
+
+**This is a roster-wide noise source, not a per-model trait.** A model penalised for guessing its shell is being scored on a coin flip, and different models guess differently.
+
+**Applied:** the system prompt opens with an Environment block (platform, workspace root, shell, and that the working directory does *not* persist between commands), and the `run_command` description names the shell and its traps. Claude Code and Codex both state this outright rather than leaving it to inference. Same run wasted five commands on `cd ..` assuming cwd persisted; that is now stated too.
+
+**Also applied — escape warnings.** `run_command` detects a `cd` landing outside the workspace root and appends a warning to the output the model reads. Deliberately **not** a boundary: a shell defeats pattern matching trivially, so this guards carelessness (the observed `cd .. && npm install`, and a 5 MB scan of an unrelated tree), not malice. File tools remain genuinely jailed.
+
+---
+
+## Harness settings are in `config.json` now
+
+Every value this document pins was environment-only, read at module load, with `server.bat` setting no environment — so `maxHops`, `commandTimeoutMs`, `maxOutputTokens`, `maxAutoContinue`, `streamIdleMs` and `toolIdleMs` lived somewhere unversioned. They are now the `harness` block of the dashboard's `config.json`, with the env var still winning for a one-off run. **A run report reads them from the running harness, so what a `RUN.md` cites is what actually executed.**
 
 ---
 
