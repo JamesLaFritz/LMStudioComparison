@@ -62,6 +62,8 @@
 
 **Did the stream ever report a stall?** no / yes → ⚠️ *pre-2026-08-20 runs: "sent nothing for 120s" was a harness kill on a working model (Fix 11). Confirm against the LM Studio log — `n_decoded` climbing across the gap means the model was generating the whole time. **Do not score that run.***
 
+**Did the run end on an EMPTY assistant message?** no / yes → ⚠️ *it did not finish (Fix 15). Look for `kind: 'empty_turn'` or a bail with `reason: 'empty_turn'`, and check the last reasoning block for `</tool_call>` markup — a tool call emitted inside reasoning is parsed as nothing and used to end the turn silently. **Runs before 2026-08-22 that end on an empty reply must be re-run, not scored.***
+
 **Scope check** — did it write files the plan did not call for? Completeness is measured against `plan.md`, not page count. List extras here:
 
 - 

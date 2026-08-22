@@ -325,6 +325,47 @@ The model also produced the **first unambiguous axis-8 = 5 behaviour** on this h
 
 ---
 
+## Fix 15 — an empty turn was read as a finished turn ✅ applied 2026-08-22
+
+Session `32d6ceae` stopped at **turn 89 of an available 250**, reported success with an **empty reply**, and was recorded as a completed run. Its own reasoning for that turn ends:
+
+> *"I found two integration mismatches: WorldBuilder imports a non-existent export from ProceduralTextures, and MusicSynth references an undefined constant. I'll fix both now."*
+> `</parameter>`
+> `</function>`
+> `</tool_call>`
+
+**The tool call was emitted inside `reasoning_content`.** LM Studio parsed no tool call from it and returned no `content`, so the agent loop saw `toolCalls.length === 0`, took that as "the model has finished talking", ended the turn and returned `''`. The model was mid-repair on two bugs it had just correctly diagnosed.
+
+It happened twice in the run — the other from reasoning that simply produced no output.
+
+**What it did to the score.** Compare the two runs of the same model on the same task:
+
+| | `e5c348f8` | `32d6ceae` |
+|---|---|---|
+| Turns / hops | 220 / 276 | 89 / 95 |
+| `run_command` | 40 | **8** |
+| `npm run build` | 3 | **0** |
+| `playwright-cli` | 14 | **0** |
+| Ended by | completing the task | **empty turn** |
+
+`32d6ceae` wrote 33 files and never installed, never built, never launched anything — its 8 commands are all `node --version`, `npm view`, `grep`, `sed`. Scored naively that is **axis 8 = 0–1**, against the **5** the same model earned days earlier. The difference is not the model; it is one unparsed tool call.
+
+This is the second fault that manufactures the same false verdict — *"writes code, never verifies"* — after the hop-ceiling bail (Fix 4). Both end a run mid-repair and leave behind exactly what an unmotivated model would leave behind.
+
+**Applied:** a turn returning neither content nor a tool call is retried with a nudge (`maxEmptyRetries`, default 2) and recorded as `kind: 'empty_turn'`. The stray-markup case is detected and named in the nudge, so the model reissues the call as a real one. Exhausting the retries is a `bail` with `reason: 'empty_turn'` — visible and unscoreable rather than a silent success.
+
+> **Scoring rule:** a run whose final assistant message is **empty** did not finish. Check the transcript for `kind: 'empty_turn'` or a `bail` with `reason: 'empty_turn'`, and check the last reasoning block for `</tool_call>` markup. Before 2026-08-22 neither was recorded, so **any earlier run ending on an empty reply must be re-run, not scored** — including calibration-3, whose "final message empty" was noted at the time and attributed to the model.
+
+---
+
+## Report accuracy — "peak" was not the peak ✅ applied 2026-08-22
+
+The generated run report labelled `lastPromptTokens` as **"Peak prompt size"**. It is the *most recent* turn, and after a fold it sits far below the high-water mark that caused the fold: `e5c348f8` reported **49,623** as its "peak" for a run that compacted at **94,296**. A benchmark record was stating a number that was wrong by nearly half.
+
+Now split into **"Last turn prompt size"** and a genuine **"Largest prompt seen"**, the latter derived from the `before` values in the compaction records.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:
