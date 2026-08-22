@@ -64,6 +64,11 @@
 
 **Did the run end on an EMPTY assistant message?** no / yes → ⚠️ *it did not finish (Fix 15). Look for `kind: 'empty_turn'` or a bail with `reason: 'empty_turn'`, and check the last reasoning block for `</tool_call>` markup — a tool call emitted inside reasoning is parsed as nothing and used to end the turn silently. **Runs before 2026-08-22 that end on an empty reply must be re-run, not scored.***
 
+**Does the delivered tree actually RUN?** build passes: yes/no · **`npm run dev` and the real entry route load the game**: yes/no
+> ⚠️ *These are different questions (Fix 16). `32d6ceae` built clean, wrote its own Playwright tests, screenshotted a working game — and the delivered tree does not run, because a later menu change pointed the hub at a route that does not exist. Score verification on the game starting, not on the build exiting 0.*
+
+**Did a turn get its tool calls capped?** no / yes → *check `kind: 'tools_capped'`. A capped turn means the model was looping; artifacts after that point are suspect even if the run continued.*
+
 **Scope check** — did it write files the plan did not call for? Completeness is measured against `plan.md`, not page count. List extras here:
 
 - 

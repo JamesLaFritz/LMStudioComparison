@@ -366,6 +366,43 @@ Now split into **"Last turn prompt size"** and a genuine **"Largest prompt seen"
 
 ---
 
+## Fix 16 — a runaway turn the harness could not see, and could not undo ✅ applied 2026-08-22
+
+Session `32d6ceae` (resumed) bailed on the hop ceiling after 193 minutes with a **9 MB context**. Two independent faults combined; either alone is survivable.
+
+**1. Nothing capped tool calls per turn.** The model emitted the *same* `read_file` on `GameController.js` **383 times in one assistant message**. The loop executed every one and appended 383 results of ~24 KB. Final role counts:
+
+```
+tool: 388    assistant: 6    user: 2    system: 1
+```
+
+**2. `#cutPoint` counted messages while the context was filled by their content.** 388 tool results sat under **6 hops**, so `hopIdxs.length <= keepRecentHops` was true, the cut point returned 0, and **compaction switched itself off at precisely the moment it was needed** — with the context 70× over the window. Throughput fell from 33.9 to 2 tok/s; the last 87 turns re-sent 5.1 M prompt tokens to produce 50 K.
+
+The proxy failed the same way as every other fault this month: *hops* stood in for *context* until one turn made them stop tracking it.
+
+**Applied**, both verified by replaying that session's own message array:
+
+| | before | after |
+|---|---|---|
+| The degenerate turn | 383 calls executed | **2 executed**, 381 duplicates dropped |
+| The 9 MB context | compaction declined | **640 msgs / 9.22 MB → 15 / 0.05 MB (99%)**, fits the window, no orphaned tool result |
+
+`capToolCalls()` removes exact duplicates and caps the rest at `maxToolCallsPerTurn` (32), dropping them from the assistant message too — every `tool_call` needs a matching result — and tells the model what was discarded. `#cutBySize()` overrides the message-counting heuristics whenever they would keep more than ~40% of the window.
+
+The two fixes are not independent: **the cap is what makes the context always foldable.** A single un-splittable group of 388 results genuinely cannot be folded without orphaning results; capping at 32 guarantees the size fallback always has a safe boundary.
+
+### What it cost the deliverable
+
+This run **built a working game** — `npm run build` passes, and the model wrote its own `smoke-test.mjs` and `gameplay-test.mjs`, ran them, and captured `screenshot-gameplay.png` showing a rendered neon invader grid with a live HUD. Unprompted. That is axis 8 = 5 behaviour.
+
+It then added a hub/menu, got the route wrong — `index.html` links `/games/space-invaders/` while the entry is at `/src/games/space-invaders/` — and was reading `GameController.js` to fix it when it degenerated. **The final tree builds clean and does not run:** the dev server falls back to the hub for the bad route.
+
+> **Scoring rule — a passing build is not a running game.** Axis 8 asks whether the model verified its work, and `npm run build` exiting 0 answers a weaker question than "does it start". Load the dev server and follow the actual entry route before scoring verification. An intermediate screenshot proves the game ran *then*, not that the delivered state runs.
+
+> **Scoring rule — a degenerate ending taints the final state, not the whole run.** Judge the artifacts at the point of degeneration, and record the hop bail separately. This run earned its axis-8 evidence *before* the loop and lost its deliverable *during* it.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:
