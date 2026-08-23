@@ -447,6 +447,50 @@ Compare the same moment in `32d6ceae`: fold #1 recovered **26%** and forced a se
 
 ---
 
+## Fix 18 — the reasoning budget, and a config file that reverted itself ✅ applied 2026-08-22
+
+### The lever Fix 17 was working around
+
+LM Studio has a per-model **Reasoning Budget** (Inference → Reasoning) that caps *thinking* tokens specifically, leaving `max_tokens` for actual output. That is the exact separation Fix 17 lacked. Measured on `qwen3.8-27b-mtp`, same prompt throughout:
+
+| | reasoning_tokens | content | finish_reason |
+|---|---|---|---|
+| No budget, `max_tokens` 2000 (×3) | 2000 | **0 chars** | `length` |
+| **Budget 8192**, `max_tokens` 32768 | **8190** | **17,563 chars** | **`stop`** |
+
+It stops thinking and starts answering. **No degradation at the boundary** — the answer is coherent, complete prose. `reasoning_budget_message` was left blank and the transition was still clean, so leave it blank: one less per-model string to keep identical across the roster.
+
+**Adopt it for the roster** at one fixed value on every model, and keep Fix 17 as the safety net for a model whose budget was never applied.
+
+### Two properties that make it a parity hazard
+
+- **It is a load-time setting.** Changing it in the UI does nothing until the model is reloaded. A run started after an unreloaded change silently has no budget.
+- **The API will not report it.** A loaded model's config exposes only `reasoning_budget_message` — there is no field stating the budget. It cannot be detected, only asserted.
+
+That is the same shape as every other silent confound here (identity files, shell, loaded context length, `gpt-oss-20b`'s reasoning default), and it is worse than most because nothing catches a wrong value.
+
+**So it is declared and then cross-checked.** `reasoningBudget` lives in the dashboard's `config.json`, and because every response reports `reasoning_tokens`, the session tracks the high-water mark and the run report tests the declaration against it:
+
+```
+| Reasoning budget | 8,192 declared, 8,190 observed — consistent |
+| Reasoning budget | ⚠️ declared 8,192 but 12,000 observed — the budget is NOT in force… |
+| Reasoning budget | 8,192 declared — no reasoning observed yet, so unverified |
+```
+
+> **Scoring rule:** record the reasoning budget in every local RUN.md, and read the report's verdict rather than the declaration. `unverified` is not `consistent`. An observed value above the declared one means that model ran **without** the budget and is not comparable to the rest of the roster.
+
+### The config file was reverting itself
+
+Found while wiring the above: the dashboard read `config.json` once at startup and `saveConfig()` wrote that whole in-memory object back. Adding a workspace therefore **reverted the file to its startup snapshot**, silently undoing any harness setting edited while the server ran. Three keys — `maxToolCallsPerTurn`, `maxReasoningOverruns`, `reasoningBudget` — had already vanished this way, with no error and no indication, and were only noticed because a constant read `null`.
+
+This is self-inflicted: harness settings were moved into `config.json` (Fix 13-era) precisely so the values HARNESS-PARITY pins would be visible and versioned, on the stated assumption that "round-tripping the whole object keeps this block intact" — true only if nobody edited the file while the server ran.
+
+`saveConfig()` now merges only the keys the server owns (`workspaces`, `skills`) over whatever is on disk. A test now fails if the code reads a harness key the shipped config does not define.
+
+> **Scoring rule:** a settings file that can silently revert makes every value in a run record suspect. Generate the configuration block from `GET /api/agent/:id/report` — it reads the *running* harness — and never transcribe it from `config.json`.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:

@@ -25,6 +25,7 @@
 | Quant / weights | |
 | **Loaded context length** | **32768** *(pinned — read from `/api/v1/models` → `loaded_instances[0].config.context_length`, never the advertised max)* |
 | `--parallel` | **1** *(pinned)* |
+| **Reasoning budget** | *(LM Studio → Inference → Reasoning; load-time, so RELOAD the model after setting it. Paste the run report's verdict, not the declaration — `unverified` is not `consistent`)* |
 | **Measured VRAM at load** | *(nvidia-smi, after load)* |
 | **Headroom after load** | |
 | Compaction threshold | 24,576 tokens *(0.75 × 32,768)* |
