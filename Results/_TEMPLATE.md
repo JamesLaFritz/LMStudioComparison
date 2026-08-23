@@ -62,6 +62,8 @@
 
 **Did the stream ever report a stall?** no / yes → ⚠️ *pre-2026-08-20 runs: "sent nothing for 120s" was a harness kill on a working model (Fix 11). Confirm against the LM Studio log — `n_decoded` climbing across the gap means the model was generating the whole time. **Do not score that run.***
 
+**Truncated segments vs useful output?** _ truncations / _ auto-continues → ⚠️ *if truncations produced no content, the output ceiling was being spent on reasoning, not writing (Fix 17). Look for `kind: 'reasoning_overrun'` or a bail with `reason: 'reasoning_overrun'`. Before 2026-08-22 this looked identical to an ordinary output-ceiling bail.*
+
 **Did the run end on an EMPTY assistant message?** no / yes → ⚠️ *it did not finish (Fix 15). Look for `kind: 'empty_turn'` or a bail with `reason: 'empty_turn'`, and check the last reasoning block for `</tool_call>` markup — a tool call emitted inside reasoning is parsed as nothing and used to end the turn silently. **Runs before 2026-08-22 that end on an empty reply must be re-run, not scored.***
 
 **Does the delivered tree actually RUN?** build passes: yes/no · **`npm run dev` and the real entry route load the game**: yes/no

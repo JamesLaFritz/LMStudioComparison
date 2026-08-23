@@ -403,6 +403,50 @@ It then added a hub/menu, got the route wrong — `index.html` links `/games/spa
 
 ---
 
+## Fix 17 — the output ceiling was being spent on thinking ✅ applied 2026-08-22
+
+Session `ba96be9b` — the first run with all sixteen prior fixes live — bailed at turn 125 after four auto-continues. Every one of its five truncated segments had **`content=0`**:
+
+```
+[ 12] content=0  reasoning=8000+  "...Invader geometry: body core box, head, legs, antennae..."
+[126] content=0  reasoning=8000+  "...collision sweeps for both bullet types, chain window decay, HUD emission..."
+[129] content=0  reasoning=8000+  "...Rewrite to import {UFO, ARENA}. powerups.js: cfg.powerup.fallSpeed..."
+[181] content=0  reasoning=8000+  "...half-width of 1.0 and height of 0.45 for invader bullet collision..."
+[334] content=0  reasoning=8000+  "...we'd re-steal this young particle instead of the true oldest..."
+```
+
+The reasoning is coherent design work, not a loop. The model simply spent the whole 16,384-token budget thinking and emitted nothing — `max_tokens` counts `reasoning_content`, visible content and tool-call arguments against **one** allowance, so a ceiling meant to bound *the answer* is consumed invisibly by *thinking*.
+
+Auto-continue (Fix 8) then told it *"continue from exactly where it stopped — do not restart"*. There was nothing to resume, so it bought another full budget of reasoning. Four rounds: **~26 minutes and ~65,000 tokens for zero output.**
+
+**This is Fix 14's root cause in the main loop.** The identical phenomenon was diagnosed for the compaction summariser (reasoning model, budget exhausted, no content, salvage returns a fragment) and fixed there — without asking whether the agent loop had the same exposure. It did.
+
+**Applied:** `finish_reason: "length"` now branches on whether anything was emitted.
+
+| | meaning | response |
+|---|---|---|
+| `length` + content | genuine truncation | resume — auto-continue, up to 3 |
+| `length` + nothing | budget went to reasoning | `reasoning_overrun`; nudge to **act**, abandon after **1** |
+
+The nudge is deliberately opposite to auto-continue's: *"Stop analysing and act. Take the single next concrete step now — issue one tool call, or write one file. Do not plan further; you have already planned enough."* The bail names the lever. `maxOutputTokens` raised **16,384 → 32,768**.
+
+> **Scoring rule:** a run ending on `reason: 'reasoning_overrun'` is a harness limit, not a model that stopped. Check `Auto-continues used` against `Truncated segments` in the report — if truncations exceed useful output, the ceiling was being spent on thinking. Before 2026-08-22 this was indistinguishable from an ordinary output-ceiling bail.
+
+### What the run showed otherwise
+
+**Fixes 14, 15 and 16 all held.** Zero `tools_capped` events, zero `empty_turn` events, and both compactions were clean and well spaced:
+
+| # | Turn | Before → After | Recovered | Summary | Gap |
+|---|---|---|---|---|---|
+| 1 | 79 | 94,496 → 34,564 | **63%** | 6,885 chars | — |
+| 2 | 110 | 96,017 → 11,813 | **88%** | 12,292 chars | 31 turns |
+
+Compare the same moment in `32d6ceae`: fold #1 recovered **26%** and forced a second fold **4 turns** later. `#cutBySize` fixed that on its first opportunity — the compaction thrash and the 9 MB runaway are both gone.
+
+**The deliverable is thin.** 36 files across a `shared/` kernel and `games/invader-grid-2099/`, but **one `run_command` in the entire run** — it never installed, never built, never ran anything. Nothing to verify, so axis 8 has no evidence regardless of the bail. It also pinned `three@^0.185.1` / `vite@^6.3.5` itself instead of using the Template's committed lockfile, which is exactly the toolchain drift ROSTER exists to prevent.
+
+---
+
 ## Draft 2 — auto-approve for benchmark runs
 
 The workbench already has the mechanism. From `lib/agent.js`:
