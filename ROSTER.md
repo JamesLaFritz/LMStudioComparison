@@ -14,7 +14,39 @@ lms load <key> -c 128500 --gpu max --parallel 1 -y
 
 LM Studio rounds the request up to a multiple of 64, so `-c 128500` loads as **128,512**. Record the loaded value, not the requested one.
 
-**Exception — `qwen3.6-35b-a3b-mtp@q4_k_m` (unsloth).** Its weights alone already exceed the card (24.4 GB, partial CPU offload at 32k), so it cannot hold a 128,500-token KV cache. Load it at the largest context that fits and **record the actual value in its RUN.md** — its endurance numbers are not comparable to the rest of the roster, and the quant-ladder comparison against `@q3_k_m` must use a context both models can hold.
+### Full roster measured at 128,512 — 2026-08-23
+
+Every model loaded at the pinned context; idle baseline 757 MiB, clean desktop. `tok/s` is a 200-token generation used **only** to detect CPU offload — a load that fits but spills looks identical at load time and shows up nowhere else. MTP/speculative models inflate it, so compare it against a model's own class, not across the table.
+
+| Model | VRAM used | Free | tok/s | |
+|---|---:|---:|---:|---|
+| `qwen/qwen3-coder-30b` | 24,024 | **115** | **16.2** | 🔴 **offloading — not viable** |
+| `qwen3.6-35b-a3b-mtp@q4_k_m` | 23,988 | **151** | 76.2 | 🔴 no working headroom |
+| `qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled` | 23,660 | **479** | 110.5 | 🔴 no working headroom |
+| `fable-coder-35b-a3b` | 23,327 | 812 | 73.9 | 🟠 tight |
+| `qwen3.6-27b-fable-5-experimental` | 23,000 | 1,139 | 51.9 | 🟠 tight |
+| `google/gemma-4-26b-a4b` | 21,304 | 2,835 | 109.2 | 🟢 |
+| `qwen3.6-40b-…-deckard-…-imatrix-max` | 20,828 | 3,311 | 39.4 | 🟢 |
+| `qwen3.6-35b-a3b-mtp@q3_k_m` | 20,608 | 3,531 | 83.4 | 🟢 |
+| `qwen/qwen3.6-27b` | 20,517 | 3,622 | 41.4 | 🟢 |
+| `qwen.qwen3.6-35b-a3b` | 19,524 | 4,615 | 117.3 | 🟢 |
+| `qwen-agentworld-35b-a3b-apex` | 19,246 | 4,893 | 103.2 | 🟢 |
+| `gemma-4-12b-…-tau2@q8_0` | 15,790 | 8,349 | 51.0 | 🟢 |
+| `openai/gpt-oss-20b` | 15,174 | 8,965 | 134.7 | 🟢 |
+| `prism-ml/bonsai-27b` | 13,944 | 10,195 | 88.0 | 🟢 |
+| `gemma-4-12b-…-tau2@q6_k` | 13,040 | 11,099 | 59.8 | 🟢 |
+
+**Ten of fifteen have comfortable headroom (≥1.5 GB, no offload signature).** The five that do not need decisions before the roster runs:
+
+- **`qwen/qwen3-coder-30b` is the real casualty.** 115 MiB free *and* 16.2 tok/s against 41–134 for its peers — that is the CPU-offload signature, not a tight fit. An 18.6 GB model using 24,024 MiB is spilling. **It cannot run at 128,512.** Either drop the pinned context for this model and record the value, or drop the model.
+- **`@q4_k_m` (unsloth) does load** — the earlier assumption that it could not was wrong — but 151 MiB free is not working headroom. **The quant ladder against `@q3_k_m` must run at a context both halves hold comfortably**, or it measures memory pressure rather than quantisation.
+- **`opus-reasoning-distilled` (479 MiB) and `fable-coder` (812 MiB)** load and run fast, but see the caveat below.
+
+> **Why <1 GB free is not safe, even at 73.9 tok/s.** These readings are taken with a ~200-token prompt. KV is preallocated at load, but **compute buffers scale with prompt length** — fable-coder grew 51 MiB going from idle to a trivial generation. A benchmark turn runs at 90,000+ tokens of prompt, and every figure here is a *card total* that other desktop applications live inside. One accelerated browser window is roughly 800 MiB.
+
+### Recommendation
+
+Run the roster at **128,512** for the ten green models. For the five tight ones, either drop to a context they hold with ≥1.5 GB free and record it per model, or accept them as a separate lane whose endurance numbers are not comparable. **Do not run `qwen3-coder-30b` at 128,512 at all** — it is already offloading before the benchmark starts.
 
 ### Why the window is the number that matters
 
