@@ -12,6 +12,8 @@ Fixed across every local model. Load with:
 lms load <key> -c 128500 --gpu max --parallel 1 -y
 ```
 
+LM Studio rounds the request up to a multiple of 64, so `-c 128500` loads as **128,512**. Record the loaded value, not the requested one.
+
 **Exception — `qwen3.6-35b-a3b-mtp@q4_k_m` (unsloth).** Its weights alone already exceed the card (24.4 GB, partial CPU offload at 32k), so it cannot hold a 128,500-token KV cache. Load it at the largest context that fits and **record the actual value in its RUN.md** — its endurance numbers are not comparable to the rest of the roster, and the quant-ladder comparison against `@q3_k_m` must use a context both models can hold.
 
 ### Why the window is the number that matters
@@ -30,14 +32,21 @@ A context window is the model's **active token workspace, shared by prompt and c
 
 > **Superseded:** this file previously pinned **32,768**, measured 2026-08-07 against `fable-coder-35b-a3b` at 22,495 MiB of 24,564. That measurement stands for that model at that quantisation; the 128,500 figure is James's operating call for the current roster. **Re-measure VRAM at 128,500 before the roster runs** — KV preallocates at load (~23 KB/token measured), so this is a materially larger allocation and the old table does not cover it.
 
-**Measured, not estimated** (2026-08-07, RTX 4090 24,564 MiB, 596 MiB idle). The binding model is `fable-coder-35b-a3b` — heaviest weights, least headroom:
+**Measured, not estimated.** The binding model is `fable-coder-35b-a3b` — heaviest weights (21.7 GB Q4_K_M), least headroom. RTX 4090, 24,564 MiB:
 
-| Context | VRAM used | Free |
-|---|---|---|
-| 8,192 | 21,939 MiB | 2,625 MiB |
-| **32,768** | **22,495 MiB** | **2,069 MiB** |
+| Context | VRAM used | Free | Notes |
+|---|---|---|---|
+| 8,192 | 21,939 MiB | 2,625 MiB | 2026-08-07 |
+| 32,768 | 22,495 MiB | 2,069 MiB | 2026-08-07 |
+| **128,512** | **23,296 MiB** | **843 MiB** | **2026-08-23 — the pinned value** |
+| 128,512 *under load* | 23,347 MiB | 792 MiB | inference adds only ~51 MiB of compute buffers |
+| 262,144 | 24,061 MiB | 78 MiB | model's advertised max; fits, but unusable headroom |
 
-KV cache is preallocated at load and scales at **~23 KB/token** (556 MiB across 24,576 tokens). Extrapolating, 64k lands near 22,640 MiB — about 1.3 GiB free — too tight to trust across twelve models with different KV geometry, and extrapolation is not measurement. 32k leaves ~2 GiB and every other roster model is lighter.
+**Verified GPU-resident at 128,512: 69.3 tok/s.** A CPU-offloaded model on this box runs single digits, so the load is genuinely on the card, not spilling.
+
+> **The ~23 KB/token figure this file used to quote was wrong to extrapolate from.** It came from the 8,192 → 32,768 delta (556 MiB across 24,576 tokens = 23.2 KB/token). But 32,768 → 128,512 costs 801 MiB across 95,744 tokens — **8.6 KB/token**, a third of that. The cost is **not linear**: the small-context delta includes fixed allocations that do not keep scaling. Extrapolating it predicted 5.8 GB of KV at 262,144, which would have been impossible on top of 20.7 GB of weights — yet the model loads there with room to spare. The old conclusion ("64k leaves ~1.3 GiB, too tight to trust") rested entirely on that bad rate, and it is what pinned the roster at 32,768.
+
+**Measurement hygiene, learned the same day:** `nvidia-smi` cannot report per-process VRAM on Windows (WDDM), so every figure here is a *card total* and other desktop applications are inside it. Paint.NET was holding VRAM during the 262,144 reading above. **Measure with a clean desktop**, and treat 843 MiB as thinner than it looks — one accelerated browser window is that much.
 
 Compaction fires at **93,684 tokens** (the tighter of `0.75 × C` and `C − M − S`). That is the number the endurance axis is really testing.
 
