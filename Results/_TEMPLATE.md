@@ -23,12 +23,14 @@
 | Date | |
 | **— local runs only —** | |
 | Quant / weights | |
-| **Loaded context length** | **32768** *(pinned — read from `/api/v1/models` → `loaded_instances[0].config.context_length`, never the advertised max)* |
+| **Loaded context length** | **128500** *(pinned — read from `/api/v1/models` → `loaded_instances[0].config.context_length`, never the advertised max. Exception: `qwen3.6-35b-a3b-mtp@q4_k_m` cannot hold it — record its actual value)* |
 | `--parallel` | **1** *(pinned)* |
 | **Reasoning budget** | *(LM Studio → Inference → Reasoning; load-time, so RELOAD the model after setting it. Paste the run report's verdict, not the declaration — `unverified` is not `consistent`)* |
 | **Measured VRAM at load** | *(nvidia-smi, after load)* |
 | **Headroom after load** | |
-| Compaction threshold | 24,576 tokens *(0.75 × 32,768)* |
+| Compaction threshold | **93,684** *(tighter of `0.75 × C` and `C − maxOutputTokens − margin`; paste the report's row, which names which bound)* |
+| Generation cap (last turn) | *(report row — `min(M, C − I − S)`; says whether the ceiling or the headroom bound)* |
+| Effective content budget | *(report row — `maxOutputTokens − reasoningBudget`)* |
 | CPU offload? | yes / no — layers: |
 | Workbench sub-skill access verified | yes / no |
 

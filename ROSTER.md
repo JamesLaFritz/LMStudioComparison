@@ -4,13 +4,31 @@
 >
 > Card: RTX 4090, 24 GB.
 
-## Pinned context length — **32,768**, `--parallel 1`
+## Pinned context length — **128,500**, `--parallel 1`
 
 Fixed across every local model. Load with:
 
 ```
-lms load <key> -c 32768 --gpu max --parallel 1 -y
+lms load <key> -c 128500 --gpu max --parallel 1 -y
 ```
+
+**Exception — `qwen3.6-35b-a3b-mtp@q4_k_m` (unsloth).** Its weights alone already exceed the card (24.4 GB, partial CPU offload at 32k), so it cannot hold a 128,500-token KV cache. Load it at the largest context that fits and **record the actual value in its RUN.md** — its endurance numbers are not comparable to the rest of the roster, and the quant-ladder comparison against `@q3_k_m` must use a context both models can hold.
+
+### Why the window is the number that matters
+
+A context window is the model's **active token workspace, shared by prompt and completion** — every generated token is appended to the same sequence and attended to by the next one (`Raw/Research/ContextWindowSizeResearch.md`). LM Studio's own definition is explicit that `contextLength` covers prompts *and* responses. So three settings interact, and the harness now derives them rather than pinning them independently:
+
+| Symbol | Here | Meaning |
+|---|---|---|
+| `C` | 128,500 | loaded context window |
+| `M` | 32,768 | `maxOutputTokens` — one response: reasoning + content + tool arguments |
+| `S` | 2,048 | safety reserve for chat-template and tool-schema tokens the estimate cannot see |
+
+**Generation cap per request:** `G ≤ min(M, C − I − S)`, with `I` the rendered input. A constant ceiling implements only the `M` term and overflows once `I` grows.
+**Compaction threshold:** `min(0.75 × C, C − M − S)` = **93,684** here. The ratio alone does not know the output ceiling.
+**Effective content budget:** `M − reasoningBudget` = 32,768 − 8,192 = **24,576** — what is actually left for output after thinking takes its share.
+
+> **Superseded:** this file previously pinned **32,768**, measured 2026-08-07 against `fable-coder-35b-a3b` at 22,495 MiB of 24,564. That measurement stands for that model at that quantisation; the 128,500 figure is James's operating call for the current roster. **Re-measure VRAM at 128,500 before the roster runs** — KV preallocates at load (~23 KB/token measured), so this is a materially larger allocation and the old table does not cover it.
 
 **Measured, not estimated** (2026-08-07, RTX 4090 24,564 MiB, 596 MiB idle). The binding model is `fable-coder-35b-a3b` — heaviest weights, least headroom:
 
@@ -21,7 +39,7 @@ lms load <key> -c 32768 --gpu max --parallel 1 -y
 
 KV cache is preallocated at load and scales at **~23 KB/token** (556 MiB across 24,576 tokens). Extrapolating, 64k lands near 22,640 MiB — about 1.3 GiB free — too tight to trust across twelve models with different KV geometry, and extrapolation is not measurement. 32k leaves ~2 GiB and every other roster model is lighter.
 
-Compaction fires at **0.75 × 32,768 = 24,576 tokens**. That is the number the endurance axis is really testing.
+Compaction fires at **93,684 tokens** (the tighter of `0.75 × C` and `C − M − S`). That is the number the endurance axis is really testing.
 
 > `lms load --estimate-only` is useless here: it returns 20.22 GiB for fable-coder at *both* 4,096 and 262,144 context. It ignores context entirely — hence its own `Confidence: LOW`. Use `probe-context.sh`, which does real loads.
 
