@@ -286,3 +286,231 @@ Every measurement above was therefore taken with a synthetic entry point importi
   numbers come from a synthetic single-emitter scene, because the game layer does not
   exist yet.
 - Revisions 0.183+ were not examined. The Template pins 0.182.
+
+## The visual target
+
+**The bar is Housemarque's *Resogun* (2013), stated as measurements, not adjectives.**
+Spec, reference pack, judging checklist and a measurement tool live in
+`wayfinder/retro-futurism-space-invaders/assets/visual-target/` (commit `043d333`).
+
+A generated reference pack was **not** warranted; real imagery of a shipped title was, and
+it is strictly better — a generated pack can only describe a world, whereas 26 frames of an
+actual game can be *measured*, and the numbers are what make the direction verifiable.
+
+### How this was established
+
+26 Resogun frames from two independent sources, deliberately: 6 first-party (Housemarque's
+own press capture) and 20 third-party, which have different re-encode pipelines. Every
+finding below is one the two sources agree on; the one place they disagree is recorded as a
+ruling. Nothing was inferred from an adjective in a review. Provenance and the two-tier
+authority split are in `manifest.md`; per-frame numbers for all 26 in `reference/measurements.csv`.
+
+### The authority split, because the reference is a different game
+
+Resogun is a horizontal cylinder-world twin-stick shooter; we are building Space Invaders.
+
+- **SPEC tier** — `visual-spec.md` and `measurements.csv`. Sole authority for layout,
+  counts, sizes, colours and parameters.
+- **FIDELITY tier** — the images. They answer exactly one question: *put our screenshot next
+  to Resogun, could you tell which is the game?*
+
+**Tiebreak, quotable in a judge prompt:** where an image disagrees with the spec about what
+is on screen, where it is, or how many there are, the spec wins and the disagreement is not
+a defect. The images are explicitly not authority for a horizontal camera, a scrolling city,
+voxel destruction, enemy silhouettes, or HUD layout.
+
+### What was measured
+
+| Finding | Confidence | What it changes |
+|---|---|---|
+| **Two thirds of the frame is dark.** 49-86 % of pixels below sRGB V 0.35 (median 64 %); frame-median linear luminance 0.028 | measured, both sources | The whole tonal contract. If our frame is bright with dark bits, nothing else matters |
+| **Under 1 % of the frame is white.** Median 0.94 %; even peak destruction only 1.7 % | measured | The washout ceiling |
+| **The dark is green-teal and *more saturated* than the highlights.** Near-black `#030906`/`#050a06`; shadow band ~`#0d2224` | measured, sources agree to 2/255 | The build's `#05060f` fog is blue-violet. `FogExp2` to **`#0b1e22`** is the highest-value single line in the spec |
+| **Glow shape: tight core, long faint skirt.** Half-power at **0.74 % of frame height**, still ~7 % of core brightness 8 % away | measured two independent ways | **This is the bloom acceptance criterion**, not the three parameters |
+| **Light is narrow-band.** Top two adjacent 30° hue bins hold 40-75 % of lit pixels | measured; corroborated by a contradiction — the two halves disagree on the hue and agree on the narrowness | Kills "neon = cyan + magenta + lime + amber at once". Our band: 150-210° |
+| **Enemy hulls are lit matter, not light.** Saturated mid-dark body, faceted PBR, a 1-2 px near-white rim, one small hot accent | visible at magnification | The big one — see below |
+| **Reference density is 1-2 orders of magnitude past 500 particles** (~20,000 bright runs/frame, median 5 px wide) | measured | Density comes from `InstancedMesh`, not the particle manager |
+
+### The decision that matters most
+
+`config.js` gives all three invader species `emissiveIntensity` 1.45-1.55, all above
+`minimumGlowIntensity(0.72)` = 1.368. **All 55 invaders would bloom** — precisely the
+"formation merges into one glowing slab" that `BloomPreset.js` warns about, arrived at
+through *material authoring* where the file's own comment expects it to arrive through the
+bloom parameters. Turning bloom down cannot fix it without killing the projectiles.
+
+The reference's answer: the formation is not a light source at all.
+
+- hull body emissive **0.35** — does not bloom
+- silhouette rim **1.05** — deliberately just under the 1.368 floor: bright and crisp, adds
+  nothing to the bloom buffer
+- one "eye" dot, <= 4 % of hull area, at **2.1** — blooms
+
+55 small hot points instead of 55 glowing slabs. Species emissive *hues* stay as authored —
+row identity by colour is the classic's own readability device and the rim carries it.
+
+### Bloom, stated as r182 values
+
+```
+r169 (frozen preset):  strength 0.85   radius 0.55   threshold 0.72
+r182 (this spec):      strength 0.72   radius 0.38   threshold 0.72
+```
+
+- **threshold holds at 0.72** — it anchors the emissive-authoring contract above. Safe
+  because nearly every material is specified below roughness 0.5, which is where r181 bites.
+- **radius 0.55 -> 0.38** is the significant move, the direct counter to r181's widened kernel.
+- **strength cut only 15 %**, deliberately: removing 55 invader emitters takes real bloom
+  source out of the frame. Both changes must be made and measured together; either alone
+  looks wrong.
+
+**Starting point only — not verified, r182 could not be run in that session. The gate is the
+measured halo profile.** If the halo is still too wide, drop `PostFX.bloomDivisor` from 2 to
+1 *before* dropping `radius` further: the half-resolution bloom buffer is itself doubling the
+kernel's screen-space width.
+
+### The hub
+
+`.cabinet__status--scheduled` is wired up and made **mandatory on every card**. A dimmed card
+is ambiguous by default — "off on purpose" and "failed to load" look identical — so seven
+rules each remove one way of reading it as broken. Load-bearing: opacity **0.46 -> 0.70**
+(below ~0.6 a title stops reading as text and starts reading as a failed render); grayscale
+the accent bar rather than dimming the whole card, so exactly one title in fourteen is
+coloured; a **dashed** border on the locked pill, the cheapest unambiguous "placeholder, on
+purpose" signal in CSS; and a hover response, because an unresponsive element is
+indistinguishable from a dead one — exactly the case the playability gate must not mistake
+for a dead button.
+
+`HubScene.js` uses the `deepSpace` preset (radius 0.78, widest in the table) against r169. At
+r182 that reads as haze, not stars. The attract scene is not exempt from the visual gate; it
+is the first frame anyone sees.
+
+### The gate
+
+`tools/measure-frame.py` reports ten metrics on any screenshot with the reference p10-p90
+envelope beside each (needs `pillow`, `numpy`). `judging-checklist.md` is 16 items in
+priority order, each answerable by looking at two images rather than reading code, in four
+tiers. Tier-1 failures are fixed before a Tier-3 item is looked at, because a Tier-1 failure
+makes the rest unjudgeable. Output is a list of named failures with the plate proving each —
+not a score.
+
+### Stated as unconfirmed
+
+- The three bloom numbers. Arithmetic on measured deltas plus judgement about the
+  emitter-count change; not rendered.
+- Every roughness/metalness value. Reasoned, none measured off a material.
+- The green-led *deepest* black. Two lossy codecs agreeing is strong, but it is the
+  measurement taken where codecs are least reliable. The teal fog (V 0.10-0.42) is safe; the
+  exact sub-0.06 hex is not.
+- The split of that finding between fog and true void — a call about our different subject
+  matter, not something an image showed.
+- All of glassmorphism and the hub cards. The reference has neither.
+- **Motion.** Everything was measured on stills. Trail length, hit-stop duration, shake decay
+  and the timing of the six VFX belong to the playability gate.
+
+### Assets
+
+`assets/visual-target/` — `README.md`, `visual-spec.md` (9 sections, every number tagged
+[M]easured / [C]arried / [D]erived / [G]uess), `judging-checklist.md`, `manifest.md`,
+`reference/` (13 plates + `measurements.csv`), `tools/measure-frame.py`.
+
+## The playability gate
+
+**Written, executable, and proved able to go red. 42 automated verbs — 10 hub, 26
+classic-complete, 6 VFX — plus 9 integrity checks and 3 specified as manual.** Everything in
+`wayfinder/retro-futurism-space-invaders/assets/playability-gate/` (commit `ee2311c`);
+`gate.md` is the gate, `run-gate.mjs` executes it. Every row is: the verb, the real input
+that triggers it, the observable that proves it, and a numeric threshold.
+
+### The rule the whole instrument turns on
+
+The gate may **read** state to confirm what it caused. It may never **cause** state by calling
+into game internals. Every state change originates from `page.keyboard.*` / `page.mouse.*`,
+dispatched through CDP `Input.dispatchKeyEvent` — the browser's real input pipeline, upstream
+of the page's own listeners. No harness code path calls a game method, sets a game field, or
+synthesises a `KeyboardEvent` in page script. Causing by calling internals is exactly how the
+2026-09-04 failure hid.
+
+Corollary, enforced per row: **no verb passes on state alone.** Every verb carries a pixel or
+DOM observable; the probe is corroboration only.
+
+### Anti-false-green
+
+1. **Idle-window frame differencing.** I5 over the whole frame, C6 restricted to the
+   formation band. Reported as raw changed-pixel counts, so `0` appears as `0`. This is the
+   measurement that caught the local build.
+2. **Per-verb pixel/state deltas.** C12 requires the score increase to coincide with the
+   formation *losing lit mass*; C25 requires restart to restore not just the picture and the
+   HUD but the *march*. Both exist to catch a HUD reporting what the world did not do.
+3. **Negative control** (I6): an unbound key must change nothing, making every input verb a
+   differential claim. **Input-path liveness** (I7) separates "keyboard dead" from "verb
+   unimplemented" — opposite repairs.
+4. **Three-valued verdicts.** PASS / FAIL / INCONCLUSIVE, where INCONCLUSIVE is a claim about
+   the *run*, never a pass. `--quick`, `--only`, `--verbs`, `--fault` runs can report red but
+   can never report a pass.
+5. **Capture cadence is a measurement.** `page.screenshot()` costs 1102 ms/frame against a
+   bloomed WebGL build under software GL — too coarse to see a projectile or a 200 ms
+   hit-stop, and it would have produced confident reds about working code. Time-series
+   capture therefore uses CDP `Page.startScreencast`, measured at 16.5 ms/frame. Achieved
+   cadence is recorded beside each verdict; C5 returns INCONCLUSIVE rather than red when it
+   cannot resolve the shot rate.
+
+### The six VFX are six rows, never one
+
+They fire on the same event, so each needs a signature no other produces. **V1** moves light
+in a `sceneryBand` containing no gameplay entity (only the camera can do that) and must
+decay. **V2** is a filled cloud that swells and clears, beating a measured ambient baseline.
+**V3** is a *trough* in whole-frame change that recovers — the one effect that is the absence
+of motion. **V4** is a single-frame streak far longer than the projectile, dimming along its
+length. **V5** must be **hollow** and its peak radius must strictly grow. **V6** is a DOM node
+with digits that rises and is removed. The self-test asserts a filled burst passes V2 and
+**fails** V5 on the same frames.
+
+### The hub, and the locked-card subtlety
+
+H1-H10 cover boot, the 14-card grid (13 locked), hash routing and deep links, launching the
+lit cabinet into a *painting* canvas, exit back to hub, attract liveness, and a failed load
+surfacing (H8 aborts the lazily-imported chunk by request interception, so the registry's
+rejection and `main.js`'s `showFatal` run for real).
+
+H3 does not ask "did clicking the locked card do something" — **silence is never scored as a
+dead button.** It requires both *correctly inert* (no navigation, no mount, nothing thrown)
+and *legible* (`disabled`/`aria-disabled`, plus a status matching `/scheduled|soon|locked/i`
+on screen). A locked card that launched something fails as a broken lock; one that sat there
+with no indication why fails as an **unlabelled** button — and the report says so in those
+words, so the repair is unambiguous.
+
+### What the build owes the gate
+
+A read-only `window.__gate.snapshot()` (contract in `gate.md`: pure, derived from what the
+renderer draws from, never a call-site tally) and `data-gate` attributes on the HUD, the
+game-over overlay, the restart control and each floating-score node. Absent probe is not a
+failure — the harness degrades to HUD scraping and marks affected rows INCONCLUSIVE.
+
+### Proved, not asserted
+
+- `selftest.mjs` — **24/24**, a PASS *and* a FAIL case per detector. Writing it found three
+  real weaknesses: V1, V2 and V5 all read ambient scene motion as an effect. Fixed; all three
+  now require the effect to beat a measured ambient baseline.
+- **Run end to end against the frozen 2026-09-04 local build** (a copy outside `Results/`)
+  and it reproduced the human verdict independently: I5 `unionChangedPixels: 0`, C6
+  `centroidTravel: 0, maxChangedPixels: 0`, C4 no projectile, C12 score never moved, C1/C2/C3
+  pass — the ship being the only working verb, exactly as recorded.
+  **9 pass · 14 fail · 13 inconclusive · 3 skipped.**
+- **Live red proofs:** `--fault freeze-raf` turns I2, I5, I9 red. `--fault no-input` turns
+  C1/C2/C3 red on the same build where they pass unfaulted, while the negative control I6
+  stays green. That differential is the strongest evidence the harness measures input rather
+  than the passage of time.
+- Reports and frames for all four runs are under `assets/playability-gate/evidence/`.
+
+### Not verified, and gate.md says so plainly
+
+**No verb has ever been observed passing on a real Space Invaders build, because there is not
+one yet.** The frozen build proves the reds; it cannot prove the greens. Unexecuted in the
+green direction: C6-C10, C14-C28, V1-V6, and all of H1-H10. The `__gate` probe has never been
+implemented, so every probe-corroborated branch is untried. `targets/reference.json` regions
+are guesses and are marked as such — calibration against one real frame is part of running
+it, and a mis-set `sceneryBand` is the one way this harness can produce a false red.
+`--fault mute-fire` and `--fault frozen-hud` are untested live. C17 (shoot the UFO), C28
+(invasion ends the run) and G1 (gamepad — CDP has no gamepad domain, and faking
+`navigator.getGamepads` would be the synthetic call this gate forbids) are specified with
+manual procedures and deliberately not automated.

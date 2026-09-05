@@ -81,40 +81,23 @@ Two compile breaks are already known and named in the answer key under
 Answer is a module-by-module real-versus-fiction verdict, and the adopt-or-greenfield
 call that Q5 left conditional on it.
 
-### The playability gate
+### Wire and calibrate the gate
 
-- Type: grilling
+- Type: task
+- Blocked by: Does the adopted layer run
 
-Write the acceptance gate the destination is defined by: the enumerated verbs, and for
-each one, how it is *proven* under real input. This is the instrument that caught the
-local failure — a formation that never marched showed up as zero differing pixels over
-five idle seconds, and nothing else in the toolchain noticed.
+The gate harness exists and is proved able to go red, but it has never seen a passing
+build and two things it depends on do not exist yet.
 
-Must cover the six mandated VFX as individually observable events, not as a bundle.
-Needs to be executable by a later session without judgement calls.
+Implement what the build owes it: a read-only `window.__gate.snapshot()` honouring the
+purity contract in `gate.md` — derived from what the renderer draws from, never a
+call-site tally — plus the `data-gate` attributes on the HUD, the game-over overlay, the
+restart control and each floating-score node.
 
-Decide how far the gate reaches into the hub. It now sits between the player and the
-game, so booting, picking the cabinet and landing in play is part of the path — but a
-locked card that does nothing is correct behaviour, and the gate must not mistake it for
-a dead button.
-
-### The visual target
-
-- Type: prototype
-
-"AAA Retro-Futurism" is a direction, not a specification, and it cannot be verified as
-written. Decide what it concretely means for this game — palette, bloom character,
-material language, the shape of the neon, what the grid floor and formation actually look
-like. Is a generated reference pack warranted, or does the directive's text plus a rough
-concrete take settle it?
-
-The hub is in frame as well: it is the first thing anyone sees, so the cabinet grid and
-the attract scene have to carry the look, and thirteen dimmed cards need to read as
-*coming soon* rather than as a broken menu. `hub.css` has an unused
-`.cabinet__status--scheduled` style, which suggests a per-card status line was intended
-and never wired up.
-
-Cheap and rough. The point is something to react to.
+Then calibrate `targets/reference.json` against one real frame. Its regions are currently
+guesses and are marked as such in the file. A mis-set `sceneryBand` is the single way this
+harness can produce a **false red**, and a false red costs more than no gate at all —
+it sends a builder to repair working code.
 
 ### Audio in the done bar
 
