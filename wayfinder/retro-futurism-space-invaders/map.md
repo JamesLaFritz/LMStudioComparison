@@ -51,20 +51,6 @@ frozen, commit the three untracked `_*-2026-09-04` evidence directories, and set
 
 Answer records the path and why, plus what was committed.
 
-### Three.js 0.169 to 0.182
-
-- Type: research
-- Claimed: research subagent
-
-The adopted build targets `three@0.169.0` / `vite@^5.4.10`. The repo Template pins
-`three 0.182.0` / `vite 7.3.6`. What actually breaks across that range for the APIs this
-build uses: `EffectComposer` and `UnrealBloomPass` import paths and constructor shape,
-colour management and `outputColorSpace`, `MeshStandardMaterial`, `InstancedMesh`, and
-`.dispose()` semantics. Is there a custom-pass API change that affects the hand-written
-`ChromaticAberrationPass` and `FilmGrainPass`?
-
-Answer must be specific enough to decide pin-up versus stay-put without opening a browser.
-
 ### Does the adopted layer run
 
 - Type: task
