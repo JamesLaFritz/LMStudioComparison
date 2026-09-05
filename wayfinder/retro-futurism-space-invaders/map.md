@@ -2,9 +2,10 @@
 
 ## Destination
 
-A shipped, standalone Space Invaders that satisfies every mission-directive constraint
-and is **proven playable by real input**: classic-complete, with the six mandated VFX
-visibly firing. It exists to be the *reference build* — the ceiling the benchmark's
+A shipped arcade shell whose one lit cabinet — Space Invaders — satisfies every
+mission-directive constraint and is **proven playable by real input**: classic-complete,
+with the six mandated VFX visibly firing. The other thirteen cabinets ship as
+coming-soon. It exists to be the *reference build* — the ceiling the benchmark's
 contestant builds can later be read against.
 
 Reached when a human has played it end to end and every verb in the playability gate
@@ -32,6 +33,12 @@ anything. Prefer cheap AFK verification over expensive rebuilds.
 - `grilling` + `domain-modeling` — the fallback pair for any ticket.
 - `remakebench-skills:reference-pack-authority` — for anything that decides how it looks.
 - `ctx7` CLI — for Three.js API facts. Never answer three.js questions from memory.
+
+**The hub stays.** The arcade shell ships with all fourteen cabinets, thirteen of them
+coming-soon. This is a *keep*, not a build: `GameRegistry.js` already marks thirteen
+`available: false` and `hub.css` already renders them `.cabinet--locked`. The cost is
+that the hub is now on the path between the player and the game, so it is inside the
+audit and inside the playability gate rather than being chrome.
 
 **Frozen, do not touch.** `Results/_SpaceInvaders-bench-2026-09-04/opus/` and `.../local/`
 are contestant evidence. The reference build is a *copy*. Editing either in place
@@ -63,6 +70,14 @@ does the particle manager emit, does the pool recycle, does bloom composite, doe
 input manager report a keypress, does audio produce a sample, does `Disposer` actually
 free?
 
+The hub's 1,247 lines are in scope too, since it is kept: does the cabinet grid render,
+do the thirteen locked cards read as coming-soon rather than broken, does hash routing
+work, does the attract scene run, and does a failed load surface on screen the way
+`main.js` claims it does?
+
+Two compile breaks are already known and named in the answer key under
+`Three.js 0.169 to 0.182` — start from those rather than re-finding them.
+
 Answer is a module-by-module real-versus-fiction verdict, and the adopt-or-greenfield
 call that Q5 left conditional on it.
 
@@ -78,6 +93,11 @@ five idle seconds, and nothing else in the toolchain noticed.
 Must cover the six mandated VFX as individually observable events, not as a bundle.
 Needs to be executable by a later session without judgement calls.
 
+Decide how far the gate reaches into the hub. It now sits between the player and the
+game, so booting, picking the cabinet and landing in play is part of the path — but a
+locked card that does nothing is correct behaviour, and the gate must not mistake it for
+a dead button.
+
 ### The visual target
 
 - Type: prototype
@@ -87,6 +107,12 @@ written. Decide what it concretely means for this game — palette, bloom charac
 material language, the shape of the neon, what the grid floor and formation actually look
 like. Is a generated reference pack warranted, or does the directive's text plus a rough
 concrete take settle it?
+
+The hub is in frame as well: it is the first thing anyone sees, so the cabinet grid and
+the attract scene have to carry the look, and thirteen dimmed cards need to read as
+*coming soon* rather than as a broken menu. `hub.css` has an unused
+`.cabinet__status--scheduled` style, which suggests a per-card status line was intended
+and never wired up.
 
 Cheap and rough. The point is something to react to.
 
@@ -113,6 +139,10 @@ the entire render layer, the game entry point, collision wiring, bunkers, the UF
 escalation, and the audio hookup. Decide the module boundaries and what carries state,
 given what the audit found real.
 
+The entry point is contractually fixed by keeping the hub: `GameRegistry.js:76` lazy-loads
+`../games/Space_Invaders/index.js` and expects a default export constructible as
+`new Game(ctx)`. That file is one of the two known compile breaks.
+
 ### What the gold reference licenses
 
 - Type: grilling
@@ -133,8 +163,6 @@ nothing.
 - **The polish pass.** "AAA feel" — juice, game feel — was deliberately excluded from the
   done bar and deferred until classic-complete plus VFX passes. Its shape is unknown and
   it may turn out to be several tickets or none.
-- **Hub removal fallout.** Deleting the 1,247-line hub may leave `shared/` coupled to
-  cabinet concepts. Whether that is a rename, a refactor, or nothing depends on the audit.
 - **What ships alongside the build** so a future reader can use it as a reference.
   Downstream of "What the gold reference licenses".
 
@@ -143,7 +171,8 @@ nothing.
 - **Finishing Opus 5's parked run as a scored contestant, and running Codex / GPT-5.6 Sol.**
   That is measurement; this effort is construction. Recoverable later as its own effort —
   which is exactly why `opus/` is frozen rather than adopted in place.
-- **The other 13 games, and roster-wide gate design.** Space Invaders only.
+- **The other 13 games, and roster-wide gate design.** Their cabinets ship, as coming-soon
+  cards. The games do not. A locked card is a menu entry, not a title.
 - **`MAX_HOPS` and harness calibration.** Already answered in `_evidence/PARKED.md`
   (>= 450), and it is instrument work, not build work.
 - **Actually scoring any contestant build against this reference.** The destination ends
