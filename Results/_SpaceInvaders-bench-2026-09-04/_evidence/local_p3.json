@@ -1,0 +1,1 @@
+{"reply":"Stopped after 3 turns that produced neither output nor a tool call (the tool call was emitted inside reasoning and never parsed) — harness limit, not a completed task."}

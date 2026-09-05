@@ -1,0 +1,18 @@
+{
+  "name": "retro-futurism-arcade",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AAA Retro-Futurism arcade cabinet. 100% procedural assets, hand-written physics, Three.js + PBR + UnrealBloom.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "three": "0.169.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

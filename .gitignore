@@ -11,3 +11,8 @@ dist/
 # Generated games are results and ARE tracked — a scored run has to be
 # inspectable later. Nothing under Results/<model>/src, games/, or *.js is
 # ignored on purpose.
+
+# Playwright / gate run artefacts. The reports under
+# wayfinder/.../playability-gate/evidence/ are the kept record; these are scratch.
+test-results/
+playwright-report/

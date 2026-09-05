@@ -1,0 +1,195 @@
+Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.
+## Compliance Acknowledgment
+
+**Anti-Lazy Directive** — Acknowledged. Every file I emit will be complete. No `// ... rest of`, no `// TODO`, no elided function bodies, no "same as above" references. If a function is declared, it is implemented.
+
+**Strict Memory Management** — Acknowledged. Every `BufferGeometry`, `Material`, `Texture`, `RenderTarget`, and `AudioNode` I allocate will have a traceable owner and an explicit teardown path. Every game module exposes a `dispose()` that walks its own resource ledger; pooled objects are recycled, never re-allocated; `EffectComposer` render targets are resized, not recreated.
+
+**Sequential Output Protocol** — Acknowledged. One game at a time. `plan.md` on "Begin [Game Name]", full implementation only on "Plan approved". On truncation I resume from the exact cut character with no preamble.
+
+---
+
+# STEP 1 — MASTER ARCHITECTURE
+
+## 1.1 Root Directory Structure
+
+```
+retro-futurism-arcade/
+│
+├── index.html                     # Arcade hub — game selection cabinet
+├── package.json
+├── vite.config.js
+├── .gitignore
+├── README.md
+│
+├── src/
+│   │
+│   ├── main.js                    # Hub bootstrap: routes to a game module, owns the single WebGLRenderer
+│   ├── hub/
+│   │   ├── ArcadeShell.js         # Lifecycle owner: mount(game) / unmount() / dispose()
+│   │   ├── GameRegistry.js        # id → { title, stars, loader: () => import('...') }
+│   │   ├── hub.css                # Glassmorphism cabinet-select UI
+│   │   └── HubScene.js            # Idle attract-mode scene behind the menu
+│   │
+│   ├── shared/                    # ═══ THE ENGINE LAYER — game-agnostic, zero game imports ═══
+│   │   │
+│   │   ├── core/
+│   │   │   ├── Game.js            # Abstract base class every title extends
+│   │   │   ├── Loop.js            # Fixed-step accumulator + interpolated render, timescale-aware
+│   │   │   ├── Clock.js           # Scaled/unscaled delta, hit-stop integration, max-frame clamp
+│   │   │   ├── StateMachine.js    # Generic FSM (menu/play/pause/gameover + entity AI reuse)
+│   │   │   ├── EventBus.js        # Typed pub/sub, auto-unsubscribe on dispose
+│   │   │   └── Disposer.js        # Resource ledger: track(obj) → disposeAll(); deep scene walker
+│   │   │
+│   │   ├── render/
+│   │   │   ├── RendererFactory.js # Singleton WebGLRenderer, ACESFilmic, sRGB, PCFSoft shadows
+│   │   │   ├── PostFX.js          # EffectComposer stack builder (Render→Bloom→Chroma→Vignette→Grain→SMAA→Output)
+│   │   │   ├── BloomPreset.js     # Per-genre UnrealBloomPass tuning tables
+│   │   │   ├── ChromaticAberrationPass.js  # Custom ShaderPass
+│   │   │   ├── FilmGrainPass.js            # Custom ShaderPass (hash noise + scanline + vignette)
+│   │   │   └── CameraRig.js       # Damped follow, look-ahead, FOV kick, shake mount point
+│   │   │
+│   │   ├── vfx/                   # ═══ THE 6 MANDATORY SHARED EFFECTS ═══
+│   │   │   ├── CameraShake.js     # (1) Trauma model: trauma², simplex-driven, velocity-scaled
+│   │   │   ├── ParticleManager.js # (2) HARD CAP 500. InstancedMesh pool + priority eviction
+│   │   │   ├── ParticleEmitters.js#     Burst recipes: sparks, smoke, debris, embers, plasma
+│   │   │   ├── HitStop.js         # (3) Timescale dilation queue, priority-max, ease-out release
+│   │   │   ├── TrailRenderer.js   # (4) Ribbon trails, ring-buffer verts, InstancedMesh variant
+│   │   │   ├── Shockwave.js       # (5) Pooled emissive ring meshes, additive, radial falloff shader
+│   │   │   ├── FloatingText.js    # (6) HTML-layer + 3D-sprite score popups, projected & pooled
+│   │   │   └── VFXDirector.js     #     Single façade: VFX.impact({pos, power, color, normal})
+│   │   │
+│   │   ├── pool/
+│   │   │   ├── ObjectPool.js      # Generic acquire/release, high-water mark, prewarm
+│   │   │   └── Poolable.js        # Interface contract: onAcquire / onRelease / onDispose
+│   │   │
+│   │   ├── procgen/
+│   │   │   ├── SimplexNoise.js    # Vanilla 2D/3D/4D simplex, seedable
+│   │   │   ├── PRNG.js            # Mulberry32 / xorshift128 deterministic RNG
+│   │   │   ├── TextureFactory.js  # Canvas2D → CanvasTexture: grids, hex, scanlines, circuitry
+│   │   │   ├── PBRMaps.js         # Derive normal/roughness/AO/emissive maps from a height canvas
+│   │   │   ├── GeometryLab.js     # Displacement, fracture, extrusion, bevel, weld, merge helpers
+│   │   │   ├── SDFText.js         # Canvas-glyph → geometry/texture atlas for in-world 3D numerals
+│   │   │   └── MaterialLibrary.js # Cached MeshStandardMaterial factory (neon, chrome, glass, matte)
+│   │   │
+│   │   ├── audio/
+│   │   │   ├── AudioEngine.js     # AudioContext, master bus, compressor, convolver (procedural IR)
+│   │   │   ├── Synth.js           # Osc/noise/FM voices, ADSR, filter sweeps — all SFX synthesized
+│   │   │   ├── SFXLibrary.js      # Named recipes: laser, thud, shatter, powerup, explode
+│   │   │   └── MusicDirector.js   # Generative arpeggio/bass/drum sequencer, intensity-reactive
+│   │   │
+│   │   ├── input/
+│   │   │   ├── InputManager.js    # Unified action map, per-frame edge detection (pressed/held/released)
+│   │   │   ├── KeyboardDevice.js  # WASD + Arrows + Space/Enter/Esc
+│   │   │   ├── GamepadDevice.js   # Gamepad API poll, deadzone, radial clamp, rumble
+│   │   │   └── ActionMap.js       # Per-game binding schema → normalized axes/buttons
+│   │   │
+│   │   ├── ui/
+│   │   │   ├── glass.css          # ═ THE DESIGN SYSTEM ═ tokens, blur, neon vars, keyframes
+│   │   │   ├── HUD.js             # Base overlay: score/lives/level, DOM-pooled
+│   │   │   ├── Overlay.js         # Modal panels: title, pause, game-over, transitions
+│   │   │   ├── Notifier.js        # Combo/streak banners
+│   │   │   └── DebugPanel.js      # FPS, draw calls, tris, particle count, pool occupancy (F3)
+│   │   │
+│   │   └── util/
+│   │       ├── MathUtils.js       # clamp, lerp, damp, smoothstep, easings, springs
+│   │       ├── Collision.js       # AABB, sphere, swept-AABB, circle-line, SAT-OBB, ray-plane
+│   │       ├── Storage.js         # Safe localStorage high-scores/settings wrapper
+│   │       └── Perf.js            # Adaptive quality governor (drops bloom res / particle cap)
+│   │
+│   └── games/                     # ═══ 14 ISOLATED TITLES ═══
+│       ├── Pong/
+│       ├── Snake/
+│       ├── Breakout/
+│       ├── Tetris/
+│       ├── Space_Invaders/
+│       ├── Pac-Man/
+│       ├── Asteroids/
+│       ├── Frogger/
+│       ├── Centipede/
+│       ├── Galaga/
+│       ├── Defender/
+│       ├── Donkey_Kong/
+│       ├── Paperboy/
+│       └── TMNT/
+│
+└── public/                        # EMPTY BY MANDATE — zero binary assets, ever
+```
+
+## 1.2 Per-Game Folder Template
+
+Every title is self-contained and follows an identical shape, so no game ever reaches into another:
+
+```
+src/games/<GameName>/
+├── plan.md                  # Written in STEP 2, lives beside the code
+├── index.js                 # Sole public export: default class <GameName> extends Game
+├── config.js                # ALL tunables: physics constants, colors, bloom, difficulty curves
+├── scene/                   # World construction (arena, lighting, environment, skybox)
+├── entities/                # Gameplay actors (each Poolable where instanced)
+├── systems/                 # Update systems (physics, spawn, scoring, AI, difficulty)
+├── fx/                      # Game-specific VFX built ON TOP of shared/vfx
+├── audio/                   # Game-specific synth recipes / music seed
+├── ui/                      # Game-specific HUD extension + its scoped .css
+└── dispose.js               # (only where teardown is nontrivial — usually handled by Disposer)
+```
+
+## 1.3 Import Scoping Law (enforced by ESLint rule + convention)
+
+| From | May import |
+|---|---|
+| `shared/**` | `three`, other `shared/**`. **Never** `games/**`. |
+| `games/X/**` | `three`, `../../shared/**`, siblings inside `games/X/**`. **Never** `games/Y/**`. |
+| `hub/**` | `shared/**`, lazy `import()` of `games/*/index.js` only. |
+
+Vite aliases kill deep `../../../` chains entirely:
+
+```js
+// vite.config.js
+resolve: {
+  alias: {
+    '@shared': '/src/shared',
+    '@game':   '/src/games',
+    'three':   '/node_modules/three'   // single instance guarantee
+  }
+}
+```
+
+So every game imports as `@shared/vfx/VFXDirector.js` — flat, unambiguous, refactor-proof.
+
+## 1.4 Vite Setup
+
+```
+package.json
+  dependencies:    three
+  devDependencies: vite
+  scripts: dev / build / preview
+```
+
+`three` is the **only** runtime dependency. Post-processing comes from `three/examples/jsm/postprocessing/*` (EffectComposer, RenderPass, UnrealBloomPass, ShaderPass, SMAAPass, OutputPass) — first-party, not an external engine. No physics library, no tween library, no noise library (I write my own simplex), no audio library.
+
+## 1.5 The Shared-Utilities Strategy — Contracts
+
+**One renderer, many games.** `RendererFactory` owns a single `WebGLRenderer` for the whole session. Mounting a game hands it a fresh `Scene`/`Camera` and rebuilds only the `EffectComposer` passes; unmounting calls `Disposer.disposeAll()` on that game's ledger. This makes leak-testing trivial: after unmount, `renderer.info.memory.geometries` and `.textures` must return to the hub baseline. That assertion is wired into `DebugPanel`.
+
+**One VFX façade.** Games never talk to `ParticleManager`, `CameraShake`, `HitStop`, and `Shockwave` individually. They call:
+
+```js
+VFX.impact({ position, normal, power, color, hitStop: 0.06, shockwave: true });
+```
+
+`VFXDirector` translates `power` (normalized impact energy) into trauma, particle count, hit-stop duration, and shockwave radius using one shared curve — which is why every game will *feel* like the same premium product.
+
+**One particle budget.** `ParticleManager` is a hard 500-instance ceiling backed by `InstancedMesh`. Every emit request carries a `priority`. At saturation, incoming high-priority particles evict the oldest lowest-priority live particles rather than being dropped — so a boss explosion always reads, even mid-firefight. Count is exposed for the adaptive quality governor.
+
+**One base class.** `Game` defines the lifecycle every title implements: `init(ctx)`, `fixedUpdate(dt)`, `update(dt, alpha)`, `render()`, `onResize(w,h)`, `onPause()`, `dispose()`. `Loop` drives a fixed 120 Hz simulation step with an accumulator and renders with interpolation `alpha`, so collision math is frame-rate independent on every machine — mandatory for the swept-AABB in Breakout and the jump derivatives in Donkey Kong.
+
+---
+
+## Ready for STEP 2
+
+The scaffold above is the contract; each `plan.md` will specify exactly which shared modules its game consumes and which files it adds.
+
+**Which game are we starting with?** The roster is ordered easiest → hardest, so `Pong` is the natural first build — it establishes the PBR/bloom baseline and exercises every shared system once at low complexity. But I'll begin wherever you'd like.
+
+Say **"Begin [Game Name]"** and I'll produce its exhaustive `plan.md`.

@@ -1,0 +1,21 @@
+{
+  "name": "retro-futurism-arcade-reference",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Reference build - AAA Retro-Futurism arcade. Hand-built to define the ceiling, NOT a contestant result.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "three": "0.182.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.6"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

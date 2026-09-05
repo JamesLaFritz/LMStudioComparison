@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#05060f" />
+    <title>NEON BULWARK — Retro-Futurism Arcade</title>
+    <meta
+      name="description"
+      content="A procedurally generated, physically based reimagining of the 1978 arcade canon. Three.js, zero external assets."
+    />
+  </head>
+  <body>
+    <!-- The single WebGL surface. Owned by RendererFactory for the whole session. -->
+    <div id="viewport" aria-hidden="true"></div>
+
+    <!-- DOM overlay root. All HUD, menus and modals live here, never in WebGL. -->
+    <div id="overlay-root"></div>
+
+    <noscript>
+      <div class="noscript-panel">
+        This arcade is built entirely in code and requires JavaScript and WebGL 2.
+      </div>
+    </noscript>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
