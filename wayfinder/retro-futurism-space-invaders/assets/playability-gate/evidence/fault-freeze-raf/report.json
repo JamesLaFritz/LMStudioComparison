@@ -1,0 +1,182 @@
+{
+  "gate": "FAIL",
+  "counts": {
+    "PASS": 3,
+    "FAIL": 3,
+    "INCONCLUSIVE": 3,
+    "SKIP": 0
+  },
+  "meta": {
+    "target": "local-frozen.json",
+    "url": "http://localhost:5199/",
+    "fault": "freeze-raf",
+    "quick": true,
+    "viewport": "1280x720",
+    "startedAt": "2026-09-05T22:06:38.962Z",
+    "harness": "playability-gate/run-gate.mjs",
+    "inputPath": "CDP Input.dispatchKeyEvent / dispatchMouseEvent (real browser input)"
+  },
+  "verbs": [
+    {
+      "required": false,
+      "measured": {
+        "gitSha": "043d333",
+        "url": "http://localhost:5199/"
+      },
+      "evidence": [],
+      "id": "I4",
+      "group": "integrity",
+      "verb": "the build under test is the current build",
+      "input": "--source <dir>",
+      "observable": "newest source mtime vs. the start of this run",
+      "threshold": "every source file predates the run",
+      "verdict": "INCONCLUSIVE",
+      "note": "No --source given. This run cannot prove it played current bytes.",
+      "at": "2026-09-05T22:06:39.002Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "state": "visible",
+        "hidden": false,
+        "focused": true
+      },
+      "evidence": [],
+      "id": "I1",
+      "group": "integrity",
+      "verb": "the page is visible, so rAF is running",
+      "input": "none — precondition",
+      "observable": "document.visibilityState",
+      "threshold": "=== 'visible'",
+      "verdict": "PASS",
+      "at": "2026-09-05T22:06:41.083Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "frames": 9
+      },
+      "evidence": [],
+      "id": "I2",
+      "group": "integrity",
+      "verb": "the page paints frames",
+      "input": "none — precondition",
+      "observable": "requestAnimationFrame callbacks in a 1 s window",
+      "threshold": ">= 20",
+      "verdict": "FAIL",
+      "note": "The render loop is not running.",
+      "at": "2026-09-05T22:06:42.600Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "pageErrors": 0,
+        "consoleErrors": 0,
+        "failedRequests": 0
+      },
+      "evidence": [],
+      "id": "I3",
+      "group": "integrity",
+      "verb": "the build boots without throwing",
+      "input": "page load",
+      "observable": "uncaught page errors + console.error, minus the allowlist",
+      "threshold": "0 uncaught, 0 unallowlisted console errors",
+      "verdict": "PASS",
+      "at": "2026-09-05T22:06:42.600Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "windowMs": 4000,
+        "samples": 63,
+        "captureSource": "screenshot-fallback",
+        "cadenceMs": 63.64516129032258,
+        "unionChangedPixels": 0,
+        "unionRatio": 0,
+        "maxConsecutiveChangedPixels": 0,
+        "movingPairs": 0,
+        "pairs": 62
+      },
+      "evidence": [],
+      "id": "I5",
+      "group": "integrity",
+      "verb": "the simulation runs when the player does nothing (dead-sim detector)",
+      "input": "no keys held for the whole window",
+      "observable": "per-pixel luminance difference between consecutive frames, and between the first and last frame of the window",
+      "threshold": "union changed-pixel ratio >= 0.001 AND >= 50% of consecutive frame pairs differ by >= 200 px",
+      "verdict": "FAIL",
+      "note": "ZERO differing pixels across the whole frame over the idle window. The simulation is not running. This is the 2026-09-04 failure exactly.",
+      "at": "2026-09-05T22:06:50.742Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "key": "F7",
+        "drift": 0,
+        "scoreBefore": 0,
+        "scoreAfter": 0
+      },
+      "evidence": [
+        "frames\\0000-unbound-before.png",
+        "frames\\0001-unbound-during.png"
+      ],
+      "id": "I6",
+      "group": "integrity",
+      "verb": "an unbound key changes nothing (negative control)",
+      "input": "hold F7 for 700 ms",
+      "observable": "player-band luminance centroid drift, and score",
+      "threshold": "centroid drift <= 0.01 AND score unchanged",
+      "verdict": "PASS",
+      "at": "2026-09-05T22:06:51.579Z"
+    },
+    {
+      "required": false,
+      "measured": {},
+      "evidence": [],
+      "id": "I7",
+      "group": "integrity",
+      "verb": "the input layer receives key events",
+      "input": "press F7",
+      "observable": "__gate.snapshot().input.downCount",
+      "threshold": "increments",
+      "verdict": "INCONCLUSIVE",
+      "note": "No __gate probe on this build. A dead input layer and an unimplemented verb are indistinguishable in this run; every input verb result below is pixel-only evidence.",
+      "at": "2026-09-05T22:06:51.584Z"
+    },
+    {
+      "required": false,
+      "measured": {},
+      "evidence": [],
+      "id": "I8",
+      "group": "integrity",
+      "verb": "the 500-particle cap holds",
+      "input": "sampled across every burst in this run",
+      "observable": "__gate.snapshot().vfx.particlesLive",
+      "threshold": "<= 500 at every sample",
+      "verdict": "INCONCLUSIVE",
+      "note": "No probe; the cap is not observable from pixels.",
+      "at": "2026-09-05T22:06:51.584Z"
+    },
+    {
+      "required": false,
+      "measured": {
+        "heldKeys": 0,
+        "frames": 0,
+        "drift": 0
+      },
+      "evidence": [
+        "frames\\0002-disarm-before.png",
+        "frames\\0003-disarm-after.png"
+      ],
+      "id": "I9",
+      "group": "integrity",
+      "verb": "the harness released the controls and the build still responds",
+      "input": "release everything, then hold Left for 500 ms",
+      "observable": "held-key list, rAF count, player-band centroid drift",
+      "threshold": "0 keys held AND frames advancing AND the ship still moves",
+      "verdict": "FAIL",
+      "note": "The run may have left the build in a state a human would find broken. Check before trusting the verdicts above.",
+      "at": "2026-09-05T22:06:53.436Z"
+    }
+  ]
+}

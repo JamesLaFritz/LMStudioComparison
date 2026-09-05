@@ -1,0 +1,16 @@
+{
+  "name": "playability-gate",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Executable acceptance gate for the retro-futurism Space Invaders reference build. Drives the build with real input and reports pass/fail per verb.",
+  "scripts": {
+    "gate": "node run-gate.mjs --target targets/reference.json",
+    "gate:quick": "node run-gate.mjs --target targets/reference.json --quick",
+    "selftest": "node selftest.mjs",
+    "install:browser": "playwright install chromium"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

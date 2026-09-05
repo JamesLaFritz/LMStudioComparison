@@ -1,0 +1,139 @@
+{
+  "gate": "FAIL",
+  "counts": {
+    "PASS": 2,
+    "FAIL": 3,
+    "INCONCLUSIVE": 1,
+    "SKIP": 0
+  },
+  "meta": {
+    "target": "local-frozen.json",
+    "url": "http://localhost:5199/",
+    "fault": "no-input",
+    "quick": true,
+    "onlyGroups": "all",
+    "onlyVerbs": "C1,C2,C3,I6",
+    "viewport": "1280x720",
+    "startedAt": "2026-09-05T22:08:39.288Z",
+    "harness": "playability-gate/run-gate.mjs",
+    "inputPath": "CDP Input.dispatchKeyEvent / dispatchMouseEvent (real browser input)"
+  },
+  "verbs": [
+    {
+      "required": false,
+      "measured": {
+        "gitSha": "043d333",
+        "url": "http://localhost:5199/"
+      },
+      "evidence": [],
+      "id": "I4",
+      "group": "integrity",
+      "verb": "the build under test is the current build",
+      "input": "--source <dir>",
+      "observable": "newest source mtime vs. the start of this run",
+      "threshold": "every source file predates the run",
+      "verdict": "INCONCLUSIVE",
+      "note": "No --source given. This run cannot prove it played current bytes.",
+      "at": "2026-09-05T22:08:39.334Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "state": "visible",
+        "hidden": false,
+        "focused": true
+      },
+      "evidence": [],
+      "id": "I1",
+      "group": "integrity",
+      "verb": "the page is visible, so rAF is running",
+      "input": "none — precondition",
+      "observable": "document.visibilityState",
+      "threshold": "=== 'visible'",
+      "verdict": "PASS",
+      "at": "2026-09-05T22:08:41.358Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "key": "F7",
+        "drift": 0,
+        "scoreBefore": 0,
+        "scoreAfter": 0
+      },
+      "evidence": [
+        "frames\\0000-unbound-before.png",
+        "frames\\0001-unbound-during.png"
+      ],
+      "id": "I6",
+      "group": "integrity",
+      "verb": "an unbound key changes nothing (negative control)",
+      "input": "hold F7 for 700 ms",
+      "observable": "player-band luminance centroid drift, and score",
+      "threshold": "centroid drift <= 0.01 AND score unchanged",
+      "verdict": "PASS",
+      "at": "2026-09-05T22:08:43.638Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "before": 0.49936781229632077,
+        "after": 0.49936781229632077,
+        "delta": 0
+      },
+      "evidence": [
+        "frames\\0002-move-C1-before.png",
+        "frames\\0003-move-C1-after.png"
+      ],
+      "id": "C1",
+      "group": "core",
+      "verb": "the player moves left",
+      "input": "hold ArrowLeft for 700 ms (real key event via CDP)",
+      "observable": "luminance centroid of the player band, before vs after",
+      "threshold": "centroid moves left by >= 0.02 of the band width",
+      "verdict": "FAIL",
+      "at": "2026-09-05T22:08:46.713Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "before": 0.49936781229632077,
+        "after": 0.49936781229632077,
+        "delta": 0
+      },
+      "evidence": [
+        "frames\\0004-move-C2-before.png",
+        "frames\\0005-move-C2-after.png"
+      ],
+      "id": "C2",
+      "group": "core",
+      "verb": "the player moves right",
+      "input": "hold ArrowRight for 700 ms (real key event via CDP)",
+      "observable": "luminance centroid of the player band, before vs after",
+      "threshold": "centroid moves right by >= 0.02 of the band width",
+      "verdict": "FAIL",
+      "at": "2026-09-05T22:08:50.782Z"
+    },
+    {
+      "required": true,
+      "measured": {
+        "mid": 0.49936781229632077,
+        "end": 0.49936781229632077,
+        "drift": 0,
+        "litAtEnd": 8880
+      },
+      "evidence": [
+        "frames\\0006-clamp-mid.png",
+        "frames\\0007-clamp-end.png"
+      ],
+      "id": "C3",
+      "group": "core",
+      "verb": "the player is clamped by the playfield wall",
+      "input": "hold ArrowLeft for 5000 ms",
+      "observable": "player-band centroid at the half-way point vs at the end, and lit mass",
+      "threshold": "centroid < 0.35 AND further drift <= 0.01 AND the ship is still drawn",
+      "verdict": "FAIL",
+      "at": "2026-09-05T22:08:58.899Z"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "name": "retro-futurism-arcade — reference build",
+  "url": "http://localhost:5173/",
+  "_note": [
+    "TUNE THE REGIONS BEFORE THE FIRST REAL RUN. Every region below is a",
+    "fraction of the viewport and they are guesses until someone has looked at",
+    "one frame of the built game. The procedure is in gate.md, section",
+    "'Calibrating a target'. An untuned region is the one way this harness can",
+    "produce a false red, so calibration is part of running it, not optional.",
+    "",
+    "selectors.floatingScore requires the build to tag its floating-score nodes",
+    "with data-gate=\"floating-score\"; see gate.md, 'What the build must expose'."
+  ],
+  "viewport": { "width": 1280, "height": 720 },
+
+  "hub": {
+    "present": true,
+    "expectedCabinets": 14,
+    "litCabinetId": "Space_Invaders",
+    "lockedProbeId": "Pong",
+    "cardSelector": ".cabinet",
+    "lockedSelector": ".cabinet--locked",
+    "statusSelector": ".cabinet__status",
+    "promptSelector": ".hub-prompt",
+    "visibleSelector": ".hub-layer--visible",
+    "bootScreenSelector": ".boot-screen",
+    "fatalSelector": ".fatal",
+    "comingSoonPattern": "scheduled|soon|locked",
+    "gameChunkPattern": "**/Space_Invaders/**",
+    "bootTimeoutMs": 8000,
+    "launchTimeoutMs": 10000,
+    "attract": true
+  },
+
+  "keys": {
+    "left": "ArrowLeft",
+    "right": "ArrowRight",
+    "fire": "Space",
+    "restart": "Enter",
+    "pause": "KeyP",
+    "exit": "Escape",
+    "unbound": "F7"
+  },
+
+  "selectors": {
+    "score": "[data-gate=\"score\"]",
+    "highScore": "[data-gate=\"high-score\"]",
+    "wave": "[data-gate=\"wave\"]",
+    "lives": "[data-gate=\"lives\"]",
+    "lifeIcon": "[data-gate=\"life-icon\"]",
+    "gameOver": "[data-gate=\"game-over\"]",
+    "restartButton": "[data-gate=\"restart\"]",
+    "floatingScore": "[data-gate=\"floating-score\"]"
+  },
+
+  "regions": {
+    "formationBand": { "x": 0.05, "y": 0.12, "w": 0.9, "h": 0.4 },
+    "descentBand": { "x": 0.05, "y": 0.46, "w": 0.9, "h": 0.22 },
+    "shotBand": { "x": 0.05, "y": 0.4, "w": 0.9, "h": 0.42 },
+    "muzzleBand": { "x": 0.05, "y": 0.7, "w": 0.9, "h": 0.06 },
+    "bunkerBand": { "x": 0.05, "y": 0.65, "w": 0.9, "h": 0.1 },
+    "playerBand": { "x": 0.05, "y": 0.76, "w": 0.9, "h": 0.15 },
+    "ufoBand": { "x": 0.05, "y": 0.04, "w": 0.9, "h": 0.07 },
+    "sceneryBand": { "x": 0.0, "y": 0.93, "w": 1.0, "h": 0.07 }
+  },
+
+  "thresholds": {
+    "allowedConsolePatterns": ["favicon"]
+  }
+}
