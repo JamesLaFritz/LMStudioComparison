@@ -54,6 +54,7 @@ Answer records the path and why, plus what was committed.
 ### Three.js 0.169 to 0.182
 
 - Type: research
+- Claimed: research subagent
 
 The adopted build targets `three@0.169.0` / `vite@^5.4.10`. The repo Template pins
 `three 0.182.0` / `vite 7.3.6`. What actually breaks across that range for the APIs this
