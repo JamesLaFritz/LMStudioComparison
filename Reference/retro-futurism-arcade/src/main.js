@@ -464,6 +464,43 @@ window.setTimeout(() => {
   }
 }, 260);
 
+/**
+ * External hash navigation.
+ *
+ * Both `launch()` and `showHub()` write the hash with `replaceState`, which
+ * does **not** fire `hashchange`. So this listener only ever runs for
+ * navigation the app did not perform itself: the browser's back and forward
+ * buttons, a hand-edited URL, or an automation harness deep-linking into a
+ * cabinet. That is what makes it safe to act on directly — there is no
+ * re-entrancy from the app's own writes to guard against, only its idea of
+ * what is currently mounted.
+ *
+ * Without this the hash is written but never read again after boot: a deep
+ * link works on a cold load and silently does nothing on a warm one, which
+ * looks exactly like a dead menu.
+ */
+window.addEventListener('hashchange', () => {
+  if (launching) return;
+
+  const id = window.location.hash.replace(/^#/, '');
+  const target = getCabinet(id);
+
+  if (target && target.available) {
+    if (shell.activeId === id) return;
+    const index = CABINETS.findIndex((c) => c.id === id);
+    if (index >= 0) selectIndex(index, false);
+    launch(id);
+    return;
+  }
+
+  // An empty or unknown hash means "go back to the cabinet select". Only act
+  // if something is actually mounted, so a stray hash edit on the hub is inert.
+  if (shell.activeId) {
+    shell.unmount();
+    showHub();
+  }
+});
+
 // Exposed for the QA pass: `__arcade.loseContext()` exercises the recovery
 // path, and `__arcade.shell` allows inspecting live budgets from the console.
 window.__arcade = Object.assign(window.__arcade || {}, {
