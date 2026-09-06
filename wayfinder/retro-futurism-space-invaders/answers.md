@@ -619,3 +619,107 @@ real frame of this build.
 **A full-gate run has never completed.** It exceeded a 10-minute budget and was killed before
 writing a report; only the `--quick` subset above has ever produced one. No verb has yet been
 observed passing in a trustworthy full run.
+
+## Wire and calibrate the gate
+
+**Done, and it changed the verdict from 7 pass to 21.** The probe now honours `gate.md` in
+full, the harness can see, and its regions were measured rather than guessed. The gate still
+reports FAIL — but every remaining red is now either a real narrow gap or a measurement
+limitation that is named, not a false accusation.
+
+`7 → 15 → 18 → 21 pass` across four runs, each step a defect in the instrument or in what the
+build owed it. Not one of those steps was a change to how the game plays.
+
+### The instrument was blind three separate ways
+
+**1. It measured before the game existed.** The harness slept a flat 1200 ms after navigation,
+then began driving keys. Mounting a cabinet is asynchronous — a dynamic `import()` and an
+`init()` that builds a renderer, a post-processing stack and a particle pool — and it
+comfortably outruns 1200 ms. So the harness drove the *hub* and reported the game frozen and
+deaf. It now waits for the probe, falls back to a sized canvas, and records which path it took,
+because "the probe never appeared" changes how every verdict below it should be read.
+
+**2. Forcing SwiftShader made it blind, not slow.** Measured on this build, same machine, same
+scene:
+
+| | rAF/s | screencast frames in 3 s | sim steps/s |
+|---|---:|---:|---:|
+| software GL | 7 | **0** | 56 |
+| hardware GL | 33 | 83 | 114 |
+
+At seven frames a second with *no screencast at all*, every verb that differences frames fails
+— the six VFX, every centroid check, the dead-simulation detector — against a build whose own
+probe shows it working. The launch now lets ANGLE pick the platform's hardware backend;
+`--software-gl` restores the old behaviour where reproducibility matters more than sight.
+`Page.enable` is also now sent before `Page.startScreencast`, without which the screencast is
+accepted and silently pushes nothing.
+
+Headed runs work too, and are worse: a visible window gets occluded by other work and Chromium
+throttles it, so results flip between runs. Headless with hardware GL is the configuration to
+use.
+
+**3. The regions were guesses, and two missed their subjects entirely.** Row-wise luminance
+profiling of a real frame at 1280×720 put the five invader rows at y=0.15/0.225/0.30/0.375/0.45,
+the bunkers at 0.775–0.85, and the ship at 0.925–0.975. The shipped `playerBand` was 0.76–0.91
+and `bunkerBand` 0.65–0.75 — both looking at empty sky. That alone failed every
+player-movement verb against a build whose probe showed the ship moving. `sceneryBand` is now a
+left-edge sliver of city: static, feature-rich enough to carry a camera-shake signal, and
+outside the horizontal reach of the formation, the bunkers and the ship, so nothing but the
+camera can move it.
+
+### What the build owed it, and did not pay
+
+`I7` reads `input.downCount` and `lastCode`; the probe exposed only `moveX` and `fire`. So "the
+game never saw the key event" was true of the probe and false of the game — and because `I7`
+declares that nothing below it can be trusted, one missing field discredited thirty verdicts.
+
+Now implemented in full: `version`, `frame`, the `input` block, and the `vfx` block mapped to
+each subsystem's own live counts. Spawn counts are call-site tallies and are labelled as
+corroboration only, because a tally can stay correct while the world is dead. HUD tags
+corrected to the gate's names (`high-score`, not `hiScore`), plus `lives`, `life-icon`, and
+`floating-score` tagged on spawn and untagged on release — a pooled node that is permanently
+tagged would let the gate find fourteen popups that never appeared.
+
+### Three real defects the gate exposed, all in the build
+
+1. **Fast key taps were silently dropped.** `InputManager` sampled held-state once per poll, so
+   a key pressed and released between two polls was never observed. Pause did nothing when
+   tapped and worked when held; **fire lost shots from any player tapping quickly**.
+   `KeyboardDevice` now latches the press itself in a `tapped` set drained each poll.
+   Verified: paused flag true, simulation delta **0** while paused, 178 steps after resume.
+2. **Escape unmounted the cabinet instead of pausing it.** `ActionMap` binds Escape to both
+   `pause` and `back`, and `back` was wired to `exitToHub`. The pause verb measured no change
+   because there was no longer a simulation.
+3. **Pause was toggled twice per fixed step.** `index.js` called `togglePause` immediately
+   before `step()`, which consumes `input.pausePressed` itself — on, then straight back off.
+
+Pause also moved from `Overlay` to the HUD prompt: `Overlay.show` suspends the input manager,
+which is right for a game-over panel and fatal for a pause screen, since it suspends the layer
+that reads the key to resume.
+
+### Proved by playing, after the fixes
+
+Ten seconds of held fire, no movement: **22 shots, 14 invaders killed, score 0 → 467**, and
+14 particle bursts, 14 shockwaves and 14 floating-score popups requested — one of each per
+kill. `C12`'s "score never changed" was a windowing artifact; scoring works.
+
+### Still red, and honestly so
+
+- **C13** — `litInShotBand: 110438` with `probeActive: 0`. The probe is right and the pixel
+  threshold cannot work: this build puts a lit city *behind* the playfield, so absolute lit
+  mass in a corridor measures architecture, not projectiles. Needs a delta-from-baseline
+  observable, not a tighter box.
+- **C14** — the ship parks where the harness thinks a bunker is and no erosion follows. The
+  parked x and this build's bunker positions disagree.
+- **C3** — drift 0.0172 against a 0.01 threshold while clamped at the wall. A near-miss, most
+  likely bloom and starfield noise inside the player band.
+- **C27** — `pausedDelta 9.87` vs `runningDelta 22`. Pause demonstrably works (delta 0 measured
+  directly); the harness window straddles the press.
+- **C18 / C23** — the player is never killed inside the budget. Bomb rate at wave 1 is
+  0.061/s, exactly as `config.js` specifies, so a 30 s window sees about two bombs and the
+  parked ship is not reliably under a firing column. The simulation agent predicted this.
+- **C7 / C8 / C12** flip between runs on window budgets rather than on behaviour.
+
+**A full-gate run has still never completed** — it exceeds ten minutes and is killed before
+writing a report. Every tally here is from `--only integrity,core --quick`, which by its own
+design can never report a pass. The hub group and all six VFX rows remain unrun.

@@ -46,30 +46,27 @@ destroys its attribution and cannot be undone.
 
 ## Tickets
 
-### Wire and calibrate the gate
+### Close the last gate reds
 
 - Type: task
-- Blocked by: Does the adopted layer run
 
-The probe is **done**: `window.__gate.snapshot()` is live and built on `snapshotInto`, so
-every field comes from the state the renderer draws from, and the HUD carries its
-`data-gate` attributes. What remains is making the harness tell the truth.
+Twenty-one of the thirty-three verbs in the `integrity,core` slice pass. The seven reds left
+are named in the answer key under `Wire and calibrate the gate`, and none of them is a claim
+that the game plays wrongly:
 
-Its first run against the live build was **mostly a false red** — 18 fails led by `I7`
-"the game never saw the key event" and `I5` "the page is frozen", both disproved minutes
-later by direct measurement showing input arriving, the ship moving and the formation
-marching. It reached the build through a warm hash change that did not mount, so it
-measured the hub and reported the game dead.
+- **C13** needs a delta-from-baseline observable. This build lights a city *behind* the
+  playfield, so absolute lit mass in the shot corridor measures architecture. A tighter box
+  cannot fix it.
+- **C14** parks the ship where the harness believes a bunker is; this build disagrees.
+- **C3** misses a clamp-drift threshold by 0.007, most likely on bloom and starfield noise.
+- **C18/C23** never kill the player inside the budget — bomb rate at wave 1 is 0.061/s, as
+  specified, so a parked ship sees about two bombs in thirty seconds.
+- **C7/C8/C12** flip between runs on window budgets, not on behaviour.
 
-Fix the harness, not the game: wait for `window.__gate` rather than a fixed delay, navigate
-cold, and calibrate `targets/reference.json` against a real frame of this build — its
-regions are still guesses and marked as such. A mis-set `sceneryBand` is the one way this
-harness produces a false red, and a false red costs more than no gate at all: it sends a
-builder to repair working code, which is what nearly happened here.
+Also unfinished: **no full-gate run has ever completed.** It exceeds ten minutes and dies
+before writing a report, so the hub group and every VFX row remain unrun. Either the long
+verbs get their own pass, or the budget grows.
 
-Also unresolved: **a full-gate run has never completed.** It exceeded ten minutes and was
-killed before writing a report. Either it needs a budget, or the long verbs need to run as
-their own pass.
 
 ### Audio in the done bar
 
@@ -91,16 +88,22 @@ completeness, and this is real work.
 The layer is filled — simulation, render and entry point all exist and the game plays. What
 is not done is the half of the done bar that is not "classic-complete".
 
-**Motion trails do not exist.** The render layer implements none, and `V4` requires a
-single-frame streak far longer than the projectile, dimming along its length.
-`src/shared/vfx/TrailRenderer.js` exists and has never been used.
+Measured directly from the probe over ten seconds of held fire — 22 shots, 14 kills:
 
-The other five are wired from the event drain but **none has been observed firing**: camera
-shake, particle bursts, hit-stop, shockwave rings and floating score text. Each has a
-distinct signature in the gate's V-rows precisely so they cannot be waved through as a
-bundle, and every one of those rows is currently untested rather than passing.
+| Effect | State |
+|---|---|
+| Particle bursts | **14 spawned** — one per kill |
+| Shockwave rings | **14 spawned** — one per kill |
+| Floating score text | **14 spawned** — one per kill |
+| Camera shake | wired to kills and formation drops; trauma decays, so sampling catches it only mid-event |
+| **Hit-stop** | **0 in ten seconds.** Only wired to UFO kills and player death, so it effectively never fires. An ordinary kill should carry a short freeze |
+| **Motion trails** | **do not exist.** `src/shared/vfx/TrailRenderer.js` has never been used |
 
-Verify each against its V-row, and build the trails.
+So three of six are confirmed firing, one is wired but hard to sample, and two need work.
+
+Build the trails, give an ordinary invader kill a real hit-stop, then prove each of the six
+against its own V-row rather than as a bundle — those rows have never been run, because the
+VFX group has never been reached inside a completing gate run.
 
 ### What the gold reference licenses
 
