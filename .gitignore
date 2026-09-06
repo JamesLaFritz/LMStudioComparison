@@ -16,3 +16,6 @@ dist/
 # wayfinder/.../playability-gate/evidence/ are the kept record; these are scratch.
 test-results/
 playwright-report/
+
+# Playwright MCP session scratch.
+.playwright-mcp/
