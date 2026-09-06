@@ -100,6 +100,30 @@ export const FORMATION = Object.freeze({
  */
 export const ROW_SPECIES = Object.freeze([0, 1, 1, 2, 2]);
 
+/**
+ * ### The material inversion — read this before changing an emissive number
+ *
+ * Every species used to be authored at `emissiveIntensity` 1.45-1.55, all of
+ * which sit above `minimumGlowIntensity(0.72)` = 1.368. That made all 55
+ * invaders bloom, and 55 blooming objects in an 11x5 lattice merge into one
+ * luminous rectangle — the exact failure `BloomPreset.js` warns about, arrived
+ * at through material authoring rather than through bloom parameters. No bloom
+ * setting can fix it, because the frame genuinely contains 55 light sources.
+ *
+ * The reference (`visual-spec.md` §4, measured off Resogun's `C01`/`F05`) does
+ * the opposite: enemy hulls are **lit matter**, not emitters. Three tiers:
+ *
+ *  - `emissiveIntensity` **0.35** — the hull body. Far below the bloom floor.
+ *  - `rimIntensity` **1.05** — the Fresnel silhouette edge. Deliberately just
+ *    *under* 1.368, so it reads bright and crisp and contributes nothing to
+ *    the bloom buffer.
+ *  - `eyeIntensity` **2.1** — one small dot, <= 4% of the hull's projected
+ *    area. This is the only part of an invader that blooms.
+ *
+ * A full formation therefore contributes 55 small hot points instead of 55
+ * glowing slabs. The hues are unchanged: row identity by colour is the
+ * classic's own readability device and the rim carries it fine at 1.05.
+ */
 export const SPECIES = Object.freeze([
   Object.freeze({
     key: 'squid',
@@ -111,7 +135,9 @@ export const SPECIES = Object.freeze([
     halfHeight: 0.43,
     color: 0x161d33,
     emissive: 0x57e2ff,
-    emissiveIntensity: 1.55
+    emissiveIntensity: 0.35,
+    rimIntensity: 1.05,
+    eyeIntensity: 2.1
   }),
   Object.freeze({
     key: 'crab',
@@ -121,7 +147,9 @@ export const SPECIES = Object.freeze([
     halfHeight: 0.45,
     color: 0x1a1630,
     emissive: 0x9d6bff,
-    emissiveIntensity: 1.5
+    emissiveIntensity: 0.35,
+    rimIntensity: 1.05,
+    eyeIntensity: 2.1
   }),
   Object.freeze({
     key: 'octopus',
@@ -131,7 +159,9 @@ export const SPECIES = Object.freeze([
     halfHeight: 0.46,
     color: 0x24132a,
     emissive: 0xff3a8c,
-    emissiveIntensity: 1.45
+    emissiveIntensity: 0.35,
+    rimIntensity: 1.05,
+    eyeIntensity: 2.1
   })
 ]);
 
@@ -262,7 +292,11 @@ export const BUNKER = Object.freeze({
 
   COLOR: 0x1d3a2a,
   EMISSIVE: 0x7dff9b,
-  EMISSIVE_INTENSITY: 0.42,
+  /** Cut from 0.42. Bunker roughness is 0.62, one of only two surfaces in the
+   *  game above 0.5, and r181's energy-conservation change made rough
+   *  materials measurably brighter. Roughness is carrying the material's
+   *  chalky identity, so the emissive pays for the lift instead. */
+  EMISSIVE_INTENSITY: 0.3,
 
   /** Cells regenerated at the bottom of each bunker on wave clear. */
   REGEN_ROWS: 2
@@ -409,7 +443,90 @@ export const RENDER = Object.freeze({
   TENSION_FOV: -3.5,
   TENSION_SPAN: 12,
 
-  BLOOM: Object.freeze({ strength: 0.85, radius: 0.55, threshold: 0.72 }),
+  /**
+   * Bloom, stated as **r182** values and nothing else.
+   *
+   * The frozen 0.85 / 0.55 / 0.72 was authored against r169. Between then and
+   * r182 the `UnrealBloomPass` kernel widened (`kernelSizeArray` [3,5,7,9,11]
+   * -> [6,10,14,18,22], sigma = radius/3, normalisation removed) and the
+   * composite gained a 3x factor, measured at +16.7% mean luminance and ~2x in
+   * the mid-halo for identical numbers. Copying any bloom value from a
+   * pre-r181 source or tutorial is therefore wrong here.
+   *
+   *  - `threshold` **0.72 — held.** It anchors the emissive-authoring contract:
+   *    must-glow >= 1.4, must-not-glow <= 0.5, threshold between. Moving it
+   *    invalidates every emissive value in this file.
+   *  - `radius` 0.55 -> **0.38.** The significant move. `radius` blends the
+   *    blur pyramid's mips; lower concentrates the composite on the finer ones.
+   *    This is what buys the tight core the reference's halo profile demands
+   *    (half-power inside ~0.74% of frame height).
+   *  - `strength` 0.85 -> **0.72.** Roughly cancels r182's mean rise.
+   *    Deliberately not cut further, because the material inversion above
+   *    removes 55 emitters from the bloom buffer and the frame loses real
+   *    bloom source as a result.
+   *
+   * The acceptance criterion is the measured halo profile, not these three
+   * numbers. If the halo is too wide, drop `PostFX.bloomDivisor` from 2 to 1
+   * before reducing `radius` below 0.38.
+   */
+  BLOOM: Object.freeze({ strength: 0.72, radius: 0.38, threshold: 0.72 }),
+
+  /**
+   * The colour of the dark, measured off 26 Resogun frames from two
+   * independently re-encoded sources that agree to within 2/255 per channel.
+   *
+   * Resogun's near-black is **green-led with red crushed**, ramping to
+   * teal-cyan as it lifts. The build's inherited `#05060f` is blue-violet —
+   * blue channel highest, green almost absent — and it is the single most
+   * visible wrong number in the frame.
+   *
+   * The finding is *not* applied everywhere. Resogun's dark is a city under
+   * atmosphere; ours is partly empty space, and a green-black void would read
+   * as a colour bug rather than as air. So the void stays near-neutral and the
+   * teal lives in the fog, which is where it does the work.
+   */
+  VOID: 0x03060a,
+  /** The highest-value single number in the visual spec. */
+  FOG: 0x0b1e22,
+  FOG_DENSITY: 0.021,
+  /** Measured shadow band, V 0.10-0.22. The arena deck's base albedo. */
+  DECK: 0x0d2224,
+  /** Measured haze band, V 0.22-0.42. Must stay below the bloom threshold. */
+  HAZE: 0x1c4046,
+
+  /**
+   * Roughness / metalness bands.
+   *
+   * r181 improved indirect specular and made materials above roughness 0.5
+   * brighter. Everything that must stay dark is therefore specified below 0.5,
+   * and the two entries that are above it (bunker 0.62, nebula 1.0) have had
+   * their emissive cut to pay for it. If either still reads too bright, cut
+   * the emissive again before touching the roughness — roughness is carrying
+   * the material's identity and emissive is not.
+   */
+  SURFACE: Object.freeze({
+    /** The shiniest object on screen; the eye should find the player instantly. */
+    player: Object.freeze({ metalness: 0.75, roughness: 0.2, emissiveIntensity: 1.6 }),
+    /** Painted metal, crisp facet highlights. */
+    invader: Object.freeze({ metalness: 0.6, roughness: 0.32 }),
+    /** Chrome — the only fully hot hull in the game. */
+    ufo: Object.freeze({ metalness: 0.85, roughness: 0.16, emissiveIntensity: 2.2 }),
+    /** Chalky, eroding, the one non-metal. */
+    bunker: Object.freeze({ metalness: 0.1, roughness: 0.62 }),
+    /** Matte, dark, must never lift. */
+    deck: Object.freeze({ metalness: 0.12, roughness: 0.46, emissiveIntensity: 0 }),
+    /** Silhouette only. */
+    wall: Object.freeze({ metalness: 0, roughness: 0.45, emissiveIntensity: 0.05 }),
+    /** Fills a third of the frame, so it must contribute nothing to bloom. */
+    nebula: Object.freeze({ metalness: 0, roughness: 1, emissiveIntensity: 0.18 }),
+    /** Pure light. */
+    bolt: Object.freeze({ metalness: 0, roughness: 0.4, emissiveIntensity: 2.4 }),
+    bomb: Object.freeze({ metalness: 0, roughness: 0.4, emissiveIntensity: 1.9 }),
+    /** Structure, not light. */
+    gridMinor: Object.freeze({ metalness: 0, roughness: 0.5, emissiveIntensity: 0.35 }),
+    /** Light. */
+    gridMajor: Object.freeze({ metalness: 0, roughness: 0.4, emissiveIntensity: 1.9 })
+  }),
 
   STARS: Object.freeze([
     Object.freeze({ count: 260, scale: 0.018, z: -30, intensity: 0.5, parallax: 0.02 }),

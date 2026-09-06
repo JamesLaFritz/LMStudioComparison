@@ -20,7 +20,23 @@
  *
  * `radius` controls the spread of the blur pyramid, not its brightness. Large
  * radii read as atmospheric haze; small radii read as a hard light source.
- * Space Invaders wants hard point sources, hence 0.55.
+ * Space Invaders wants hard point sources, hence 0.38.
+ *
+ * ### These are r182 numbers
+ *
+ * The table was originally authored against r169. Between r169 and r182 the
+ * bloom kernel changed twice: **r181** widened `kernelSizeArray` from
+ * [3,5,7,9,11] to [6,10,14,18,22], set sigma to `kernelRadius / 3` and removed
+ * the `diffuseSum / weightSum` normalisation; **r182** changed the composite
+ * from `bloomStrength * sum(vec4)` to `3.0 * bloomStrength * sum(rgb)` with a
+ * computed alpha and `premultipliedAlpha: true` on the blend material.
+ * Measured on an identical single-emitter scene, the same numeric settings
+ * produce +16.7% mean screen luminance and roughly **twice** the mid-halo
+ * brightness at r182. The emitter core is unchanged; the skirt is what moved.
+ *
+ * The practical consequence: **never copy a bloom number from a pre-r181
+ * source, tutorial or answer.** `spaceInvaders` has been re-tuned; the other
+ * four entries are still r169 values and are marked as such.
  */
 
 /**
@@ -34,21 +50,41 @@
 export const BLOOM_PRESETS = Object.freeze({
   /**
    * Space Invaders — hard neon point sources against near-black space.
-   * Strength is moderate because the scene has many small emitters; pushing it
-   * higher makes a full formation of 55 invaders merge into one glowing slab.
+   * **Re-tuned for r182** (was 0.85 / 0.55 / 0.72 at r169).
+   *
+   * `radius` is the significant move: it blends the blur pyramid's mip levels,
+   * and lowering it concentrates the composite on the finer mips. That is the
+   * direct counter to r181's widened kernel, and it is what buys the tight
+   * core the reference's halo profile demands — half-power inside ~0.74% of
+   * frame height, with a faint skirt still alive at 8%.
+   *
+   * `strength` is cut 15%, roughly cancelling r182's mean rise. Deliberately
+   * not cut further: the game's invader materials were inverted so that 55
+   * hulls no longer emit, which removes real bloom source from the frame.
+   * These two changes must be measured together; either alone looks wrong.
+   *
+   * `threshold` holds at 0.72 because it anchors the whole emissive-authoring
+   * contract, and it is safe to hold because almost every material in the game
+   * is below roughness 0.5, which is where r181's energy-conservation change
+   * bites.
    */
-  spaceInvaders: Object.freeze({ strength: 0.85, radius: 0.55, threshold: 0.72 }),
+  spaceInvaders: Object.freeze({ strength: 0.72, radius: 0.38, threshold: 0.72 }),
 
-  /** Pong / Snake — few emitters, so they can each afford to be brighter. */
+  /** Pong / Snake — few emitters, so they can each afford to be brighter.
+   *  Still an r169 value; re-tune when that title is built. */
   minimalNeon: Object.freeze({ strength: 1.05, radius: 0.62, threshold: 0.7 }),
 
-  /** Breakout / Tetris — many simultaneous emitters during a clear. */
+  /** Breakout / Tetris — many simultaneous emitters during a clear.
+   *  Still an r169 value; re-tune when that title is built. */
   denseField: Object.freeze({ strength: 0.72, radius: 0.48, threshold: 0.78 }),
 
-  /** Asteroids / Defender — wide open space, atmospheric haze wanted. */
+  /** Asteroids / Defender — wide open space, atmospheric haze wanted.
+   *  Still an r169 value, and the widest radius in the table: at r182 it will
+   *  read as haze rather than as stars. The hub uses it. */
   deepSpace: Object.freeze({ strength: 0.95, radius: 0.78, threshold: 0.68 }),
 
-  /** Pac-Man / TMNT — interior scenes with strong ambient; tighter cutoff. */
+  /** Pac-Man / TMNT — interior scenes with strong ambient; tighter cutoff.
+   *  Still an r169 value; re-tune when that title is built. */
   interior: Object.freeze({ strength: 0.68, radius: 0.42, threshold: 0.82 })
 });
 
