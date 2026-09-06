@@ -124,16 +124,36 @@ export function greedyRects(bits, width, height) {
  * separates a shape from a flat slab under a hard key light, at the cost of one
  * extra box per rectangle.
  *
+ * `rounded` replaces the flat boxes with corner-rounded ones and switches the
+ * inner bevel shell off, because the two are alternative answers to the same
+ * problem and stacking them wastes triangles. Rounding is what a Fresnel rim
+ * needs: `pow(1 - |N.V|, k)` only resolves into a *thin line* where the normal
+ * sweeps quickly through the grazing angle, which happens on a rounded edge
+ * and nowhere else. On a hard 90-degree edge the term is a broad dim wash
+ * across the whole front face instead. It also grooves the seams between
+ * adjacent greedy rectangles, which reads as voxel construction rather than as
+ * one flat slab — the reference's material language exactly.
+ *
  * @param {string[]} rows sprite rows, top-first
  * @param {object} [opts]
- * @param {number} [opts.cell]   world size of one sprite pixel
- * @param {number} [opts.depth]  extrusion along Z
- * @param {number} [opts.bevel]  0 disables the inner shell
- * @param {number} [opts.gap]    shrink each box slightly to leave visible seams
+ * @param {number} [opts.cell]     world size of one sprite pixel
+ * @param {number} [opts.depth]    extrusion along Z
+ * @param {number} [opts.bevel]    0 disables the inner shell; ignored when rounded
+ * @param {number} [opts.gap]      shrink each box slightly to leave visible seams
+ * @param {number} [opts.rounded]  corner radius as a fraction of `cell`; 0 = off
+ * @param {number} [opts.roundSegments] subdivisions per box axis when rounded
  * @returns {THREE.BufferGeometry} centred on its own bounding box
  */
 export function bitmapToGeometry(rows, opts = {}) {
-  const { cell = 0.12, depth = 0.34, bevel = 0.16, gap = 0.0, center = true } = opts;
+  const {
+    cell = 0.12,
+    depth = 0.34,
+    bevel = 0.16,
+    gap = 0.0,
+    center = true,
+    rounded = 0,
+    roundSegments = 2
+  } = opts;
 
   const { width, height, bits } = parseBitmap(rows);
   const rects = greedyRects(bits, width, height);
@@ -153,6 +173,17 @@ export function bitmapToGeometry(rows, opts = {}) {
     // reads the same way in the file as it does on screen.
     const cx = (r.x + r.w * 0.5) * cell;
     const cy = -(r.y + r.h * 0.5) * cell;
+
+    if (rounded > 0) {
+      // Rounded boxes already carry their own light-catching edge, so the
+      // inner bevel shell is redundant and is skipped: at 55 instances the
+      // second shell is the difference between a 29k-triangle formation and a
+      // 58k one for no visible gain.
+      const box = createRoundedBox(w, h, depth, cell * rounded, roundSegments);
+      box.translate(cx, cy, 0);
+      parts.push(box);
+      continue;
+    }
 
     const box = new THREE.BoxGeometry(w, h, depth);
     box.translate(cx, cy, 0);
@@ -196,6 +227,174 @@ export function bitmapToGeometry(rows, opts = {}) {
   merged.userData.worldHeight = height * cell;
 
   return merged;
+}
+
+/**
+ * Build the **silhouette outline** of a sprite bitmap as real geometry: a thin
+ * emissive picture-frame tracing every boundary between a lit cell and an
+ * unlit one, interior holes included.
+ *
+ * ### Why this is geometry and not a shader term
+ *
+ * The visual reference's single most characteristic material feature is a
+ * 1-2 px near-white line around every hull, and it is what lets a *dark* ship
+ * read against a *dark* ground without the hull itself having to emit. The
+ * two obvious implementations both fail on an extruded sprite:
+ *
+ *  - **A Fresnel term** resolves into a thin line only where the surface normal
+ *    sweeps quickly through the grazing angle. An extruded bitmap is flat
+ *    faces meeting at hard edges, so the term is a broad dim wash across the
+ *    front face and then a hard jump at the rim - a gradient, not a line.
+ *    Fresnel is still right for curved hulls; see `applyFresnelRim`.
+ *  - **A scaled back-face shell** is a fixed *world-space* offset, so its
+ *    apparent width changes with distance, and on an `InstancedMesh` it costs
+ *    a second full draw of every instance.
+ *
+ * A strip of geometry at the exact silhouette gives an exactly specified world
+ * width - 0.02-0.04 units here, which is 0.10-0.20% of frame height at this
+ * project's camera, which is the 1-2 px the reference measures - and it rides
+ * in the same draw call as the hull as a second geometry group.
+ *
+ * ### Runs, not cells
+ *
+ * Boundaries are emitted as **maximal runs**, not per-cell segments: an
+ * eleven-cell-wide flat top is one strip, not eleven. On the crab that is the
+ * difference between roughly 70 boxes and roughly 20, and at 22 instances the
+ * saving is thousands of triangles for a pixel-identical result.
+ *
+ * Horizontal runs are extended by half a thickness at each end so that corners
+ * close cleanly against the vertical strips rather than leaving a notch.
+ *
+ * Coordinates match `bitmapToGeometry` exactly - same cell size, same y-flip,
+ * same origin - so the two can be merged and centred as one object. Both must
+ * be built with `center: false` and centred together with `centerTogether`,
+ * because the outline's bounding box is a half-thickness larger than the
+ * hull's and centring them independently would misalign them by exactly the
+ * width of the feature being drawn.
+ *
+ * @param {string[]} rows sprite rows, top-first
+ * @param {object} [opts]
+ * @param {number} [opts.cell]      world size of one sprite pixel
+ * @param {number} [opts.depth]     extrusion along Z
+ * @param {number} [opts.thickness] world width of the line
+ * @param {boolean} [opts.center]   centre on the outline's own bounding box
+ * @returns {THREE.BufferGeometry}
+ */
+export function bitmapOutlineGeometry(rows, opts = {}) {
+  const { cell = 0.12, depth = 0.36, thickness = 0.03, center = false } = opts;
+
+  const { width, height, bits } = parseBitmap(rows);
+  const at = (x, y) => (x < 0 || y < 0 || x >= width || y >= height ? 0 : bits[y * width + x]);
+
+  const half = thickness * 0.5;
+  /** @type {THREE.BufferGeometry[]} */
+  const parts = [];
+
+  const addStrip = (cx, cy, w, h) => {
+    const box = new THREE.BoxGeometry(w, h, depth);
+    box.translate(cx, cy, 0);
+    parts.push(box);
+  };
+
+  // --- Horizontal boundaries: top edges, then bottom edges -----------------
+  // `dy` is the neighbour tested; -1 finds top edges, +1 finds bottom edges.
+  for (const dy of [-1, 1]) {
+    for (let y = 0; y < height; y++) {
+      // World Y of this boundary. Sprite space is y-down and world is y-up, so
+      // cell (x, y) spans world Y from -(y+1)*cell up to -y*cell.
+      const edgeY = dy === -1 ? -y * cell : -(y + 1) * cell;
+      let runStart = -1;
+      for (let x = 0; x <= width; x++) {
+        const isEdge = x < width && at(x, y) === 1 && at(x, y + dy) === 0;
+        if (isEdge && runStart < 0) {
+          runStart = x;
+        } else if (!isEdge && runStart >= 0) {
+          const x0 = runStart * cell - half;
+          const x1 = x * cell + half;
+          addStrip((x0 + x1) * 0.5, edgeY, x1 - x0, thickness);
+          runStart = -1;
+        }
+      }
+    }
+  }
+
+  // --- Vertical boundaries: left edges, then right edges -------------------
+  for (const dx of [-1, 1]) {
+    for (let x = 0; x < width; x++) {
+      const edgeX = dx === -1 ? x * cell : (x + 1) * cell;
+      let runStart = -1;
+      for (let y = 0; y <= height; y++) {
+        const isEdge = y < height && at(x, y) === 1 && at(x + dx, y) === 0;
+        if (isEdge && runStart < 0) {
+          runStart = y;
+        } else if (!isEdge && runStart >= 0) {
+          // Vertical runs are deliberately *not* extended: the horizontal
+          // strips already overhang by half a thickness, and extending both
+          // would double the material at every corner and read as a blob.
+          const y0 = -y * cell;
+          const y1 = -runStart * cell;
+          addStrip(edgeX, (y0 + y1) * 0.5, thickness, y1 - y0);
+          runStart = -1;
+        }
+      }
+    }
+  }
+
+  if (parts.length === 0) {
+    throw new Error('bitmapOutlineGeometry: bitmap has no boundary (empty or fully lit).');
+  }
+
+  const merged = mergeGeometries(parts, false);
+  for (const p of parts) p.dispose();
+  if (!merged) {
+    throw new Error('bitmapOutlineGeometry: mergeGeometries failed.');
+  }
+
+  merged.computeBoundingBox();
+  if (center) {
+    const c = new THREE.Vector3();
+    merged.boundingBox.getCenter(c);
+    merged.translate(-c.x, -c.y, -c.z);
+    merged.computeBoundingBox();
+  }
+  merged.computeBoundingSphere();
+  merged.computeVertexNormals();
+
+  merged.userData.stripCount = parts.length;
+  merged.userData.spriteWidth = width;
+  merged.userData.spriteHeight = height;
+
+  return merged;
+}
+
+/**
+ * Centre a group of geometries about their *common* bounding box.
+ *
+ * Centring a hull and its outline independently misaligns them by half the
+ * outline's thickness, which is the entire width of the feature. Returns the
+ * offset that was applied so a caller can place related objects (an eye dot, a
+ * muzzle point) in the same frame.
+ *
+ * @param {THREE.BufferGeometry[]} geometries mutated in place
+ * @returns {THREE.Vector3}
+ */
+export function centerTogether(geometries) {
+  const offset = new THREE.Vector3();
+  if (!geometries.length) return offset;
+
+  const box = new THREE.Box3();
+  for (const g of geometries) {
+    g.computeBoundingBox();
+    box.union(g.boundingBox);
+  }
+  box.getCenter(offset);
+
+  for (const g of geometries) {
+    g.translate(-offset.x, -offset.y, -offset.z);
+    g.computeBoundingBox();
+    g.computeBoundingSphere();
+  }
+  return offset;
 }
 
 /**

@@ -220,6 +220,92 @@ export function applyNeonBolt(material, opts = {}) {
 }
 
 /**
+ * A thin, bright Fresnel rim traced around a lit hull's silhouette.
+ *
+ * This is the material change that makes a *dark* object read against a *dark*
+ * background, and it is the reason the invader formation can be pulled out of
+ * the bloom buffer without dissolving into the fog. At magnification every
+ * enemy hull in the visual reference shows the same three things: a saturated
+ * mid-dark albedo with real faceted PBR shading, a 1-2 px near-white line
+ * tracing the whole outline, and one small hot accent that does glow. The
+ * outline is this function; the hot accent is a separate emitter.
+ *
+ * ### Why Fresnel and not a scaled back-face shell
+ *
+ * The target width is 0.10-0.20% of frame height — one to two pixels at 1080p,
+ * which at this project's camera is 0.02-0.04 world units. A shell that thin
+ * cannot hold a steady width: it is a fixed world-space offset, so it thickens
+ * as an object nears the camera and disappears as it recedes, and on an
+ * `InstancedMesh` it costs a second full draw of every instance. A Fresnel
+ * term is view-relative by construction, so the line stays the same apparent
+ * width everywhere in the frame, and it is free — one dot product in a shader
+ * that was already computing the normal.
+ *
+ * ### Why the geometry has to be rounded for this to work
+ *
+ * `pow(1 - |N.V|, k)` only produces a *narrow* band where the surface normal
+ * sweeps quickly through the grazing angle, which happens at a rounded edge
+ * and nowhere else. On a hard 90-degree box edge the two adjacent faces are
+ * flat, so the term is broad and dim across the front face and then jumps: a
+ * wash, not a line. Pair this with `bitmapToGeometry({ rounded: ... })`.
+ *
+ * ### The intensity contract
+ *
+ * `emissiveIntensity` on the material is the *body* value. `rimIntensity` is
+ * what the silhouette reaches. The patch multiplies rather than adds, so both
+ * ends stay on the material's authored emissive hue:
+ *
+ *     totalEmissiveRadiance *= 1 + (rimIntensity / bodyIntensity - 1) * rim
+ *
+ * That means `material.emissiveIntensity` must be non-zero and must be the
+ * body value at the time this is called. The ratio is baked into the shader
+ * source as a constant, so changing `emissiveIntensity` afterwards moves both
+ * the body and the rim together, which is the behaviour the emissive-scale
+ * accessibility path wants.
+ *
+ * @param {THREE.MeshStandardMaterial} material mutated in place
+ * @param {object} [opts]
+ * @param {number} [opts.rimIntensity] emissive intensity at the silhouette
+ * @param {number} [opts.power]        Fresnel exponent; higher is a thinner line
+ * @param {number} [opts.bias]         floor subtracted before the ramp, kills
+ *                                     the broad dim wash across flat faces
+ * @param {string} [opts.cacheKey]     unique per patch variant — mandatory
+ */
+export function applyFresnelRim(material, opts = {}) {
+  const {
+    rimIntensity = 1.05,
+    power = 3.4,
+    bias = 0.28,
+    cacheKey = 'fresnel-rim'
+  } = opts;
+
+  const body = material.emissiveIntensity || 1;
+  // How much brighter the silhouette is than the body, as a multiplier.
+  const gain = Math.max(0, rimIntensity / body - 1);
+  const invBias = 1 / Math.max(1e-3, 1 - bias);
+
+  material.onBeforeCompile = (shader) => {
+    shader.fragmentShader = shader.fragmentShader.replace(
+      '#include <emissivemap_fragment>',
+      `#include <emissivemap_fragment>
+       {
+         // normal and vViewPosition are both already in scope here:
+         // <normal_fragment_begin> runs three chunks earlier, and
+         // vViewPosition is declared unconditionally by meshphysical_frag.
+         float rimFacing = abs(dot(normalize(normal), normalize(vViewPosition)));
+         float rimRaw = clamp((1.0 - rimFacing - ${bias.toFixed(3)}) * ${invBias.toFixed(
+           4
+         )}, 0.0, 1.0);
+         float rimTerm = pow(rimRaw, ${power.toFixed(2)});
+         totalEmissiveRadiance *= 1.0 + ${gain.toFixed(4)} * rimTerm;
+       }`
+    );
+  };
+  material.customProgramCacheKey = () => cacheKey;
+  return material;
+}
+
+/**
  * Vertex-colour driven emission, for ribbon trails.
  *
  * Trails taper in brightness along their length. `vertexColors = true` is a
