@@ -1,4 +1,4 @@
-import { FORMATION, ARENA, SPECIES } from '../config.js';
+import { FORMATION, ARENA, SPECIES, BOMB } from '../config.js';
 // SimState is the authority on its own API. This file was authored against an
 // object-payload `emit(state, TYPE, {…})` that never existed; the real queue is a
 // pooled, zero-allocation ring with positional slots, which is the design the
@@ -187,16 +187,29 @@ function step(state, director, rng, dropBomb) {
     // formation does not also translate that step.
     f.direction = -f.direction;
     f.originY -= FORMATION.DROP_Y;
-    pushEvent(state.events, EVENT.FORMATION_DROP, 0, f.originY);
+    state.stats.descendSteps++;
+    pushEvent(state.events, EVENT.FORMATION_DROP, 0, f.originY, 0, 0, f.direction);
   } else {
     f.originX = nextOriginX;
   }
 
   f.animFrame ^= 1;
+  f.stepIndex++;
+  state.stats.marchSteps++;
   // MARCH_STEP, not FORMATION_STEP — the latter is not in the EVENT enum. This is
   // the tick the audio layer paces the four-note bassline from, so the period and
   // the alive count ride in the payload slots.
-  pushEvent(state.events, EVENT.MARCH_STEP, 0, 0, 0, 0, f.stepPeriod, f.aliveCount);
+  pushEvent(
+    state.events,
+    EVENT.MARCH_STEP,
+    f.originX,
+    f.originY,
+    0,
+    0,
+    f.stepPeriod,
+    f.aliveCount,
+    f.stepIndex & 3
+  );
 
   maybeDropBomb(state, director, rng, dropBomb);
 
@@ -227,24 +240,31 @@ function maybeDropBomb(state, director, rng, dropBomb) {
   if (!state.player.alive) return;
 
   const thinning = 1 - f.aliveCount / FORMATION.COUNT;
-  let probability = cfg.bombProbability * (1 + thinning * 0.9);
-  probability *= director ? director.bombScale : 1;
+  let probability = cfg.bombProbability * (1 + thinning * BOMB.THINNING_GAIN);
+  // `state.director.scale` is the authority; SimState documents it as "the
+  // multiplier applied to bomb probability". This file was authored against a
+  // `DifficultyDirector` class with a `bombScale` getter that never existed.
+  probability *= director ? director.scale : 1;
 
-  if (probability > 0.42) probability = 0.42;
+  if (probability > BOMB.MAX_PROBABILITY) probability = BOMB.MAX_PROBABILITY;
   if (rng.next() >= probability) return;
 
-  // Choose among columns that still have a survivor. Building the candidate
-  // list every time is 11 reads — cheaper and far clearer than maintaining
-  // another incremental structure for something that runs a few times a second.
-  const candidates = [];
+  // Choose among columns that still have a survivor. Eleven reads into a
+  // scratch array allocated once at module load — the original `const
+  // candidates = []` here allocated on every bomb, which is exactly the rule
+  // this layer is built to obey.
+  let count = 0;
   for (let c = 0; c < FORMATION.COLS; c++) {
-    if (f.bottomOfColumn[c] >= 0) candidates.push(c);
+    if (f.bottomOfColumn[c] >= 0) columnCandidates[count++] = c;
   }
-  if (candidates.length === 0) return;
+  if (count === 0) return;
 
-  const col = candidates[rng.int(0, candidates.length - 1)];
+  const col = columnCandidates[rng.int(0, count - 1)];
   dropBomb(state, f.bottomOfColumn[col], rng);
 }
+
+/** Scratch for `maybeDropBomb`. Allocated once, at module load. */
+const columnCandidates = new Int32Array(FORMATION.COLS);
 
 /**
  * Inverse lattice mapping: which invader, if any, occupies a world position.
@@ -321,9 +341,12 @@ export function forEachLowInvader(state, minY, maxY, callback) {
   for (let c = 0; c < FORMATION.COLS; c++) {
     const index = f.bottomOfColumn[c];
     if (index < 0) continue;
-    const y = invaderY(state, index);
+    // `invaderX`/`invaderY` take (formation, col) and (formation, row) — this
+    // was calling them with (state, latticeIndex), which produced NaN-free but
+    // completely wrong world positions. Cover erosion silently never happened.
+    const y = invaderY(f, rowOf(index));
     if (y >= minY && y <= maxY) {
-      callback(index, invaderX(state, index), y);
+      callback(index, invaderX(f, colOf(index)), y);
     }
   }
 }

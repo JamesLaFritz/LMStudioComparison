@@ -58,8 +58,44 @@ export const EVENT = Object.freeze({
   EXTRA_LIFE: 14,
   BOMB_FIRED: 15,
   COMBO_CHANGED: 16,
-  BOLT_EXPIRED: 17
+  BOLT_EXPIRED: 17,
+
+  /* --- Added by the simulation layer -------------------------------------
+   * Flow-control events. Nothing above them changed; these are appended so the
+   * audio and HUD layers have something to hang a stinger and a banner on.
+   * Every one of them is emitted exactly once per occurrence by `Simulation.js`.
+   * ---------------------------------------------------------------------- */
+  RUN_STARTED: 18,
+  WAVE_STARTED: 19,
+  PLAYER_RESPAWNED: 20,
+  GAME_OVER: 21,
+  PAUSED: 22,
+  RESUMED: 23
 });
+
+/**
+ * Flow phases.
+ *
+ * The playability gate reads these as strings; `PHASE_NAMES` is the single
+ * mapping, so the probe cannot drift from the simulation by spelling one of
+ * them differently.
+ */
+export const PHASE = Object.freeze({
+  ATTRACT: 0,
+  PLAYING: 1,
+  WAVE_CLEAR: 2,
+  LIFE_LOST: 3,
+  GAME_OVER: 4
+});
+
+/** Index-aligned with `PHASE`. */
+export const PHASE_NAMES = Object.freeze([
+  'attract',
+  'playing',
+  'wave-clear',
+  'life-lost',
+  'game-over'
+]);
 
 /**
  * Create the state object.
@@ -90,6 +126,49 @@ export function createSimState() {
     /** Per-wave tuning, refreshed by `resetForWave`. */
     waveConfig: getWaveConfig(1),
     bombWeights: getBombTypeWeights(1),
+
+    /* ---- Flow ------------------------------------------------------------
+     * Added by the simulation layer. `phase` is the single authority on what
+     * the run is doing; the render layer reads it rather than inferring state
+     * from `lives === 0` or `aliveCount === 0`, both of which are ambiguous for
+     * a frame or two around a transition.
+     * -------------------------------------------------------------------- */
+    /** One of PHASE. */
+    phase: PHASE.PLAYING,
+    /** Seconds spent in the current phase. Drives the wave-clear pause and the
+     *  post-game-over input lockout. */
+    phaseTimer: 0,
+    /** When true `step()` returns immediately, having advanced nothing. */
+    paused: false,
+    /**
+     * Fixed steps executed since the state was created. Monotonic, never reset:
+     * it is how an external observer proves the simulation is running at all,
+     * which is precisely what the 2026-09-04 build could not demonstrate.
+     */
+    fixedSteps: 0,
+
+    /**
+     * Monotonic per-run counters.
+     *
+     * These are instrumentation, not simulation inputs — nothing in the game
+     * reads them. They exist because "did anything actually happen" has to be
+     * answerable from outside, and a count of shots fired is not derivable from
+     * a pool whose slots are recycled.
+     */
+    stats: {
+      playerFiredTotal: 0,
+      enemyFiredTotal: 0,
+      invadersKilled: 0,
+      bombsIntercepted: 0,
+      bunkerCellsLost: 0,
+      marchSteps: 0,
+      descendSteps: 0,
+      ufoSpawns: 0,
+      ufoKills: 0,
+      ufoEscapes: 0,
+      deaths: 0,
+      wavesCleared: 0
+    },
 
     /* ---- Formation ------------------------------------------------------
      * The 55 invaders are a lattice plus an origin, never 55 positions. World
@@ -358,6 +437,26 @@ export function resetRun(state, hiScore = 0) {
   state.nextExtraLife = SCORE.EXTRA_LIFE_FIRST;
   state.elapsed = 0;
   state.overrun = false;
+
+  state.phase = PHASE.PLAYING;
+  state.phaseTimer = 0;
+  state.paused = false;
+  // `fixedSteps` is deliberately NOT reset — it is the liveness counter, and a
+  // restart that zeroed it would erase the evidence that the sim ever ran.
+
+  const s = state.stats;
+  s.playerFiredTotal = 0;
+  s.enemyFiredTotal = 0;
+  s.invadersKilled = 0;
+  s.bombsIntercepted = 0;
+  s.bunkerCellsLost = 0;
+  s.marchSteps = 0;
+  s.descendSteps = 0;
+  s.ufoSpawns = 0;
+  s.ufoKills = 0;
+  s.ufoEscapes = 0;
+  s.deaths = 0;
+  s.wavesCleared = 0;
 
   state.director.scale = 1;
   state.director.accuracy = 0.4;
