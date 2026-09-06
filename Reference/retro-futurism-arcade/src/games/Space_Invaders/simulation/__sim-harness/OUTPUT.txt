@@ -80,7 +80,7 @@
     PASS   phase is one of the strings the gate expects         phase "playing" in [attract, playing, wave-clear, life-lost, game-over]
 
 --- 11. Steady-state allocation
-    PASS   120 s of simulation grows the heap by under 64 KB    heapUsed 5380.0 KB -> 5377.6 KB (-2.4 KB) over 14400 steps
+    PASS   120 s of simulation grows the heap by under 64 KB    heapUsed 5374.3 KB -> 5371.9 KB (-2.4 KB) over 14400 steps
 
 --- 12. Measurements for gate calibration (informational)
     note   time to first death, idle at x=0, 8 seeds            >300, 250.933, >300, 175.042, >300, 38.733, >300, 82.642 s; mean of finite 136.838 s
@@ -99,15 +99,22 @@
     PASS   the run ends, regardless of lives remaining          game over at 264.633 s with 3 lives still in hand
     note   time for an undefended formation to land, wave 1     264.633 s, 13 descents, 288 march steps
 
+--- 15. The attract loop marches, fires nothing, and starts a run on confirm
+    PASS   attract reports its own phase                        phase attract, cannon alive false, hiScore carried in 4200
+    PASS   the attract formation marches                        originX -9.500 -> -6.140, marchSteps 434
+    PASS   nothing shoots at a cannon that is not there         0 bombs, 0 deaths, lives 3
+    PASS   the loop rebuilds the formation rather than ending   phase attract after 400.000 s, aliveCount 55, originY 3.300
+    PASS   confirm starts a run, carrying the high score in     phase playing, score 0, lives 3, hiScore 4200, cannon alive true
+
 --- 14. Invariants held on every step of every test in this file
-    PASS   lives never went negative                            0 violations in 403001 steps
+    PASS   lives never went negative                            0 violations in 451002 steps
     PASS   the run never kept playing on zero lives             0 steps found PLAYING or WAVE_CLEAR with lives === 0
     PASS   the bolt pool count always matched its active flags  0 mismatches
     PASS   the bomb pool count always matched its active flags  0 mismatches
     PASS   every bunker cell counter matched its grid           0 mismatches across sampled audits
     PASS   the 96-slot event queue never overflowed             peak overflow 0
-    note   total simulated steps across this file               403001 steps = 3358.342 s of gameplay
+    note   total simulated steps across this file               451002 steps = 3758.350 s of gameplay
 
 ========================================================================
-  60 passed, 0 failed
+  65 passed, 0 failed
 ========================================================================

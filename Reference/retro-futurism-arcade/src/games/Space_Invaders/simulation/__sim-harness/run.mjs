@@ -39,6 +39,7 @@ import {
   startRun,
   createInput,
   clearInputEdges,
+  enterAttract,
   createSnapshot,
   snapshotInto
 } from '../Simulation.js';
@@ -1353,6 +1354,52 @@ test('13. The formation reaching the kill line ends the run outright', () => {
 
   note('time for an undefended formation to land, wave 1',
     `${f3(gameOverAt)} s, ${state.stats.descendSteps} descents, ${state.stats.marchSteps} march steps`);
+});
+
+/* ================================================================== *
+ * 15. The attract loop
+ * ================================================================== */
+
+test('15. The attract loop marches, fires nothing, and starts a run on confirm', () => {
+  const state = createSimState();
+  const rng = new PRNG(15015);
+  const input = createInput();
+  const ctx = { state, rng, input };
+
+  enterAttract(state, 4200);
+
+  check('attract reports its own phase',
+    state.phase === PHASE.ATTRACT && PHASE_NAMES[state.phase] === 'attract',
+    `phase ${PHASE_NAMES[state.phase]}, cannon alive ${state.player.alive}, hiScore carried in ${state.hiScore}`);
+
+  const x0 = state.formation.originX;
+  let bombs = 0;
+  let deaths = 0;
+  // Long enough for the formation to walk itself into the kill line and be
+  // rebuilt at least once, which is how the loop loops.
+  advance(ctx, 120 * 400, (e) => {
+    if (e.type === EVENT.BOMB_FIRED) bombs++;
+    if (e.type === EVENT.PLAYER_HIT) deaths++;
+  });
+
+  check('the attract formation marches',
+    Math.abs(state.formation.originX - x0) > 1e-6 && state.stats.marchSteps > 0,
+    `originX ${f3(x0)} -> ${f3(state.formation.originX)}, marchSteps ${state.stats.marchSteps}`);
+
+  check('nothing shoots at a cannon that is not there',
+    bombs === 0 && deaths === 0 && state.lives === PLAYER.LIVES,
+    `${bombs} bombs, ${deaths} deaths, lives ${state.lives}`);
+
+  check('the loop rebuilds the formation rather than ending',
+    state.phase === PHASE.ATTRACT && state.formation.aliveCount === FORMATION.COUNT,
+    `phase ${PHASE_NAMES[state.phase]} after ${f3(120 * 400 * DT)} s, aliveCount ${state.formation.aliveCount}, originY ${f3(state.formation.originY)}`);
+
+  input.confirmPressed = true;
+  advance(ctx, 1);
+
+  check('confirm starts a run, carrying the high score in',
+    state.phase === PHASE.PLAYING && state.score === 0 && state.lives === PLAYER.LIVES && state.hiScore === 4200,
+    `phase ${PHASE_NAMES[state.phase]}, score ${state.score}, lives ${state.lives}, hiScore ${state.hiScore}, cannon alive ${state.player.alive}`);
 });
 
 /* ================================================================== *
