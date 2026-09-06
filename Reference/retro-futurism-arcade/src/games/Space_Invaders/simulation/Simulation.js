@@ -331,7 +331,12 @@ function advanceFlow(state, dt) {
   }
 
   // --- A death just happened ------------------------------------------------
-  if (!p.alive && state.phase === PHASE.PLAYING) {
+  // Every phase in which the cannon exists, not only PLAYING. Bombs keep
+  // falling during WAVE_CLEAR, so one can land in that window; when this test
+  // read `phase === PLAYING` the life was still deducted but the freeze-out
+  // never started, and `advanceWave` then revived the cannon on its way into
+  // the next wave. The run could reach zero lives and carry on playing.
+  if (!p.alive && (state.phase === PHASE.PLAYING || state.phase === PHASE.WAVE_CLEAR)) {
     state.phase = PHASE.LIFE_LOST;
     state.phaseTimer = 0;
     // The player's shot dies with them. Leaving it in flight lets a dead cannon
@@ -363,6 +368,12 @@ function advanceFlow(state, dt) {
     state.phase = PHASE.WAVE_CLEAR;
     state.phaseTimer = 0;
     state.stats.wavesCleared++;
+    // A bomb released a moment before the last invader died is still falling.
+    // Taking a life for it, after the wave is already won, is the kind of
+    // unfairness a player remembers. `resetForWave` grants the same grace on
+    // the far side of the transition for exactly this reason; this covers the
+    // pause in between.
+    if (p.invulnTimer < PLAYER.RESPAWN_INVULN) p.invulnTimer = PLAYER.RESPAWN_INVULN;
     pushEvent(
       state.events,
       EVENT.WAVE_CLEARED,

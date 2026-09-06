@@ -508,8 +508,16 @@ export function resetForWave(state, wave) {
   f.warpT = 0;
   f.warping = true;
 
+  // `bottomOfColumn` holds a LATTICE INDEX, not a row. Seeding it with
+  // `ROWS - 1` — the row number — made every column report lattice index 4,
+  // which is row 0, column 4: one invader in the top row. The consequences were
+  // silent and severe. Every bomb in a fresh wave was released from that single
+  // top-row invader, and `invadersVsBunkers` measured that invader's height, so
+  // a formation could march straight through the bunkers without touching them.
+  // Both symptoms disappear the moment the seed is an index.
+  const bottomRowStart = (FORMATION.ROWS - 1) * FORMATION.COLS;
   for (let col = 0; col < FORMATION.COLS; col++) {
-    f.bottomOfColumn[col] = FORMATION.ROWS - 1;
+    f.bottomOfColumn[col] = bottomRowStart + col;
   }
 
   // Projectiles never survive a wave transition.
