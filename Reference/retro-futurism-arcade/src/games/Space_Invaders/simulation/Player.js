@@ -65,7 +65,11 @@ export function updatePlayer(state, dt, input) {
   }
 
   // --- Lateral motion ------------------------------------------------------
-  const moveX = clamp(input.moveX, -1, 1);
+  // `|| 0` is not defensive padding. An input frame assembled by the game layer
+  // that omits `moveX`, or an analog axis that reads NaN from a disconnected
+  // pad, would otherwise put NaN into `x` — and a NaN position never recovers,
+  // never throws, and renders as a cannon that has silently vanished.
+  const moveX = clamp(input.moveX || 0, -1, 1);
   const targetVx = moveX * PLAYER.MAX_SPEED;
   p.vx = damp(p.vx, targetVx, PLAYER.RESPONSE, dt);
 

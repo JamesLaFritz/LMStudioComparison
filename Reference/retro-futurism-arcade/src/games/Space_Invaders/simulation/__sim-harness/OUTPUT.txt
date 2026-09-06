@@ -80,7 +80,7 @@
     PASS   phase is one of the strings the gate expects         phase "playing" in [attract, playing, wave-clear, life-lost, game-over]
 
 --- 11. Steady-state allocation
-    PASS   120 s of simulation grows the heap by under 64 KB    heapUsed 5398.3 KB -> 5395.9 KB (-2.4 KB) over 14400 steps
+    PASS   120 s of simulation grows the heap by under 64 KB    heapUsed 5398.4 KB -> 5395.9 KB (-2.5 KB) over 14400 steps
 
 --- 12. Measurements for gate calibration (informational)
     note   time to first death, idle at x=0, 8 seeds            >300, 250.933, >300, 175.042, >300, 38.733, >300, 82.642 s; mean of finite 136.838 s
