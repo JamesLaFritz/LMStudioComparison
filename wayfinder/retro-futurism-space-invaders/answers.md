@@ -514,3 +514,108 @@ it, and a mis-set `sceneryBand` is the one way this harness can produce a false 
 (invasion ends the run) and G1 (gamepad — CDP has no gamepad domain, and faking
 `navigator.getGamepads` would be the synthetic call this gate forbids) are specified with
 manual procedures and deliberately not automated.
+
+## The build's home
+
+**`Reference/retro-futurism-arcade/`**, a sibling of `Template/` and `Results/`.
+
+`Results/` means "a contestant produced this", so a hand-built reference cannot live there
+without lying about its provenance. Siting it beside `Template/` says what it is from the
+directory listing alone: neither a starting template nor a run result.
+
+Copied out of `Results/_SpaceInvaders-bench-2026-09-04/opus/retro-futurism-arcade/` on
+2026-09-05. `Results/_SpaceInvaders-bench-2026-09-04/FROZEN.md` marks `local/` and `opus/`
+read-only and says why: hand-finishing `opus/` in place would destroy the only attributable
+record of what Opus 5 produced from three prompts, and that run is still resumable as a
+scored contestant.
+
+Committed: the three untracked `_*-2026-09-04` evidence directories (1.3 MB total).
+`.gitignore` gained `test-results/` and `playwright-report/`; `node_modules/` and `dist/`
+were already covered.
+
+**This rule was violated once and caught.** A subagent edited the frozen local build's
+`PostProcessing.js`, adding a `composer.setSize()` and a render guard — an attempt to *fix*
+a contestant's recorded output, which would have silently improved the evidence the whole
+benchmark rests on. Restored with `git checkout`. Worth knowing that the freeze needs
+enforcing, not just documenting.
+
+## Does the adopted layer run
+
+**Yes. It runs, and it plays.** The adopt decision that Q5 left conditional is resolved:
+**adopt**, not greenfield.
+
+### Migration
+
+Applied per `Three.js 0.169 to 0.182`: `three@0.182.0` / `vite@7.3.6`, `PCFSoftShadowMap` →
+`PCFShadowMap`, `SMAAPass()` without its dropped arguments, and `Disposer` now calls
+`dispose()` on instanced meshes instead of nulling CPU-side arrays, which freed nothing.
+
+### Two structural gaps, both real
+
+1. **`Formation.js` was written against an API that never existed** — `emit(state, TYPE,
+   {obj})` with object payloads, and `EVENT.FORMATION_STEP`, which is not in the enum. The
+   real queue is a pooled, zero-allocation ring with positional slots, and the
+   no-allocation-after-init rule requires exactly that. SimState is the authority, so
+   Formation adapted; `speciesOfRow` moved into SimState so scoring, meshing and audio
+   cannot disagree.
+2. **The game entry point did not exist**, so nothing could mount.
+
+### What the shared layer turned out to be
+
+Real. ~11,000 lines that had never executed, and they largely work: `VFXDirector`,
+`ParticleManager`, `PostFX`, `RendererFactory`, `HUD`, `Overlay`, `InputManager`,
+`SFXLibrary`, `Disposer`. The audio layer even ships recipes named for this game —
+`marchTick`, `invaderDeath`, `bunkerChip`, `intercept`, `ufoDeath`. `SFXLibrary` is properly
+defensive about an uninitialised engine and unknown recipe names.
+
+Two shell contracts had to be read rather than assumed, and both would have been silent
+bugs:
+
+- **Pause cannot be `this.paused`.** The shell skips `fixedUpdate` for a paused game, which
+  would starve the loop that reads the key to *un*pause. Pause is a simulation phase; `step()`
+  early-returns.
+- **Input edges must be latched per frame.** `fixedUpdate` runs zero to eight times against a
+  single `poll()`, so a naive read fires eight shots from one tap, or drops a press entirely
+  on a frame that ran no steps.
+
+### Proved by playing it
+
+Real CDP key events through the browser's input pipeline, against the live build:
+
+| | |
+|---|---|
+| Boot | `phase: playing`, 55 alive, player alive, no console errors |
+| Input received | `moveX: -1` while left is held |
+| Ship moves left | `x: 0 → -2.574` |
+| Ship moves right | `x: -2.574 → +0.885` |
+| Fire | `playerFiredTotal: 0 → 1` |
+| **Formation marches** | `originX: -9.500 → -8.660`, `marchSteps: 0 → 2` |
+
+`vite build` transforms 86 modules into hub / engine / game / three chunks.
+
+### One real defect found by playing, now fixed
+
+`main.js` read `location.hash` twice, both during boot, and never again — despite its own
+docblock claiming it routes "including the URL hash". A deep link worked on a cold load and
+did nothing on a warm one; browser back and forward did nothing at all. A `hashchange`
+listener was added. It is safe to act on unconditionally because `launch()` and `showHub()`
+both write the hash with `replaceState`, which does not fire `hashchange`, so the listener
+only ever sees navigation the app did not perform itself.
+
+### The gate's first run was mostly a FALSE RED
+
+`--only integrity,core --quick` reported **7 pass · 18 fail · 6 inconclusive · 2 skipped**,
+led by `I7` "the browser dispatched a real key event and the game never saw it" and `I5`
+"the page is frozen". Both are wrong, and direct measurement disproves them: input arrives,
+the ship moves, the formation marches.
+
+The cause was the harness reaching the build through a warm hash change that did not mount —
+so it measured the hub and reported the game dead. That is exactly the failure the ticket
+`Wire and calibrate the gate` was written to prevent: *a false red costs more than no gate at
+all, because it sends a builder to repair working code.* The harness needs to wait for
+`window.__gate` rather than a fixed delay, and its regions still need calibrating against a
+real frame of this build.
+
+**A full-gate run has never completed.** It exceeded a 10-minute budget and was killed before
+writing a report; only the `--quick` subset above has ever produced one. No verb has yet been
+observed passing in a trustworthy full run.

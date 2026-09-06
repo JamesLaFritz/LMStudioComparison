@@ -46,58 +46,30 @@ destroys its attribution and cannot be undone.
 
 ## Tickets
 
-### The build's home
-
-- Type: task
-
-Where does the reference build live, and under what name? It is not a benchmark result,
-so `Results/` is wrong — that directory means "a contestant produced this". Decide the
-location, then do the mechanical work: copy Opus 5's build out, mark `opus/` and `local/`
-frozen, commit the three untracked `_*-2026-09-04` evidence directories, and set
-`.gitignore` so `node_modules/`, `dist/` and `test-results/` stay out.
-
-Answer records the path and why, plus what was committed.
-
-### Does the adopted layer run
-
-- Type: task
-- Blocked by: The build's home, Three.js 0.169 to 0.182
-
-~14,200 lines of clean, well-commented, **never-executed** code. Zero stubs — but the
-local build had zero stubs too and its simulation layer never ran. Install deps, resolve
-the version drift per the research answer, boot it, and exercise every shared module:
-does the particle manager emit, does the pool recycle, does bloom composite, does the
-input manager report a keypress, does audio produce a sample, does `Disposer` actually
-free?
-
-The hub's 1,247 lines are in scope too, since it is kept: does the cabinet grid render,
-do the thirteen locked cards read as coming-soon rather than broken, does hash routing
-work, does the attract scene run, and does a failed load surface on screen the way
-`main.js` claims it does?
-
-Two compile breaks are already known and named in the answer key under
-`Three.js 0.169 to 0.182` — start from those rather than re-finding them.
-
-Answer is a module-by-module real-versus-fiction verdict, and the adopt-or-greenfield
-call that Q5 left conditional on it.
-
 ### Wire and calibrate the gate
 
 - Type: task
 - Blocked by: Does the adopted layer run
 
-The gate harness exists and is proved able to go red, but it has never seen a passing
-build and two things it depends on do not exist yet.
+The probe is **done**: `window.__gate.snapshot()` is live and built on `snapshotInto`, so
+every field comes from the state the renderer draws from, and the HUD carries its
+`data-gate` attributes. What remains is making the harness tell the truth.
 
-Implement what the build owes it: a read-only `window.__gate.snapshot()` honouring the
-purity contract in `gate.md` — derived from what the renderer draws from, never a
-call-site tally — plus the `data-gate` attributes on the HUD, the game-over overlay, the
-restart control and each floating-score node.
+Its first run against the live build was **mostly a false red** — 18 fails led by `I7`
+"the game never saw the key event" and `I5` "the page is frozen", both disproved minutes
+later by direct measurement showing input arriving, the ship moving and the formation
+marching. It reached the build through a warm hash change that did not mount, so it
+measured the hub and reported the game dead.
 
-Then calibrate `targets/reference.json` against one real frame. Its regions are currently
-guesses and are marked as such in the file. A mis-set `sceneryBand` is the single way this
-harness can produce a **false red**, and a false red costs more than no gate at all —
-it sends a builder to repair working code.
+Fix the harness, not the game: wait for `window.__gate` rather than a fixed delay, navigate
+cold, and calibrate `targets/reference.json` against a real frame of this build — its
+regions are still guesses and marked as such. A mis-set `sceneryBand` is the one way this
+harness produces a false red, and a false red costs more than no gate at all: it sends a
+builder to repair working code, which is what nearly happened here.
+
+Also unresolved: **a full-gate run has never completed.** It exceeded ten minutes and was
+killed before writing a report. Either it needs a budget, or the long verbs need to run as
+their own pass.
 
 ### Audio in the done bar
 
@@ -112,19 +84,23 @@ Is audio inside the destination, adjacent to it, or out? A directive-compliant r
 build arguably cannot omit a mandated subsystem — but shipping is worth more than
 completeness, and this is real work.
 
-### What fills the Space Invaders layer
+### The six VFX, and what is still missing
 
-- Type: grilling
-- Blocked by: Does the adopted layer run
+- Type: task
 
-Opus left `config.js`, four content bitmaps, `Formation.js` and `SimState.js`. Missing:
-the entire render layer, the game entry point, collision wiring, bunkers, the UFO, wave
-escalation, and the audio hookup. Decide the module boundaries and what carries state,
-given what the audit found real.
+The layer is filled — simulation, render and entry point all exist and the game plays. What
+is not done is the half of the done bar that is not "classic-complete".
 
-The entry point is contractually fixed by keeping the hub: `GameRegistry.js:76` lazy-loads
-`../games/Space_Invaders/index.js` and expects a default export constructible as
-`new Game(ctx)`. That file is one of the two known compile breaks.
+**Motion trails do not exist.** The render layer implements none, and `V4` requires a
+single-frame streak far longer than the projectile, dimming along its length.
+`src/shared/vfx/TrailRenderer.js` exists and has never been used.
+
+The other five are wired from the event drain but **none has been observed firing**: camera
+shake, particle bursts, hit-stop, shockwave rings and floating score text. Each has a
+distinct signature in the gate's V-rows precisely so they cannot be waved through as a
+bundle, and every one of those rows is currently untested rather than passing.
+
+Verify each against its V-row, and build the trails.
 
 ### What the gold reference licenses
 
