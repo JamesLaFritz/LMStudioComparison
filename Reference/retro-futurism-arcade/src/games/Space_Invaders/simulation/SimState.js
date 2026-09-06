@@ -1,5 +1,5 @@
 import { FORMATION, PLAYER, BOLT, BOMB, BUNKER, ARENA, SCORE, ROW_SPECIES } from '../config.js';
-import { createBunkerGrid, FULL_CELL_COUNT } from '../content/BunkerMask.js';
+import { createBunkerGrid, isOccupied, FULL_CELL_COUNT } from '../content/BunkerMask.js';
 import { getWaveConfig, getBombTypeWeights } from '../content/WaveTable.js';
 
 /**
@@ -421,6 +421,22 @@ export function invaderPosition(formation, index, out) {
  * ================================================================== */
 
 /**
+ * Restore one bunker's occupancy grid to pristine, in place.
+ *
+ * The allocating equivalent lives in `BunkerMask.createBunkerGrid`; this is the
+ * same mask written into an array that already exists, so a restart costs
+ * nothing and keeps every reference to the grid valid.
+ */
+function refillBunkerGrid(grid) {
+  for (let cy = 0; cy < BUNKER.ROWS; cy++) {
+    for (let cx = 0; cx < BUNKER.COLS; cx++) {
+      grid[cy * BUNKER.COLS + cx] = isOccupied(cx, cy) ? 1 : 0;
+    }
+  }
+  return grid;
+}
+
+/**
  * Reset everything for a brand-new run.
  * @param {object} state
  * @param {number} [hiScore] carried across runs
@@ -465,8 +481,15 @@ export function resetRun(state, hiScore = 0) {
 
   // Bunkers are fully rebuilt only on a new run. Within a run they persist and
   // erode, which is the entire point of them.
+  //
+  // Refilled in place rather than reassigned. `bunker.grid = createBunkerGrid()`
+  // allocates four arrays on every restart, and — the part that would actually
+  // have bitten — it swaps the array identity underneath anything holding a
+  // reference to it. The render layer reads these grids to build its instance
+  // buffers; after a restart it would have been reading the old, discarded
+  // array and drawing a bunker that no longer exists.
   for (const bunker of state.bunkers) {
-    bunker.grid = createBunkerGrid();
+    refillBunkerGrid(bunker.grid);
     bunker.cells = FULL_CELL_COUNT;
     bunker.dirty = true;
   }
