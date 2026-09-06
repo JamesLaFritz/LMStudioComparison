@@ -168,12 +168,22 @@ export class Session {
         raw.push({ data: e.data, t: this.now() });
         cdp.send('Page.screencastFrameAck', { sessionId: e.sessionId }).catch(() => {});
       });
+      // Page.enable first. Without the Page domain enabled, startScreencast is
+      // accepted and then silently pushes nothing — the capture reports zero
+      // frames, degrades to the screenshot path, and every verb that needs to
+      // difference frames goes red against working code. That is how the six
+      // mandated VFX and every centroid check failed on a build whose own probe
+      // showed the ship moving and the projectile firing.
+      await cdp.send('Page.enable');
       await cdp.send('Page.startScreencast', {
         format: 'png',
         everyNthFrame: fps ? Math.max(1, Math.round(60 / fps)) : 1,
         maxWidth: Math.round(this.target.viewport.width * scale),
         maxHeight: Math.round(this.target.viewport.height * scale)
       });
+      // Give the compositor a beat to deliver the first frame, so a short burst
+      // does not race the stream opening and conclude the stream is dead.
+      await this.sleep(120);
     } catch {
       cdp = null;
     }

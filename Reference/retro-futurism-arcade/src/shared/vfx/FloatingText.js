@@ -160,6 +160,11 @@ export class FloatingTextSystem {
     el.className = variant ? `${this.className} ${this.className}--${variant}` : this.className;
     el.style.visibility = 'visible';
     el.style.opacity = '1';
+    // Tagged on spawn and untagged on release, never at construction. The
+    // elements are a pool, so a permanent tag would leave the acceptance gate
+    // finding every slot at all times and unable to tell a popup that appeared
+    // from one that was never used.
+    el.dataset.gate = 'floating-score';
 
     return slot;
   }
@@ -193,6 +198,8 @@ export class FloatingTextSystem {
         this.liveCount = Math.max(0, this.liveCount - 1);
         el.style.opacity = '0';
         el.style.visibility = 'hidden';
+        el.textContent = '';
+        delete el.dataset.gate;
         continue;
       }
 

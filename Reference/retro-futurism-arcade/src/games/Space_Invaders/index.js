@@ -105,6 +105,33 @@ export default class SpaceInvadersGame {
 
     this._disposed = false;
     this._boundGateSnapshot = null;
+
+    /** Frames rendered. The gate reads it to tell a live loop from a still image. */
+    this._frames = 0;
+
+    /**
+     * Raw keyboard traffic, counted at the DOM boundary.
+     *
+     * This is the one place a call-site tally is the *right* answer rather than
+     * the wrong one. Everything else in the snapshot is derived from the state
+     * the renderer draws from, because a tally can stay correct while the world
+     * is dead. But "did a key event reach this document at all" has no world
+     * state to derive from, and that is exactly the question it exists to answer:
+     * it separates a dead keyboard from an unimplemented verb, which are two
+     * findings with opposite repairs.
+     */
+    this._keys = { downCount: 0, upCount: 0, lastCode: '' };
+    this._onKeyDown = null;
+    this._onKeyUp = null;
+
+    /**
+     * Cumulative VFX spawn counts.
+     *
+     * `*Live` in the snapshot comes from each subsystem's own live count and is
+     * authoritative; these `*Spawned` figures are call-site tallies and are only
+     * ever corroboration. A gate row must never pass on a spawn count alone.
+     */
+    this._vfxSpawned = { particles: 0, shockwaves: 0, floatingText: 0, hitStops: 0 };
   }
 
   /* ================================================================== *
@@ -145,6 +172,18 @@ export default class SpaceInvadersGame {
     startRun(this.state, this.state.hiScore);
     this._drainEvents();
 
+    // Capture phase, so the count is of what reached the document, not of what
+    // survived some other handler's stopPropagation.
+    this._onKeyDown = (e) => {
+      this._keys.downCount++;
+      this._keys.lastCode = e.code;
+    };
+    this._onKeyUp = () => {
+      this._keys.upCount++;
+    };
+    window.addEventListener('keydown', this._onKeyDown, true);
+    window.addEventListener('keyup', this._onKeyUp, true);
+
     this._installGateProbe();
   }
 
@@ -166,9 +205,15 @@ export default class SpaceInvadersGame {
     // The gate reads the HUD by attribute rather than by CSS class, so a
     // restyle cannot silently break the acceptance test. Tagging here keeps
     // the shared HUD component free of any knowledge of this game's gate.
-    for (const key of ['score', 'wave', 'hiScore']) {
+    // Names are the gate's, not ours: `high-score`, not `hiScore`.
+    const TAGS = { score: 'score', wave: 'wave', hiScore: 'high-score', lives: 'lives' };
+    for (const [key, tag] of Object.entries(TAGS)) {
       const field = hud.fields.get(key);
-      if (field) field.el.dataset.gate = key;
+      if (field) field.el.dataset.gate = tag;
+    }
+    const lives = hud.fields.get('lives');
+    if (lives && lives.glyphs) {
+      for (const g of lives.glyphs) g.dataset.gate = 'life-icon';
     }
 
     this.hud = hud;
@@ -195,18 +240,49 @@ export default class SpaceInvadersGame {
     this._boundGateSnapshot = () => {
       snapshotInto(this.state, this.snapshot);
       const s = this.snapshot;
+
       s.route = 'game';
       s.cabinetId = 'Space_Invaders';
+      s.frame = this._frames;
+      s.timeScale = this.timeScale;
+
       s.input = {
+        downCount: this._keys.downCount,
+        upCount: this._keys.upCount,
+        lastCode: this._keys.lastCode,
+        // Beyond the contract, and useful: what the simulation believes it was
+        // handed, as opposed to what the document received.
         moveX: this.input.moveX,
         fire: this.input.fire
       };
-      s.vfx = this.vfx ? this.vfx.stats() : null;
-      s.timeScale = this.timeScale;
+
+      const v = this.vfx;
+      const p = v ? v.particles.stats() : null;
+      const w = v ? v.shockwaves.stats() : null;
+      s.vfx = v
+        ? {
+            trauma: v.shake.trauma,
+            timeScale: v.hitStop.timeScale,
+            hitStops: v.hitStop.triggerCount,
+            particlesLive: p.live,
+            particlesSpawned: this._vfxSpawned.particles,
+            shockwavesLive: w.live,
+            shockwavesSpawned: this._vfxSpawned.shockwaves,
+            // Trails are not implemented yet. Reported as 0 rather than omitted,
+            // so V4 reads as "absent" instead of "unmeasurable".
+            trailsActive: 0,
+            floatingTextLive: v.text.liveCount,
+            floatingTextSpawned: this._vfxSpawned.floatingText,
+            particleCap: p.cap,
+            particleHighWater: p.highWater
+          }
+        : null;
+
       return s;
     };
 
     window.__gate = window.__gate || {};
+    window.__gate.version = 1;
     window.__gate.snapshot = this._boundGateSnapshot;
   }
 
@@ -275,6 +351,33 @@ export default class SpaceInvadersGame {
   render() {
     if (this._disposed) return;
     this.renderer.render();
+    this._frames++;
+  }
+
+  /* ------------------------------------------------------------------ *
+   * VFX call sites, counted.
+   *
+   * These wrap the director purely so the snapshot can report how many of each
+   * effect were *asked for*, alongside how many are live. The live counts come
+   * from the subsystems and are the real evidence; these are corroboration, and
+   * the gate is told as much.
+   * ------------------------------------------------------------------ */
+
+  _impact(spec) {
+    this._vfxSpawned.particles++;
+    if (spec.shockwave) this._vfxSpawned.shockwaves++;
+    if (spec.hitStop) this._vfxSpawned.hitStops++;
+    return this.vfx.impact(spec);
+  }
+
+  _ring(spec) {
+    this._vfxSpawned.shockwaves++;
+    return this.vfx.ring(spec);
+  }
+
+  _score(spec) {
+    this._vfxSpawned.floatingText++;
+    return this.vfx.score(spec);
   }
 
   onResize(width, height) {
@@ -315,7 +418,7 @@ export default class SpaceInvadersGame {
 
         case EVENT.INVADER_KILLED:
           // a = species, b = points awarded, c = combo
-          this.vfx.impact({
+          this._impact({
             x: e.x,
             y: e.y,
             nx: e.nx,
@@ -326,13 +429,13 @@ export default class SpaceInvadersGame {
             shockwave: 1.6,
             light: true
           });
-          this.vfx.score({ x: e.x, y: e.y, text: `${e.b}`, variant: 'kill' });
+          this._score({ x: e.x, y: e.y, text: `${e.b}`, variant: 'kill' });
           sfx.play('invaderDeath');
           break;
 
         case EVENT.UFO_KILLED:
           // a = points, b = awarded, c = combo. The heaviest impact in the game.
-          this.vfx.impact({
+          this._impact({
             x: e.x,
             y: e.y,
             nx: 0,
@@ -345,12 +448,12 @@ export default class SpaceInvadersGame {
             hitStop: 0.14,
             light: true
           });
-          this.vfx.score({ x: e.x, y: e.y, text: `${e.b}`, variant: 'ufo' });
+          this._score({ x: e.x, y: e.y, text: `${e.b}`, variant: 'ufo' });
           sfx.play('ufoDeath');
           break;
 
         case EVENT.PLAYER_HIT:
-          this.vfx.impact({
+          this._impact({
             x: e.x,
             y: e.y,
             nx: e.nx,
@@ -366,7 +469,7 @@ export default class SpaceInvadersGame {
           break;
 
         case EVENT.BOMB_INTERCEPTED:
-          this.vfx.impact({
+          this._impact({
             x: e.x,
             y: e.y,
             nx: e.nx,
@@ -391,7 +494,7 @@ export default class SpaceInvadersGame {
           break;
 
         case EVENT.BUNKER_BREACHED:
-          this.vfx.ring({ x: e.x, y: e.y, radius: 2.2, color: 0x7ef7a0, energy: 1.2 });
+          this._ring({ x: e.x, y: e.y, radius: 2.2, color: 0x7ef7a0, energy: 1.2 });
           break;
 
         case EVENT.MARCH_STEP:
@@ -416,12 +519,12 @@ export default class SpaceInvadersGame {
           break;
 
         case EVENT.EXTRA_LIFE:
-          this.vfx.score({ x: e.x, y: e.y, text: '1UP', variant: 'bonus' });
+          this._score({ x: e.x, y: e.y, text: '1UP', variant: 'bonus' });
           sfx.play('extraLife');
           break;
 
         case EVENT.WAVE_CLEARED:
-          this.vfx.ring({ x: 0, y: e.y, radius: 14, life: 1.1, color: 0x57e2ff, energy: 1.6 });
+          this._ring({ x: 0, y: e.y, radius: 14, life: 1.1, color: 0x57e2ff, energy: 1.6 });
           sfx.play('waveClear');
           break;
 
@@ -534,8 +637,13 @@ export default class SpaceInvadersGame {
     if (this._disposed) return;
     this._disposed = true;
 
-    if (typeof window !== 'undefined' && window.__gate) {
-      if (window.__gate.snapshot === this._boundGateSnapshot) {
+    if (typeof window !== 'undefined') {
+      if (this._onKeyDown) window.removeEventListener('keydown', this._onKeyDown, true);
+      if (this._onKeyUp) window.removeEventListener('keyup', this._onKeyUp, true);
+      this._onKeyDown = null;
+      this._onKeyUp = null;
+
+      if (window.__gate && window.__gate.snapshot === this._boundGateSnapshot) {
         delete window.__gate.snapshot;
       }
     }

@@ -340,6 +340,71 @@ async function provenance(report, opts, url) {
  * Main
  * ==================================================================== */
 
+/**
+ * Wait until the build is actually mounted before measuring anything.
+ *
+ * This replaced a flat `sleep(1200)`, and the difference is not cosmetic. Mounting
+ * a cabinet is asynchronous — a dynamic `import()` of the game chunk followed by
+ * `await game.init()`, which builds a renderer, a post-processing stack and a
+ * particle pool. Under headless SwiftShader that comfortably outruns 1200 ms, so
+ * the harness began driving keys at the *hub* and then reported the game frozen
+ * and deaf. Every verb below the fold inherited that, and the run named two
+ * defects — "the game never saw the key event", "the page is frozen" — that
+ * direct measurement disproved minutes later.
+ *
+ * A false red is worse than no gate, because it sends someone to repair working
+ * code. So readiness is now observed rather than assumed.
+ *
+ * Deliberately NOT a hard requirement on `__gate`: a build that exposes no probe
+ * is exactly the case this harness must still be able to fail honestly — that is
+ * how it proved itself against the frozen 2026-09-04 build, which has no probe
+ * and no working simulation. So the probe is the *preferred* signal, a painting
+ * canvas is the fallback, and the timeout still proceeds to measure rather than
+ * aborting. Which path was taken is recorded, because "the probe never appeared"
+ * changes how every verdict below should be read.
+ */
+async function waitForBuildReady(page, s, report, timeoutMs = 20000) {
+  const t0 = Date.now();
+
+  const probe = await page
+    .waitForFunction(() => !!(window.__gate && typeof window.__gate.snapshot === 'function'), {
+      timeout: timeoutMs
+    })
+    .then(() => true)
+    .catch(() => false);
+
+  if (probe) {
+    // The probe exists the instant it is installed, which is before the first
+    // frame is composited. Give the renderer a beat so pixel observables are real.
+    await s.sleep(600);
+    const out = { how: 'gate probe present', ms: Date.now() - t0, probe: true };
+    if (report && report.provenance) report.provenance.readiness = out;
+    return out;
+  }
+
+  const canvas = await page
+    .waitForFunction(
+      () => {
+        const c = document.querySelector('canvas');
+        return !!c && c.clientWidth > 0 && c.clientHeight > 0;
+      },
+      { timeout: 4000 }
+    )
+    .then(() => true)
+    .catch(() => false);
+
+  await s.sleep(1200);
+  const out = {
+    how: canvas
+      ? 'NO gate probe — fell back to a sized canvas'
+      : 'NO gate probe and NO canvas — measuring anyway',
+    ms: Date.now() - t0,
+    probe: false
+  };
+  if (report && report.provenance) report.provenance.readiness = out;
+  return out;
+}
+
 async function main() {
   const opts = parseArgs(process.argv);
   if (opts.help || !opts.target) {
@@ -444,7 +509,8 @@ async function main() {
 
     await page.goto(url, { waitUntil: 'load', timeout: 30000 });
     await page.bringToFront().catch(() => {});
-    await s.sleep(1200);
+    const readiness = await waitForBuildReady(page, s, report);
+    console.log(`  boot: ${readiness.how} after ${readiness.ms} ms`);
 
     /* ---------------- hub ---------------- */
     if (target.hub && target.hub.present && want('hub')) {
@@ -462,7 +528,9 @@ async function main() {
       await page.goto(url.replace(/#.*$/, '') + `#${target.hub.litCabinetId}`, {
         waitUntil: 'load'
       });
-      await s.sleep(target.hub.launchTimeoutMs ?? 4000);
+      // Same reasoning as the first boot: observe the mount, never assume it.
+      const back = await waitForBuildReady(page, s, report, target.hub.launchTimeoutMs ?? 20000);
+      console.log(`  re-entry: ${back.how} after ${back.ms} ms`);
     }
 
     /* ---------------- integrity, in play ---------------- */
