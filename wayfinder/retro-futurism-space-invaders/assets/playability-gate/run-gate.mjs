@@ -100,6 +100,7 @@ function parseArgs(argv) {
     else if (a === '--source') out.source = next();
     else if (a === '--quick') out.quick = true;
     else if (a === '--headed') out.headed = true;
+    else if (a === '--software-gl') out.softwareGl = true;
     else if (a === '--help' || a === '-h') out.help = true;
     else throw new Error(`unknown argument: ${a}`);
   }
@@ -121,6 +122,9 @@ playability gate
   --fault <name>    inject a fault to prove the checks go red:
                     ${Object.keys(FAULTS).join(', ')}
   --source <dir>    build source root, for the provenance check
+  --software-gl     force SwiftShader instead of the GPU. Slower AND blinder:
+                    measured 7 rAF/s and zero screencast frames on this build,
+                    which turns frame-differencing verbs into false reds.
   --quick           shorten the long idle budgets and skip the wave/game-over
                     phases. A --quick run can never report gate PASS.
   --headed          run with a visible browser window
@@ -458,10 +462,26 @@ async function main() {
   const browser = await chromium.launch({
     headless: !opts.headed,
     args: [
-      // Headless Chromium needs a software GL path for WebGL 2; without these
-      // the renderer never comes up and every pixel observable is void.
+      // ANGLE picks the platform's hardware backend (d3d11 on Windows, Metal on
+      // macOS, GL on Linux). SwiftShader stays available as a fallback where
+      // there is no GPU, but it must NOT be the default, because forcing it
+      // makes this harness blind rather than slow.
+      //
+      // Measured on this build, same machine, same scene:
+      //
+      //            rAF/s   screencast frames in 3 s   sim steps/s
+      //   software     7                          0            56
+      //   hardware    33                         83           114
+      //
+      // At 7 fps with no screencast at all, every verb that differences frames
+      // fails — the six mandated VFX, every centroid check, the dead-simulation
+      // detector — against a build whose own probe shows it working. Those are
+      // false reds, and a false red sends someone to repair working code.
+      //
+      // `--software-gl` forces the old behaviour when reproducibility across
+      // machines matters more than being able to see.
       '--use-gl=angle',
-      '--use-angle=swiftshader',
+      opts.softwareGl ? '--use-angle=swiftshader' : '--use-angle=default',
       '--enable-unsafe-swiftshader',
       '--disable-backgrounding-occluded-windows',
       '--disable-renderer-backgrounding',

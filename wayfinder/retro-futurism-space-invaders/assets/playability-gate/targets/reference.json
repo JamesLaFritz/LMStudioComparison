@@ -1,5 +1,5 @@
 {
-  "name": "retro-futurism-arcade — reference build",
+  "name": "retro-futurism-arcade \u2014 reference build",
   "url": "http://localhost:5173/",
   "_note": [
     "TUNE THE REGIONS BEFORE THE FIRST REAL RUN. Every region below is a",
@@ -11,8 +11,10 @@
     "selectors.floatingScore requires the build to tag its floating-score nodes",
     "with data-gate=\"floating-score\"; see gate.md, 'What the build must expose'."
   ],
-  "viewport": { "width": 1280, "height": 720 },
-
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
   "hub": {
     "present": true,
     "expectedCabinets": 14,
@@ -31,7 +33,6 @@
     "launchTimeoutMs": 10000,
     "attract": true
   },
-
   "keys": {
     "left": "ArrowLeft",
     "right": "ArrowRight",
@@ -41,7 +42,6 @@
     "exit": "Escape",
     "unbound": "F7"
   },
-
   "selectors": {
     "score": "[data-gate=\"score\"]",
     "highScore": "[data-gate=\"high-score\"]",
@@ -52,19 +52,60 @@
     "restartButton": "[data-gate=\"restart\"]",
     "floatingScore": "[data-gate=\"floating-score\"]"
   },
-
   "regions": {
-    "formationBand": { "x": 0.05, "y": 0.12, "w": 0.9, "h": 0.4 },
-    "descentBand": { "x": 0.05, "y": 0.46, "w": 0.9, "h": 0.22 },
-    "shotBand": { "x": 0.05, "y": 0.4, "w": 0.9, "h": 0.42 },
-    "muzzleBand": { "x": 0.05, "y": 0.7, "w": 0.9, "h": 0.06 },
-    "bunkerBand": { "x": 0.05, "y": 0.65, "w": 0.9, "h": 0.1 },
-    "playerBand": { "x": 0.05, "y": 0.76, "w": 0.9, "h": 0.15 },
-    "ufoBand": { "x": 0.05, "y": 0.04, "w": 0.9, "h": 0.07 },
-    "sceneryBand": { "x": 0.0, "y": 0.93, "w": 1.0, "h": 0.07 }
+    "formationBand": {
+      "x": 0.05,
+      "y": 0.12,
+      "w": 0.9,
+      "h": 0.38
+    },
+    "descentBand": {
+      "x": 0.05,
+      "y": 0.45,
+      "w": 0.9,
+      "h": 0.25
+    },
+    "shotBand": {
+      "x": 0.05,
+      "y": 0.5,
+      "w": 0.9,
+      "h": 0.42
+    },
+    "muzzleBand": {
+      "x": 0.05,
+      "y": 0.88,
+      "w": 0.9,
+      "h": 0.05
+    },
+    "bunkerBand": {
+      "x": 0.05,
+      "y": 0.77,
+      "w": 0.9,
+      "h": 0.09
+    },
+    "playerBand": {
+      "x": 0.05,
+      "y": 0.9,
+      "w": 0.9,
+      "h": 0.1
+    },
+    "ufoBand": {
+      "x": 0.05,
+      "y": 0.045,
+      "w": 0.9,
+      "h": 0.075
+    },
+    "sceneryBand": {
+      "x": 0.0,
+      "y": 0.55,
+      "w": 0.1,
+      "h": 0.33
+    }
   },
-
   "thresholds": {
-    "allowedConsolePatterns": ["favicon"]
-  }
+    "allowedConsolePatterns": [
+      "favicon"
+    ]
+  },
+  "_calibration": "Measured 2026-09-06 against Reference/retro-futurism-arcade at 1280x720 by row-wise luminance profiling of a real frame, replacing the original guesses. Row peaks at y=0.15/0.225/0.30/0.375/0.45 are the five invader rows; the sustained bright band at 0.775-0.85 is the bunkers; the ship sits at 0.925-0.975. The previous playerBand (0.76-0.91) and bunkerBand (0.65-0.75) both missed their subjects entirely, which is why every player-movement verb failed against a build whose own probe showed the ship moving. sceneryBand is now a left-edge sliver of city: static, feature-rich enough for a camera-shake signal, and outside the horizontal reach of the formation, the bunkers and the ship, so nothing but the camera can move it."
 }

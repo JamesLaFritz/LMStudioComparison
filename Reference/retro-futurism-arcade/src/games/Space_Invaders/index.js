@@ -12,7 +12,7 @@ import {
   clearInputEdges,
   startRun,
   enterAttract,
-  togglePause,
+
   step,
   createSnapshot,
   snapshotInto,
@@ -120,7 +120,7 @@ export default class SpaceInvadersGame {
      * it separates a dead keyboard from an unimplemented verb, which are two
      * findings with opposite repairs.
      */
-    this._keys = { downCount: 0, upCount: 0, lastCode: '' };
+    this._keys = { downCount: 0, upCount: 0, lastCode: '', pauseSeen: 0 };
     this._onKeyDown = null;
     this._onKeyUp = null;
 
@@ -250,6 +250,7 @@ export default class SpaceInvadersGame {
         downCount: this._keys.downCount,
         upCount: this._keys.upCount,
         lastCode: this._keys.lastCode,
+        pauseSeen: this._keys.pauseSeen,
         // Beyond the contract, and useful: what the simulation believes it was
         // handed, as opposed to what the document received.
         moveX: this.input.moveX,
@@ -303,13 +304,21 @@ export default class SpaceInvadersGame {
     if (this._edgeFrame !== this._frameId) {
       this._edgeFrame = this._frameId;
       if (gamepadOrKeys.pressed('fire')) this.input.firePressed = true;
-      if (gamepadOrKeys.pressed('pause')) this.input.pausePressed = true;
+      if (gamepadOrKeys.pressed('pause')) {
+        this.input.pausePressed = true;
+        this._keys.pauseSeen++;
+      }
       if (gamepadOrKeys.pressed('confirm')) this.input.confirmPressed = true;
       // Deliberately NOT the fire key. The gate holds fire after game over and
       // requires the score to stay put; a restart on fire would zero it and
       // read as exactly the defect that check exists to catch.
       if (gamepadOrKeys.pressed('restart')) this.input.restartPressed = true;
-      if (gamepadOrKeys.pressed('back')) this.ctx.exitToHub();
+      // `back` is deliberately NOT wired to a key here. ActionMap binds Escape to
+      // *both* `pause` and `back`, so honouring `back` made Escape unmount the
+      // cabinet instead of pausing it — the pause verb measured no change in the
+      // simulation because there was no longer a simulation. Leaving the cabinet
+      // is offered on the pause prompt and the game-over panel instead, where it
+      // cannot be hit by reflex mid-run.
     }
   }
 
@@ -323,10 +332,10 @@ export default class SpaceInvadersGame {
 
     this._readInput();
 
-    if (this.input.pausePressed) {
-      togglePause(this.state);
-    }
-
+    // Pause is NOT toggled here. `step()` consumes `input.pausePressed` itself,
+    // so doing it here as well toggled twice in one fixed step — on, then
+    // straight back off — and the game could never be paused at all. The
+    // simulation owns the verb; this layer only reports the key.
     step(this.state, dt, this.input, this.rng);
     this._drainEvents();
     clearInputEdges(this.input);
@@ -598,17 +607,24 @@ export default class SpaceInvadersGame {
       return;
     }
 
+    // Pause deliberately uses the HUD prompt, not the Overlay.
+    //
+    // `Overlay.show()` fires `onInputSuspend(true)`, which suspends the input
+    // manager so the panel's own controls own the keyboard. That is right for a
+    // game-over panel and catastrophic for a pause screen: it would suspend the
+    // very input layer that reads the key to resume, and the player would be
+    // sealed inside the pause they asked for. The prompt suspends nothing.
     if (s.paused) {
       if (this._overlayShown !== 'paused') {
         this._overlayShown = 'paused';
-        this.overlay.show({
-          id: 'paused',
-          title: 'PAUSED',
-          titleClass: 'neon',
-          subtitle: 'Esc to resume'
-        });
-        this._tagOverlayForGate();
+        this.hud.showPrompt('<strong>PAUSED</strong> — Esc or P to resume', 1e6);
       }
+      return;
+    }
+
+    if (this._overlayShown === 'paused') {
+      this.hud.hidePrompt();
+      this._overlayShown = '';
       return;
     }
 

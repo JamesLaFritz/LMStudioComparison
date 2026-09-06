@@ -34,6 +34,23 @@ export class KeyboardDevice {
     this.target = target;
     /** @type {Set<string>} currently held `KeyboardEvent.code` values */
     this.down = new Set();
+    /**
+     * Keys that went down since the last poll, whether or not they are still
+     * held now.
+     *
+     * `down` alone is a *sample*, and `InputManager.poll()` samples it about
+     * once per rendered frame. A key pressed and released between two polls is
+     * therefore invisible: the edge never existed as far as the game is
+     * concerned. That is not hypothetical — it is why a tapped pause key did
+     * nothing while the same key held down worked, and why fast taps of fire
+     * were silently dropped.
+     *
+     * This set is the latch that closes that hole. It records the press itself
+     * rather than the state it leaves behind, and is drained by `clearActivity`
+     * at the end of every poll, so a press is observed exactly once no matter
+     * how briefly the key was held.
+     */
+    this.tapped = new Set();
     /** Keys the game consumes, and therefore swallows. */
     this.consumed = bindings ? collectBoundKeys(bindings) : collectBoundKeys();
 
@@ -65,6 +82,7 @@ export class KeyboardDevice {
     }
 
     this.down.add(event.code);
+    this.tapped.add(event.code);
     this.activity = true;
 
     if (this.consumed.has(event.code)) event.preventDefault();
@@ -78,6 +96,7 @@ export class KeyboardDevice {
   _onBlur() {
     // See class comment — this is a correctness fix, not a nicety.
     this.down.clear();
+    this.tapped.clear();
   }
 
   _onContextMenu() {
@@ -99,14 +118,24 @@ export class KeyboardDevice {
     return false;
   }
 
+  /** True if any of the supplied codes went down since the last poll. */
+  anyTapped(codes) {
+    for (let i = 0; i < codes.length; i++) {
+      if (this.tapped.has(codes[i])) return true;
+    }
+    return false;
+  }
+
   /** Called by `InputManager` at the end of each poll. */
   clearActivity() {
     this.activity = false;
+    this.tapped.clear();
   }
 
   /** Release everything. Used when a modal overlay takes input focus. */
   reset() {
     this.down.clear();
+    this.tapped.clear();
     this.activity = false;
   }
 

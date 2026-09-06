@@ -131,8 +131,14 @@ export class InputManager {
 
     // --- Buttons ----------------------------------------------------------
     for (const [name, binding] of Object.entries(this.bindings.buttons)) {
+      // A key that went down and up entirely between two polls is still a press.
+      // Without the tap latch this loop samples `down` and sees nothing, so the
+      // action never produces an edge and the input is silently lost — the
+      // faster the player, the more often it happens.
       const down =
-        this.keyboard.anyDown(binding.keys) || this.gamepad.anyDown(binding.padButtons);
+        this.keyboard.anyDown(binding.keys) ||
+        this.keyboard.anyTapped(binding.keys) ||
+        this.gamepad.anyDown(binding.padButtons);
       this.buttonState.set(name, down);
     }
 
