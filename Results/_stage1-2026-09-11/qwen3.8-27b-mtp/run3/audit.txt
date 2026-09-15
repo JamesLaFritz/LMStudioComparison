@@ -1,0 +1,67 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run3/ws
+==========================================================================
+21 source files, 4508 lines, 32 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : all resolve
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 2 use(s) -- prompt mandates MeshStandardMaterial
+      shared/vfx/ParticleManager.js  MeshBasicMaterial
+      shared/vfx/ShockwaveRings.js  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/postfx/PostPipeline.js
+  UnrealBloomPass            yes  shared/postfx/PostPipeline.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  shared/vfx/CameraShake.js
+  particle bursts            yes  shared/audio/AudioEngine.js
+  hit-stop                   yes  shared/audio/AudioEngine.js
+  motion trails              yes  shared/vfx/MotionTrails.js
+  shockwave rings            yes  Space_Invaders/Game.js
+  floating score text        yes  shared/vfx/FloatingText.js
+  ---> 6 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/core/ObjectPool.js
+  InstancedMesh              yes  shared/vfx/ParticleManager.js
+  particle cap               NO DECLARED CAP -- prompt mandates a hard 500 limit
+  disposal                   21 dispose() vs 30 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  shared/procedural/TextureFactory.js
+  Web Audio                  yes  shared/audio/AudioEngine.js
+  procedural noise           yes  shared/procedural/Noise.js
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  shared/ui/glass.css
+  neon glow (text/box-shadow) yes  shared/ui/glass.css
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/core/InputController.js
+  Gamepad API                yes  shared/core/InputController.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  382 turns, 390 tool calls, 155 run_command
+  ran a build                2 time(s)
+  installed deps             1 time(s)
+  served the game            NEVER
+  looked for browser tools   27 time(s)
+  LAUNCHED a browser         5 time(s)
+  INTERACTED with it         19 time(s)
+  used playwright-cli        27 time(s)
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 5

@@ -1,0 +1,187 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws",
+ "files": 25,
+ "lines": 2344,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "src/shared/three/index.js",
+    17
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "src/shared/three/index.js",
+    18
+   ],
+   [
+    "src/Space_Invaders/Scene.js",
+    33
+   ]
+  ],
+  "camera shake": [
+   [
+    "src/shared/camera/CameraShakeSystem.js",
+    2
+   ]
+  ],
+  "particle bursts": [
+   [
+    "src/shared/particles/ExplosionBurst.js",
+    2
+   ],
+   [
+    "src/shared/particles/ParticleManager.js",
+    4
+   ],
+   [
+    "src/shared/particles/ShockwaveRing.js",
+    5
+   ],
+   [
+    "src/shared/particles/SparkBurst.js",
+    2
+   ]
+  ],
+  "hit-stop": [],
+  "motion trails": [],
+  "shockwave rings": [
+   [
+    "src/shared/particles/ExplosionBurst.js",
+    2
+   ],
+   [
+    "src/shared/particles/ParticleManager.js",
+    53
+   ],
+   [
+    "src/shared/particles/ShockwaveRing.js",
+    2
+   ]
+  ],
+  "floating score text": [
+   [
+    "src/Space_Invaders/ui/ScoreDisplay.js",
+    151
+   ]
+  ],
+  "object pooling": [
+   [
+    "src/shared/particles/ParticleManager.js",
+    2
+   ]
+  ],
+  "InstancedMesh": [],
+  "CanvasTexture": [
+   [
+    "src/shared/procedural/NeonGlowTextures.js",
+    20
+   ],
+   [
+    "src/shared/procedural/NoiseTextures.js",
+    14
+   ]
+  ],
+  "Web Audio": [
+   [
+    "src/shared/audio/AudioManager.js",
+    20
+   ],
+   [
+    "src/shared/audio/MusicSynth.js",
+    58
+   ],
+   [
+    "src/shared/audio/SoundSynth.js",
+    57
+   ]
+  ],
+  "procedural noise": [
+   [
+    "src/shared/procedural/NoiseTextures.js",
+    2
+   ],
+   [
+    "src/shared/utils/SimplexNoise.js",
+    2
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "src/shared/input/GamepadController.js",
+    10
+   ],
+   [
+    "src/shared/input/InputManager.js",
+    21
+   ]
+  ],
+  "keyboard input": [
+   [
+    "src/shared/input/InputManager.js",
+    60
+   ],
+   [
+    "src/shared/input/KeyboardController.js",
+    25
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "src/Space_Invaders/ui/ScoreDisplay.js",
+    25
+   ],
+   [
+    "index.html",
+    20
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "src/Space_Invaders/ui/ScoreDisplay.js",
+    32
+   ],
+   [
+    "index.html",
+    27
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "src/shared/particles/ParticleManager.js",
+   7,
+   "maxParticles",
+   500
+  ]
+ ],
+ "dispose_calls": 13,
+ "three_allocations": 0,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max",
+  "turns": 86,
+  "tool_calls": 84,
+  "run_commands": 59,
+  "verification": {
+   "ran a build": 1,
+   "installed deps": 1,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

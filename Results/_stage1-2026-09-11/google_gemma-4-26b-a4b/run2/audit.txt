@@ -1,0 +1,65 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/google_gemma-4-26b-a4b/run2/ws
+==========================================================================
+0 source files, 0 lines, 0 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : all resolve
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  materials                : MeshStandardMaterial only
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             NOT FOUND
+  UnrealBloomPass            NOT FOUND
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               NOT FOUND
+  particle bursts            NOT FOUND
+  hit-stop                   NOT FOUND
+  motion trails              NOT FOUND
+  shockwave rings            NOT FOUND
+  floating score text        NOT FOUND
+  ---> 0 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             NOT FOUND
+  InstancedMesh              NOT FOUND
+  particle cap               NO DECLARED CAP -- prompt mandates a hard 500 limit
+  disposal                   0 dispose() vs 0 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              NOT FOUND
+  Web Audio                  NOT FOUND
+  procedural noise           NOT FOUND
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) NOT FOUND
+  neon glow (text/box-shadow) NOT FOUND
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             NOT FOUND
+  Gamepad API                NOT FOUND
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  3 turns, 0 tool calls, 0 run_command
+  ran a build                NEVER
+  installed deps             NEVER
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

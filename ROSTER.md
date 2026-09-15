@@ -14,6 +14,84 @@ lms load <key> -c 128500 --gpu max --parallel 1 -y
 
 LM Studio rounds the request up to a multiple of 64, so `-c 128500` loads as **128,512**. Record the loaded value, not the requested one.
 
+## PHASE 1a ROSTER — 12 models, rebuilt 2026-09-11 from measurement
+
+> Replaces the 2026-09-08 list, which rested on the 2026-08-23 sweep's viability
+> verdicts. Those were artifacts of forcing `-c 128500 --gpu max --parallel 1`; every
+> one inverted when models were loaded on their own configuration. Nothing here is
+> inherited - every row is a measurement from `Results/_inventory-2026-09-09/` plus a
+> Stage 0 protocol screen.
+
+**Selection rule.** A model is on this roster only if it (1) loads on its own config,
+(2) is not CPU-offloading, (3) runs at >= 32,768 context, and (4) has passed or will
+pass a Stage 0 screen. Beyond that the roster is chosen for *coverage* - family,
+architecture, quantisation, MTP, and specialisation - because twelve near-identical
+Qwen 35B-A3B variants would measure quantisation noise and call it a ranking.
+
+### Tier A - plausible daily drivers (8)
+
+| Model | ctx | VRAM | free | tok/s | Stage 0 | Why |
+|---|---:|---:|---:|---:|:-:|---|
+| `qwen/qwen3.8-27b` | 128,512 | 20,505 | 4,059 | **29.5** | PASS | The only model that has produced a playable game. |
+| `qwen3.8-27b-mtp` | 128,512 | 22,627 | 1,937 | **40.4** | PASS | MTP sibling of the above - the one controlled MTP pair. |
+| `qwen/qwen3.5-35b-a3b` | 128,512 | 23,947 | 617 | **55.3** | PASS | Fastest screened passer. Replaces `qwen3-30b-a3b-2507`, which bailed. |
+| `qwen.qwen3.6-35b-a3b` | 128,512 | 17,987 | 6,577 | **56.4** | PASS | Official 35B-A3B weights, MoE, fast. |
+| `qwen-agentworld-35b-a3b-apex` | 128,512 | 17,707 | 6,857 | **55.6** | PASS | Agentic-tuned - the closest thing to a purpose-built candidate. |
+| `qwen3.5-27b` | 128,512 | 20,336 | 4,228 | **29.4** | PASS | Largest plan of any model screened (35,153 chars). Predecessor to 3.8. |
+| `google/gemma-4-26b-a4b` | 128,512 | 19,768 | 4,796 | **50.1** | PASS | Non-Qwen family. Guards against a Qwen-only conclusion. |
+| `qwen/qwen3.6-27b` | 128,512 | 20,344 | 4,220 | **29.7** | PASS | Dense 27B, the generation between 3.5 and 3.8. |
+
+### Tier B - controls, each answering one question (4)
+
+| Model | ctx | VRAM | free | tok/s | Stage 0 | Question it answers |
+|---|---:|---:|---:|---:|:-:|---|
+| `qwen3.6-35b-a3b-mtp@q3_k_m` | 128,512 | 20,660 | 3,904 | **49.8** | PASS | The incumbent baseline: every harness diagnostic ran on it, so it anchors this roster to all prior evidence. |
+| `prism-ml/bonsai-27b` | 128,512 | 9,430 | 15,134 | **81.6** | PASS | 1-bit quant, 9 GB footprint. Does extreme quantisation survive agentic work? |
+| `liquid/lfm2-24b-a2b` | 128,000 | 15,906 | 8,658 | **57.6** | PASS | Neither Qwen nor Gemma - a third architecture. |
+| `qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-co` | 128,512 | 20,898 | 3,666 | **28.6** | PASS | Largest parameter count that fits on the card. |
+
+### Before Stage 1
+
+**All 12 roster models have passed a Stage 0 protocol screen.** Phase 0 is closed.
+
+One measurement debt: re-run `tools/inventory_sweep.sh` so every tok/s figure is a
+sustained 1,200-token rate rather than the old TTFT-dominated 200-token probe. ~40 min,
+and it does not gate Stage 1.
+
+Cost at n = 3 (see `N-DESIGN.md`), ~1.9 h per run:
+
+| Roster size | Runs | GPU hours |
+|---:|---:|---:|
+| 12 | 36 | ~68 |
+| 10 | 30 | ~57 |
+| 8 | 24 | ~46 |
+
+Dropping the two weakest Tier B entries gets to 10 and saves ~11 hours. Tier A is
+not negotiable without changing what the benchmark answers.
+
+### Excluded, and why - all of it measured, none of it inherited
+
+| Model | Reason |
+|---|---|
+| `qwen/qwen3-coder-30b` | **Cannot hold the workload.** Excellent at its own 32,768 (**62.0 tok/s**, the 2nd fastest model installed) but a real run peaks at **77,566 prompt tokens**, so it would compact continuously and be scored on a different task. At 128,512 it is genuinely offloading: 15.7 tok/s, 577 MiB free. Raise its context and it qualifies. |
+| `qwen/qwen3-30b-a3b-2507` | **Stage 0 fail** - harness bail: "Stopped after 2 turns that used the entire 32768-token output budget on reasoning and produced no output". Also built 11 source modules during STEP 2. Fast (62.6 tok/s) but it cannot complete the planning step |
+| `gemma-4-12b-...-tau2@q8_0` | **Stage 0 fail** - 354 turns on p1+p2 against a healthy 2-9, 15.8M prompt tokens, throughput decaying 33.9 -> 7.9 tok/s |
+| `openai/gpt-oss-20b` | **Stage 0 fail** - wrote and deleted a temp file in STEP 1, then replied "The plan has been generated" with no plan anywhere |
+| `chronoboros-33b` (x2) | Configured at **2,048** context. Deliberate, but far below the 77,566-token peak of a real run |
+| `qwen3.8-27b-claude-opus-reasoning-distilled` | Configured at **13,056** |
+| `cydonia-24b-v4.3` | Configured at **17,152** |
+| `google/gemma-4-31b`, `-qat` | Configured at 40,960 / 54,528 - runnable, but not comparable at 128,512 |
+| `bartowski/...mtp-...q4_0`, `qwen_qwen3.6-35b-a3b@q8_0` | **Not models.** 2.1 GB and 2.9 GB files claiming 35B. Both fail to load |
+| ~30 further Qwen 27B/35B variants | Run fine; omitted for coverage, not capability. Any can be swapped into Tier B |
+
+> **tok/s caveat.** Every figure in this file except `bonsai-27b` and the sustained spot-checks came from a
+> 200-token probe, which is time-to-first-token dominated and understates decode by roughly 2x (bonsai: 48.1
+> on 200 tokens, 81.6 on 1,200). Relative ordering is roughly preserved; absolute values are not. `tools/
+> inventory_sweep.sh` now generates 1,200 tokens - re-run it before quoting throughput anywhere load-bearing.
+
+**No model is excluded for VRAM or throughput.** Of 56 that load, none is
+CPU-offloading and the slowest is 26.8 tok/s. That entire category of exclusion,
+which shaped the previous two rosters, was an artifact of the load command.
 ### Full roster measured at 128,512 — 2026-08-23
 
 Every model loaded at the pinned context; idle baseline 757 MiB, clean desktop. `tok/s` is a 200-token generation used **only** to detect CPU offload — a load that fits but spills looks identical at load time and shows up nowhere else. MTP/speculative models inflate it, so compare it against a model's own class, not across the table.
@@ -161,6 +239,50 @@ Both deep-research docs say skip aggressive quantization. Included anyway on cre
 | **Claude Sonnet 5** | Claude CLI | The high-volume workhorse — the model a local candidate would actually be displacing | 2 |
 | **Claude Opus 5** | Claude CLI | Current Claude flagship (now the default Opus in Claude Code) | 3 |
 | **GPT-5.6 Terra** (max effort) | Codex Desktop | Efficiency tier — reveals whether local models compete with the flagship or merely the cheap cloud tier | 4 |
+
+
+## Chat-template permissiveness — measured 2026-09-04
+
+> **Why this column exists.** Claude Code and Codex both emit a `system` message *after* position 0 mid-conversation. Many chat templates raise `System message must be at the beginning` on that shape, which returns HTTP 500 and kills the run. The workbench only ever puts system at index 0, so it is unaffected. A **STRICT** model therefore cannot be driven by either reference harness and **cannot be cross-harness compared at all** — not because a harness is weak, but because two of the three cannot connect.
+
+> Probed by loading each model at a 4K context and sending both shapes to `/v1/chat/completions`. Endpoint-independent: `/v1/messages` fails identically.
+
+| Model | Template | Free MiB | tok/s | Headroom |
+|---|---|---:|---:|---|
+| `google/gemma-4-26b-a4b` | **PERMISSIVE** | 2,835 | 109.2 | 🟢 |
+| `qwen3.6-35b-a3b-mtp@q3_k_m` | **PERMISSIVE** | 3,531 | 83.4 | 🟢 |
+| `gemma-4-12b-…-tau2@q8_0` | **PERMISSIVE** | 8,349 | 51.0 | 🟢 |
+| `openai/gpt-oss-20b` | **PERMISSIVE** | 8,965 | 134.7 | 🟢 |
+| `qwen3.6-27b-fable-5-experimental` | **PERMISSIVE** | 1,139 | 51.9 | 🟠 |
+| `fable-coder-35b-a3b` | **PERMISSIVE** | 812 | 73.9 | 🟠 |
+| `qwen3.6-35b-a3b-mtp@q4_k_m` | **PERMISSIVE** | 151 | 76.2 | 🔴 |
+| `qwen/qwen3-coder-30b` | **PERMISSIVE** | 115 | 16.2 | 🔴 |
+| `qwen/qwen3.6-27b` | STRICT | 3,622 | 41.4 | 🟢 |
+| `qwen.qwen3.6-35b-a3b` | STRICT | 4,615 | 117.3 | 🟢 |
+| `qwen-agentworld-35b-a3b-apex` | STRICT | 4,893 | 103.2 | 🟢 |
+| `qwen3.6-40b-…-deckard-…-imatrix-max` | STRICT | 3,311 | 39.4 | 🟢 |
+| `prism-ml/bonsai-27b` | STRICT | 10,195 | 88.0 | 🟢 |
+| `qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled` | STRICT | 479 | 110.5 | 🔴 |
+| `qwen3.8-27b-mtp` | STRICT | 1,899* | 38.5* | 🟢 |
+
+\* `qwen3.8-27b-mtp` measured 2026-09-04 at 128,512 loaded alone; not in the original headroom sweep.
+
+**Cross-harness viable = PERMISSIVE ∩ 🟢 — four models:** `google/gemma-4-26b-a4b`, `qwen3.6-35b-a3b-mtp@q3_k_m`, `gemma-4-12b-…-tau2@q8_0`, `openai/gpt-oss-20b`.
+
+**The controls are STRICT.** `qwen/qwen3.6-27b` (dense reasoning baseline / clean control) and `qwen.qwen3.6-35b-a3b` both raise. The roster's designated anchors are exactly the models whose scores cannot be validated against Claude Code or Codex. Either accept that the anchors are workbench-only, or promote a permissive model to anchor.
+
+**Harness versions — pinned 2026-09-04.** Phase 0 freezes the toolchain, and a CLI upgrade mid-campaign reads as a model difference the same way the Vite/Three drift did. Upgrade *before* Phase 1a or not at all:
+
+| Harness | Pinned version | Notes |
+|---|---|---|
+| Codex CLI | **0.153.2** | Upgraded from 0.147.0 on 2026-09-04, before any frontier run. `model_reasoning_effort = "max"` in `~/.codex/config.toml`, matching the table above. `--oss --local-provider lmstudio` verified present after the upgrade. |
+| Claude CLI | record at first run | |
+| EmberOS Workbench | `main` @ `ab4cc5a` | Fixes 19-25 merged; suite 107/107. Pushed to origin. | Fixes 19-24 merged 2026-09-04; suite 104/104. Pushed to origin. |
+| Workbench limits | `maxHops` **500** · `maxEmptyRetries` **5** | Raised 2026-09-04 in `config.json` → `harness`, **before Phase 1a**, from measurement not guesswork: a full Space Invaders build took **401 hops with 1 empty-turn bail and 1 manual continue**, and the harness gauntlet separately needed 293, against defaults of 250 and 2. Other harness settings remain at defaults (`maxToolCallsPerTurn` 32, `maxAutoContinue` 3, `maxOutputTokens` 32,768); `reasoningBudget` 8,192 is no longer merely a default -- see the row below. **Do not change either number again until the roster completes** — a model that bails at one limit and finishes at another is being ranked on its configuration, the same confound as the Vite/Three drift. | Fixes 19-23 merged 2026-09-04; suite 98/98. Pushed to origin. | Fixes 19-22 merged 2026-09-04 (tool-result byte eviction, model-id resolution, stale input measurement, report blind spots); suite 95/95. Pushed to origin. |
+
+| Reasoning budget | **8,192**, every roster model | Set in LM Studio per model (Inference -> Reasoning Budget) on 2026-09-06; **all 15 roster models verified** carrying `llm.prediction.reasoning.budgetTokens = 8192, checked: true` in `~/.lmstudio/.internal/user-concrete-model-default-config`. Matches `config.json` -> `harness.reasoningBudget`, so the harness report's cross-check is meaningful. **Verified in force over the OpenAI-compat endpoint**, not just declared: `prism-ml/bonsai-27b` given an unbounded search problem with `max_tokens: 24000` clamped at **8,191 reasoning tokens** and then answered cleanly (`finish_reason: stop`, 2,808 chars of content) -- it wraps up rather than truncating mid-thought. Second confirmation; `qwen3.8-27b-mtp` clamped at 8,190 earlier. Effective content allowance is therefore **24,576** (32,768 ceiling - 8,192). |
+
+If any of these changes after a run, the runs before and after it are not comparable and the writeup must say so.
 
 ### Frontier run depth — checkpoints, not the full ladder
 

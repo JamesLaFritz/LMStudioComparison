@@ -1,0 +1,16 @@
+{
+    "gameTitle": "Space Invaders",
+    "version": "1.0.0",
+    "screenWidth": 800,
+    "screenHeight": 600,
+    "maxParticles": 500,
+    "initialLives": 3,
+    "initialScore": 0,
+    "levelDuration": 120,
+    "enemySpeedMultiplier": 1.0,
+    "playerMaxSpeed": 6.0,
+    "projectileSpeed": 15.0,
+    "bloomThreshold": 1.2,
+    "bloomRadius": 0.5,
+    "bloomIntensity": 1.5
+}

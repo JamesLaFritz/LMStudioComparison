@@ -45,6 +45,250 @@ Rules, in order:
 
 ---
 
+## Fix 25 — unload sent the model key where an instance id was required ✅ applied 2026-09-06
+
+Reported from the workbench UI. Pressing the unload ✕ returned:
+
+```
+model_not_found: Model with instance identifier 'qwen3.6-35b-a3b-mtp@q3_k_m' is not loaded
+```
+
+LM Studio loads `qwen3.6-35b-a3b-mtp@q3_k_m` as instance `qwen3.6-35b-a3b-mtp` — the quant suffix is dropped — and `/api/v1/models/unload` takes the **instance id**. The key was never going to match. Same key-versus-instance split as **Fix 20**, at two call sites Fix 20 did not touch.
+
+**The failure mode is worse than a red toast.** The call 500s, the UI reports it, and the model **stays resident holding ~19 GB of VRAM**. On a benchmark machine that silently starves the next load — and the operator believes they freed the card.
+
+**Both sites were wrong beneath comments asserting they were right:**
+
+| Site | What it did | The comment above it |
+|---|---|---|
+| `public/workbench.js` | sent `m.key` as `data-unload` | *"the status list knows WHICH instance it is acting on"* |
+| `lib/lmstudio.js` | passed it through as `instance_id` | *"the id defaults to the model key"* — simply false |
+
+That second comment is why nobody looked twice. A confident wrong comment is worse than none.
+
+**Fix** (commit `ab4cc5a`, merged and pushed). `unload()` resolves whatever it is handed against the live instance list, so a key, an instance id, or a UI label all reach the right instance — any future caller is safe, not just this button. The button passes `instanceIds[0]`.
+
+**Verified live** on the exact failing call: 21,424 → 1,358 MiB, model gone.
+
+Suite 104 → **107 tests**; reverting the resolution fails all 3 new ones.
+
+### Carried in the same commit — the limit change, and why the suite caught it
+
+`maxHops` 250 → **500** and `maxEmptyRetries` 2 → **5** (James, 2026-09-04, pinned in `ROSTER.md`). Raising them turned two drift guards red — `bounds are set to the values the benchmark assumes` and `config.json ships the harness block`. Both now assert the new values plus `maxEmptyRetries`, and `config.example.json` was synced so a fresh install does not silently run different limits than the pinned roster.
+
+**Those guards are what make "do not change these mid-roster" a rule `npm test` enforces** rather than a note someone has to remember.
+
+---
+
+## The harness gauntlet — five rounds, closed 2026-09-04
+
+Replaying `ba96be9b`'s three-prompt sequence (mission directive → `Begin Space Invaders` → `plan approved`) on `qwen3.6-35b-a3b-mtp@q3_k_m` at 128,512, looping until a full-shape run produced no harness fault.
+
+| Round | Turns | Hops | Prompt tokens | Folds | Bail | Fault found |
+|---|---:|---:|---:|---:|---|---|
+| 1 | 198 | 194 | 9.17M | 3 | no | **Fix 22** — report hid empty turns and evictions |
+| 2 | 164 | 164 | 6.97M | 2 | no | **Fix 23** — a fold that grew the context; before/after measured differently |
+| 3 | 93 | 90 | 2.47M | 0 | no | none — but never reached the compaction path |
+| 4 | 197 | 192 | 8.16M | 1 | **empty_turn, unreported** | **Fix 24** — two of four bail reasons never reported |
+| 5 | 262 | 293 | 11.07M | 4 | max_hops, correctly reported | **none** |
+
+**Round 5 is the clean pass.** It reached every stress path — four compactions, two empty-turn recoveries, a bail — and every one was handled correctly and reported honestly. All four folds shrank genuinely (`beforeEst` → `after`: 96,264→82,814 · 92,772→23,158 · 86,291→9,673 · 93,004→22,474), no `compact_failed`, and the hop-ceiling bail printed with its reason and a do-not-score warning.
+
+### What the loop established
+
+- **The endurance question is answered.** `ba96be9b` died at the output ceiling after four truncations at 125 turns. Round 5 ran 262 turns and 11.07M prompt tokens through four folds with **0 truncations and 0 auto-continues** before hitting a deliberate limit.
+- **Every fault found was in the reporting, not the running.** Fixes 22, 23 and 24 are all instrumentation defects — actions the harness took that the report hid or mis-stated. The execution paths (Fixes 16–21) held throughout.
+- **`MAX_HOPS = 250` is reachable on this workload.** Round 5 needed 293 tool hops. That is a configuration decision, not a bug — the bail says so and names the override. Decide the value before the roster runs; a mid-roster change invalidates comparability.
+
+### Known limitation, measured not fixed
+
+The `~4 chars/token` estimator undercounts the real tokenizer by **~11%** on this content (fold #1 of the pressure run: server 94,746 vs estimate 85,478). Both numbers are now recorded side by side, so the gap is visible. It matters because `#inputNow()` (Fix 21) falls back to that estimator, making the budget slightly generous when the estimate dominates; the 2,048 safety margin partially absorbs it. Fixing properly needs a real tokenizer.
+
+### Observation, not a fault
+
+Round 5's fold #1 reduced 96,264 → 82,814 (14%) and a second fold fired three turns later. `keepRecentHops = 6` retains a lot, so a fold near the threshold can buy very little. The guard correctly allowed it — it did shrink — but the tuning is worth revisiting if folds cluster.
+
+---
+
+## Fix 24 — two of four bail reasons were never reported ✅ applied 2026-09-04
+
+Found by the gauntlet, round 4 (197 turns, 192 hops, 8.16M prompt tokens, 1 fold). The run ended on:
+
+> Stopped after 3 turns that produced neither output nor a tool call (the tool call was emitted inside reasoning and never parsed) — harness limit, not a completed task.
+
+**and the report printed `Harness bail | no`.**
+
+The harness emits four bail reasons; `report()` matched on the reason string and asked about two:
+
+| Reason | Emitted | Reported before this fix |
+|---|---|---|
+| `output_ceiling` | yes | yes |
+| `max_hops` | yes | yes |
+| `reasoning_overrun` | yes | **no** |
+| `empty_turn` | yes | **no** |
+
+A run the harness stopped, read as a run the model finished, turns a harness limit into a model result — the single thing this project exists to prevent, and the same shape as `ba96be9b` dying at the output ceiling.
+
+Detection now matches on `kind === 'bail'` and reads the reason off the record, so a reason added later cannot go silent by omission. Commit `fcbe8cc`. Suite 98 → **104 tests**; removing the generic branch fails 3.
+
+**Note on the underlying cause**, which is a model property, not a harness one: the bail text says the tool call was *emitted inside reasoning and never parsed*. **Correction, 2026-09-04:** this was first written up as an *MTP artifact*. That was wrong — MTP is speculative decoding and has nothing to do with which channel text lands in. The real mechanism is the **reasoning-channel split**: the model writes `<tool_call>…</tool_call>` as plain text inside its thinking stream, LM Studio parses tool calls only from the content channel, so nothing executes and the turn reads as empty. The label came from generalising a filename (`…-mtp`) into a cause — the exact mistake `Wiki/Local LLMs/Reading a Model Filename` warns about. That is a reasoning-model behaviour worth watching when scoring this model class — but the harness's job was to say it happened, and it did not.
+
+---
+
+## Fix 23 — a fold that did not shrink, and a delta that was not a delta ✅ applied 2026-09-04
+
+Found by the gauntlet, round 2 (164 hops, 6.97M prompt tokens, 2 folds, no bail). The compaction log read:
+
+```
+| 1 | 139 | 90829 | 91544 | 1 | 128512 | 1920 | 0 |
+```
+
+A compaction that appeared to **grow** the context by 715 tokens, followed by a second fold six turns later. Two defects.
+
+**The delta was not a delta.** `before` is the server's tokenizer count; `after` is a chars/4 estimate. The two ends of every reported fold were measured by different methods, so no fold's effectiveness has ever been readable. A `beforeEst` now runs the same estimator as `after` and is carried beside the server count.
+
+**Nothing checked that the fold helped.** A summariser call costs tokens and trades real history for a lossy note. When the summary costs more than the folded turns saved, the fold buys nothing and the next check fires immediately — paying twice. The fold is now rolled back when the result is not smaller, and the refusal is recorded with the numbers and the reason.
+
+**The ordering matters, and the existing tests caught it.** My first patch measured a *projection* before mutating. That aborted precisely the folds Fix 19 exists to rescue — on a single oversized `tool_calls` group, eviction is the only part of a fold that shrinks anything. The size test now runs *after* eviction, with a snapshot rollback.
+
+Commit `d54cba4`, merged and pushed. Suite 95 → **98 tests**; disabling the guard fails all 3 new ones.
+
+---
+
+## Fix 22 — the report hid the harness's own actions ✅ applied 2026-09-04
+
+Found by the harness gauntlet, round 1: a replay of session `ba96be9b`'s three-prompt sequence (mission directive → `Begin Space Invaders` → `plan approved`) on `qwen3.6-35b-a3b-mtp@q3_k_m` at 128,512.
+
+**The run itself was the best this harness has produced.** 198 turns, 194 tool hops, 9.17M prompt tokens, 118,600 completion tokens, **3 compactions, no bail, 0 truncated segments, 0 auto-continues** — against `ba96be9b`, which bailed after four consecutive truncations at the output ceiling. Fix 21 held at scale: folds fired at 93,827 / 94,527 / 90,439 against a 93,696 threshold, every one within ~900 tokens.
+
+**The fault was in the reporting.** Auditing every record kind against what `report()` renders found two recorded and never surfaced:
+
+| Record | Count in that run | Rendered? |
+|---|---:|---|
+| `empty_turn` | 2 (one with a stray tool call) | **no** |
+| `evictedResults` / `evictedChars` | on all 3 compaction records | **no** |
+
+Both are things the **harness** did that a reader attributes to the **model**. An empty turn is a Fix 15 recovery — the model returned nothing usable and the harness re-asked; unreported it reads as hesitation, and an exhausted retry budget reads as quitting. Eviction is Fix 19 deleting tool-result content the model had already read; unreported it reads as forgetting. A score inherits both misattributions in silence — the same class as `Compactions: 0` printed for a run that compacted twice.
+
+**Fix** (commit `c2fe74b`, merged and pushed). The outcome table carries an **Empty turns retried** row that reports `0` rather than vanishing and names a stray call when present; the compaction table gains a **Results evicted** column showing count and volume. Verified against the run that exposed it — the same session now reports `2 — at least one carried a stray tool call` and an eviction column reading 0 across all three folds.
+
+Suite 90 → **95 tests**; reverting the fix fails all 5 new ones.
+
+---
+
+## Piece 4 — compaction under real pressure ✅ 2026-09-04
+
+**The first run that ever reached the compaction path.** Fixes 16–20 had been proven in isolation and by replay since 2026-08-22; nothing had exercised them together at the ceiling. This did.
+
+Fixture: 14 synthetic modules, ~61 KB each, each carrying one `// MARKER <n>` line at char ~30,400 (inside `read_file`'s 40,000 cap, so it survives truncation). Task: read all 14 with `read_file`, one at a time, then write `SUMMARY.md` with each marker and the total.
+
+| | |
+|---|---|
+| Wall | 84s |
+| Answer | **2135 — correct** |
+| Model turns / tool hops | 8 / 17 |
+| Prompt tokens processed | 494,143 cumulative |
+| **Largest prompt** | **120,438** (high-water before the fold) |
+| **Compactions** | **1**, at turn 4 |
+| Fold | 120,438 → 54,438 tokens, 1 turn folded, 1,053-char summary |
+
+### What each fix actually did
+
+**Fix 18 bound, and it was one turn from mattering.** At the high-water turn:
+
+```
+C − I − S      = 128,512 − 120,438 − 2,048 = 6,026
+G ≤ min(M, ·)  = 6,026        against the flat 32,768 ceiling
+```
+
+The pre-fix constant would have allowed a 32,768-token response into a 120,438-token prompt against a 128,512 window — **overflow by 24,694 tokens**, the exact signature that reads as *"the model gave up"*. Fix 18 is no longer proven by replay; it is proven by a run that needed it.
+
+**Fix 14 held.** The summariser returned 1,053 chars, clear of `MIN_SUMMARY_CHARS`, so the fold completed instead of aborting — and the model produced the correct total *after* losing a turn to compaction. No amnesia.
+
+**Fix 20 held under load.** The window resolved, the threshold computed, compaction knew when to fire. The same session shape earlier the same day reported `unknown` and would never have folded at all; at 120,438 tokens that is a hard overflow.
+
+**Fix 19 correctly did nothing** — and remains untested in anger. Post-fold the retained set was ~218 KB against a ~514 KB budget, so the byte eviction had no work. It is a safety net that stayed out of the way, which is right, but its unit tests are still its only proof.
+
+---
+
+## Fix 21 — the input measurement was stale between hops ✅ applied 2026-09-04
+
+The fold above worked, but read the margins: the threshold is **93,696** and the high-water prompt was **120,438** — **26,742 tokens past it**, and only **8,074 under the window**.
+
+> **Correction to my own first diagnosis.** This entry originally said compaction was checked only *between turns*. That was wrong: line 849 has checked between hops since Fix 16. The defect was not the **frequency** of the check but the **staleness of the number being checked**.
+
+`lastPromptTokens` is the server's token count for the request **already sent**. Tool results appended since are not in it, so between hops it is stale by exactly the payload the model just fetched — and one `read_file` returns up to 40,000 chars, ~10,000 tokens. Both consumers read it directly: the auto-compaction check *and* `outputCapFor()`. The decision to fold and the decision of how much to generate were both budgeting against a conversation that no longer existed.
+
+The run survived because Fix 18 clamped generation to 6,026 tokens, not because the fold was timely. **One tool result larger than ~8,074 tokens at that moment would have overflowed the window before compaction got a turn.**
+
+**Fix applied** (commit `5715b5e`, merged and pushed). `#inputNow()` returns `max(server count, current estimate of messages)` — the server's number when it is the better measurement, the live estimate once the conversation has outgrown it. The estimator is the same ~4 chars/token rule already used when usage is absent.
+
+**Verified by re-running the identical pressure task.** Same model, same fixture, only the harness changed:
+
+| | before Fix 21 | after Fix 21 |
+|---|---:|---:|
+| Largest prompt | 120,438 | **94,598** |
+| Past the 93,696 threshold by | 26,742 | **902** |
+| Headroom under the window | 8,074 | **33,914** |
+| Compaction | turn 4, 120,438 → 54,438 | turn 8, 94,598 → 44,145 |
+| Wall / answer | 84s / 2135 | 76s / **2135** |
+
+The fold now fires 902 tokens past the threshold instead of 26,742. The run no longer depends on Fix 18's clamp to avoid overflow — that clamp is a second line of defence again rather than the only one.
+
+Suite 87 → **90 tests, all passing**; disabling `#inputNow()` fails 2 of the 3 new ones.
+
+---
+
+## Fix 20 — a model-id mismatch silently disabled compaction ✅ applied 2026-09-04
+
+LM Studio exposes two strings for one loaded model and accepts **either** for inference:
+
+```
+models[].key        : qwen3.6-35b-a3b-mtp@q3_k_m     <- what #ctxWindow() matches on
+loaded_instances[].id: qwen3.6-35b-a3b-mtp           <- what `lms ps` shows you
+```
+
+`AgentSession.#ctxWindow()` does `(await this.lm.models()).find(x => x.key === this.model)`. Create a session with the **instance id** — the string `lms ps` prints, so the natural one to copy — and the lookup misses. The window is unknown, and by design that means *"compaction just won't auto-fire"*.
+
+Measured A/B, same model, same task, two sessions:
+
+| Session model string | Loaded context | Compaction threshold | Generation cap |
+|---|---|---|---|
+| `qwen3.6-35b-a3b-mtp` (instance id) | ⚠️ **unknown** | — | — |
+| `qwen3.6-35b-a3b-mtp@q3_k_m` (model key) | **128,512** | 93,696 | 32,768 |
+
+**Why this is the dangerous shape.** Inference works perfectly either way, so the run completes and looks clean. Only the run report reveals that compaction was off and the per-request cap was uncomputable. On a short task nothing happens; on a long implementation turn the context overflows and the result reads as *"the model gave up"* — the exact failure class Fixes 15–19 exist to eliminate.
+
+**Fix applied** (`harness-fix-20-model-id-resolution`, commit `1777bba`, **not merged to main**). `lmstudio.js` now exposes `instanceIds`; `agent.js` resolves through a single `#findModel()` used by *both* the run path and the report path — there were **two** copies of the lookup and the first patch fixed only one, which the regression tests caught. An unresolved model now records a `context_unknown` entry and logs once per session instead of degrading silently.
+
+I deliberately stopped short of a hard refusal: a null window is also the legitimate "model not loaded yet" case for ordinary HUD sessions, so a throw would break normal use to catch a benchmark-only mistake. Loud and recorded, not fatal.
+
+Suite 83 → **87 tests, all passing**; disabling the `instanceIds` clause fails 2 of the 4 new ones. Verified live against a restarted server: a session created with the instance id now reports **128,512 / 93,696 / 32,768** where it previously reported *unknown / — / —*.
+
+**Note also:** the threshold computed from the *loaded* 128,512 is **93,696**, not the 93,684 in `ROSTER.md`, which was derived from the requested 128,500. The loaded value is what binds.
+
+---
+
+## Piece 2 of the harness gauntlet — all three close the loop ✅ 2026-09-04
+
+Same permissive model (`qwen3.6-35b-a3b-mtp@q3_k_m`, 128,512, 3,663 MiB free), same task: write `fib.js`, run it with node, confirm the output is 55, repair if not.
+
+| Harness | Wall | Result | Shell | Notes |
+|---|---:|---|---|---|
+| **EmberOS Workbench** | **5s** | ✅ 55 | git-bash | 4 turns, 3 tool hops, 15,420 prompt / 440 completion tokens |
+| **Codex CLI** 0.153.2 | 13s | ✅ 55 | **PowerShell** | 17,166 tokens; needs `-c model_reasoning_effort="high"` (LM Studio rejects `max`) and `--skip-git-repo-check` |
+| **Claude Code CLI** | 15s | ✅ 55 | — | needs `CLAUDE_CODE_MAX_CONTEXT_TOKENS=128512`; warns the model is unrecognised |
+
+**The workbench was fastest and used the fewest tokens.** The premise that it is a handicapped environment depressing local scores does not survive this piece.
+
+**The shell diverges, and that is acceptable — conditionally.** The workbench is pinned to Git Bash (Fix 2); Codex used PowerShell. James's call, 2026-09-04: **the Git Bash pin exists because *some* models emit POSIX commands, never fall back to the PowerShell equivalent, and burn the turn looping on the failure.** It is a model property, not a harness defect, and the model under test does not have it. So this is not a general parity confound — it is a per-model one.
+
+**What that means for scoring:** shell divergence only corrupts a comparison for a model that cannot adapt its commands to the shell it is given. Establish that per model — a model that loops on PowerShell must be scored on one shell across all harnesses, or its shell-handling scored as the model property it is.
+
+**Reasoning budget cross-check works:** 8,192 declared, 12–168 observed, reported *consistent*. Weak validation — this task barely reasons — but the mechanism from Fix 18 is confirmed live.
+
+---
+
 ## Fix 2 — the shell was not what you thought ✅ applied 2026-08-07
 
 `lib/agent.js` ran commands via `spawn(cmd, { shell: true })`. On Windows Node resolves `shell: true` to `%ComSpec%` — **cmd.exe** — regardless of which terminal launched the dashboard. Launching from Git Bash did not make `run_command` use Git Bash.

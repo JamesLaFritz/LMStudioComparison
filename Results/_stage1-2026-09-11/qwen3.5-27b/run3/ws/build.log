@@ -1,0 +1,25 @@
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 47 modules transformed.
+[31mx[39m Build failed in 462ms
+[31merror during build:
+[31mSpace_Invaders/entities/player.js (3:22): "PLAYER_CONSTANTS" is not exported by "shared/constants.js", imported by "Space_Invaders/entities/player.js".[31m
+file: [36mC:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/Space_Invaders/entities/player.js:3:22[31m
+[33m
+1: import { createPlayerMesh } from '../rendering/playerMesh.js';
+2: import { lerp, clamp } from '../../shared/math.js';
+3: import { NEON_COLORS, PLAYER_CONSTANTS } from '../../shared/constants.js';
+                         ^
+4: 
+5: export class PlayerShip {
+[31m
+    at getRollupError (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/parseAst.js:317:41)
+    at error (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/parseAst.js:313:42)
+    at Module.error (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:17233:16)
+    at Module.traceVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:17666:29)
+    at ModuleScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:15256:39)
+    at ChildScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at ClassBodyScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at ChildScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at ChildScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at FunctionScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)[39m

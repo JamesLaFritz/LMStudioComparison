@@ -1,0 +1,54 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/liquid_lfm2-24b-a2b/run1/ws",
+ "files": 0,
+ "lines": 0,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [],
+  "UnrealBloomPass": [],
+  "camera shake": [],
+  "particle bursts": [],
+  "hit-stop": [],
+  "motion trails": [],
+  "shockwave rings": [],
+  "floating score text": [],
+  "object pooling": [],
+  "InstancedMesh": [],
+  "CanvasTexture": [],
+  "Web Audio": [],
+  "procedural noise": [],
+  "Gamepad API": [],
+  "keyboard input": []
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [],
+  "neon glow (text/box-shadow)": []
+ },
+ "particle_caps": [],
+ "dispose_calls": 0,
+ "three_allocations": 0,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "liquid/lfm2-24b-a2b",
+  "turns": 3,
+  "tool_calls": 0,
+  "run_commands": 0,
+  "verification": {
+   "ran a build": 0,
+   "installed deps": 0,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

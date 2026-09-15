@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Invaders - AAA Retro-Futurism</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      background: #000;
+      font-family: 'Courier New', monospace;
+    }
+
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Glassmorphism UI Overlay */
+    .glass-overlay {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 
+        0 8px 32px rgba(0, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 24px 32px;
+      text-align: center;
+      z-index: 100;
+    }
+
+    .glass-overlay h1 {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 
+        0 0 20px rgba(0, 255, 255, 0.8),
+        0 0 40px rgba(255, 0, 255, 0.6);
+    }
+
+    .glass-overlay p {
+      font-size: 1.2rem;
+      margin-bottom: 24px;
+      color: #e0e0e0;
+    }
+
+    .glass-overlay button {
+      background: linear-gradient(90deg, #00ffff, #ff00ff);
+      border: none;
+      padding: 16px 48px;
+      font-size: 1.3rem;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 4px 20px rgba(0, 255, 255, 0.4),
+        0 0 30px rgba(255, 0, 255, 0.3);
+    }
+
+    .glass-overlay button:hover {
+      transform: scale(1.05);
+      box-shadow: 
+        0 6px 30px rgba(0, 255, 255, 0.6),
+        0 0 40px rgba(255, 0, 255, 0.5);
+    }
+
+    /* Score Display */
+    #score-display {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 1.5rem;
+      color: #00ffff;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Game Over Screen */
+    #game-over {
+      display: none;
+    }
+
+    /* Victory Screen */
+    #victory {
+      display: none;
+    }
+
+    /* Pause Menu */
+    #pause-menu {
+      display: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <!-- Main Title Screen -->
+    <div id="title-screen" class="glass-overlay">
+      <h1>SPACE INVADERS</h1>
+      <p>AAA Retro-Futurism Edition</p>
+      <button id="start-btn">START MISSION</button>
+      <p style="margin-top: 20px; font-size: 0.9rem;">
+        WASD/Arrows or Gamepad to Move<br>
+        SPACE or R1 to Shoot
+      </p>
+    </div>
+
+    <!-- Score Display -->
+    <div id="score-display" class="hidden">
+      SCORE: <span id="score-value">0</span><br>
+      HIGH SCORE: <span id="high-score">0</span>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="game-over" class="glass-overlay hidden">
+      <h1>MISSION FAILED</h1>
+      <p>Final Score: <span id="final-score">0</span></p>
+      <button id="retry-btn">RETRY MISSION</button>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="victory" class="glass-overlay hidden">
+      <h1>MISSION ACCOMPLISHED</h1>
+      <p>All Hostiles Destroyed!</p>
+      <p>Final Score: <span id="victory-score">0</span></p>
+      <button id="play-again-btn">PLAY AGAIN</button>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="glass-overlay hidden">
+      <h1>PAUSED</h1>
+      <p>Press ESC to Resume</p>
+    </div>
+
+    <!-- Game Canvas Container -->
+    <div id="canvas-container"></div>
+  </div>
+
+  <script type="module" src="/games/Space_Invaders/main.ts"></script>
+</body>
+</html>

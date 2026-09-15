@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.8-27b/run3/ws",
+ "port": 5990,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5990/index.html",
+ "start_clicked": "START",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 680,
+   "delta": 680
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 000000 WAVE 1 HI 000000 SHIPS COMBO ×1",
+ "hud_after": "SCORE 000680 WAVE 1 HI 000680 SHIPS COMBO ×8",
+ "score_before": 0,
+ "score_after": 680,
+ "score_delta": 680
+}

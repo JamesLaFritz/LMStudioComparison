@@ -1,0 +1,1 @@
+{"reply":"Stopped after 2 turns that used the entire 32768-token output budget on reasoning and produced no output — harness limit, not a completed task. Raise maxOutputTokens if this model needs a larger thinking budget."}

@@ -1,0 +1,197 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/google_gemma-4-26b-a4b/run1/ws",
+ "files": 17,
+ "lines": 1387,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "Space_Invaders/Engine.js",
+   1,
+   "../../shared/core/TimeScale.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/Engine.js",
+   2,
+   "../../shared/audio/AudioEngine.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/Engine.js",
+   3,
+   "../../shared/math/MathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/Entities.js",
+   1,
+   "../../shared/entities/EntityBase.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/main.js",
+   4,
+   "Entities.js",
+   "MISSING EXPORT",
+   "Entities"
+  ],
+  [
+   "Space_Invaders/World.js",
+   2,
+   "../../shared/math/MathUtils.js",
+   "MISSING FILE",
+   ""
+  ]
+ ],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/graphics/PostProcessor.js",
+    2
+   ],
+   [
+    "Space_Invaders/Renderer.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/graphics/PostProcessor.js",
+    4
+   ],
+   [
+    "Space_Invaders/Renderer.js",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/camera/CameraShake.js",
+    2
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/graphics/ParticleManager.js",
+    2
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/core/TimeScale.js",
+    4
+   ],
+   [
+    "shared/entities/EntityBase.js",
+    44
+   ],
+   [
+    "Space_Invaders/Engine.js",
+    1
+   ]
+  ],
+  "motion trails": [],
+  "shockwave rings": [],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "shared/entities/EntityManager.js",
+    48
+   ],
+   [
+    "shared/entities/ObjectPool.js",
+    2
+   ],
+   [
+    "shared/graphics/ParticleManager.js",
+    40
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/graphics/ParticleManager.js",
+    3
+   ]
+  ],
+  "CanvasTexture": [],
+  "Web Audio": [
+   [
+    "shared/audio/AudioEngine.js",
+    15
+   ]
+  ],
+  "procedural noise": [],
+  "Gamepad API": [
+   [
+    "shared/core/InputManager.js",
+    16
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/core/InputManager.js",
+    33
+   ],
+   [
+    "Space_Invaders/Entities.js",
+    33
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "Space_Invaders/index.html",
+    41
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "Space_Invaders/index.html",
+    47
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/graphics/ParticleManager.js",
+   14,
+   "maxParticles",
+   500
+  ]
+ ],
+ "dispose_calls": 20,
+ "three_allocations": 6,
+ "violations": [],
+ "non_standard_materials": [
+  [
+   "shared/graphics/ParticleManager.js",
+   "MeshBasicMaterial"
+  ]
+ ],
+ "session": {
+  "model": "google/gemma-4-26b-a4b",
+  "turns": 23,
+  "tool_calls": 20,
+  "run_commands": 0,
+  "verification": {
+   "ran a build": 0,
+   "installed deps": 0,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

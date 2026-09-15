@@ -1,0 +1,46 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run1/ws",
+ "port": 5971,
+ "outcome": "renders",
+ "errors": [
+  "Class constructor Particle cannot be invoked without 'new'",
+  "Class constructor Particle cannot be invoked without 'new'",
+  "Class constructor Particle cannot be invoked without 'new'"
+ ],
+ "notes": [
+  "page errors present"
+ ],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5971/index.html",
+ "start_clicked": null,
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": false,
+   "scoreBefore": null,
+   "scoreAfter": null,
+   "delta": 0
+  },
+  {
+   "attempt": 2,
+   "idle": false,
+   "scoreBefore": null,
+   "scoreAfter": null,
+   "delta": 0
+  },
+  {
+   "attempt": 3,
+   "idle": false,
+   "scoreBefore": null,
+   "scoreAfter": null,
+   "delta": 0
+  }
+ ],
+ "idle_bytes_differ": false,
+ "hud_before": "",
+ "hud_after": "",
+ "score_before": null,
+ "score_after": null,
+ "score_delta": 0
+}

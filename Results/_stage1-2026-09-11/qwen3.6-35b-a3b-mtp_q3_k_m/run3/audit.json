@@ -1,0 +1,221 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run3/ws",
+ "files": 24,
+ "lines": 3766,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "games/space_invaders/main.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "games/space_invaders/main.js",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "games/space_invaders/main.js",
+    11
+   ],
+   [
+    "games/space_invaders/entities/Alien.js",
+    4
+   ],
+   [
+    "shared/index.js",
+    7
+   ],
+   [
+    "shared/vfx/CameraShake.js",
+    3
+   ]
+  ],
+  "particle bursts": [
+   [
+    "games/space_invaders/main.js",
+    10
+   ],
+   [
+    "games/space_invaders/entities/Alien.js",
+    3
+   ],
+   [
+    "games/space_invaders/entities/Barrier.js",
+    3
+   ],
+   [
+    "shared/index.js",
+    6
+   ],
+   [
+    "shared/particles/ParticleManager.js",
+    3
+   ]
+  ],
+  "hit-stop": [
+   [
+    "games/space_invaders/main.js",
+    12
+   ],
+   [
+    "games/space_invaders/entities/Alien.js",
+    5
+   ],
+   [
+    "shared/index.js",
+    8
+   ],
+   [
+    "shared/vfx/HitStop.js",
+    1
+   ]
+  ],
+  "motion trails": [
+   [
+    "games/space_invaders/main.js",
+    13
+   ],
+   [
+    "shared/index.js",
+    9
+   ],
+   [
+    "shared/vfx/MotionTrails.js",
+    3
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "games/space_invaders/main.js",
+    82
+   ],
+   [
+    "games/space_invaders/entities/Alien.js",
+    236
+   ]
+  ],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "games/space_invaders/main.js",
+    9
+   ],
+   [
+    "games/space_invaders/entities/Alien.js",
+    2
+   ],
+   [
+    "games/space_invaders/entities/Barrier.js",
+    2
+   ],
+   [
+    "games/space_invaders/entities/Player.js",
+    159
+   ],
+   [
+    "shared/index.js",
+    5
+   ],
+   [
+    "shared/pool/ObjectPool.js",
+    2
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "games/space_invaders/main.js",
+    182
+   ]
+  ],
+  "CanvasTexture": [],
+  "Web Audio": [
+   [
+    "shared/audio/SoundEngine.js",
+    16
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/math/Noise.js",
+    1
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/input/InputManager.js",
+    16
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/input/InputManager.js",
+    48
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "games/space_invaders/ui/GameUI.js",
+    27
+   ],
+   [
+    "shared/ui/UIManager.js",
+    28
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "games/space_invaders/ui/GameUI.js",
+    31
+   ],
+   [
+    "shared/ui/UIManager.js",
+    39
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/particles/ParticleManager.js",
+   4,
+   "maxParticles",
+   500
+  ]
+ ],
+ "dispose_calls": 37,
+ "three_allocations": 48,
+ "violations": [],
+ "non_standard_materials": [
+  [
+   "shared/particles/ParticleManager.js",
+   "MeshBasicMaterial"
+  ]
+ ],
+ "session": {
+  "model": "qwen3.6-35b-a3b-mtp@q3_k_m",
+  "turns": 93,
+  "tool_calls": 97,
+  "run_commands": 19,
+  "verification": {
+   "ran a build": 8,
+   "installed deps": 2,
+   "served the game": 2,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

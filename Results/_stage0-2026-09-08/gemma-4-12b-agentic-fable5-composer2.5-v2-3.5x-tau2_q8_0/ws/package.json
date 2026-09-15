@@ -1,0 +1,16 @@
+{
+  "name": "space-invaders",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 3000",
+    "build": "vite build && node ./node_modules/.bin/vite preview",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "vite": "^5.1.0"
+  }
+}

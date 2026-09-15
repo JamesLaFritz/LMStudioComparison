@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Invaders — AAA Retro-Futurism</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0a0a0f;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    #game-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    canvas {
+      display: block;
+      outline: none;
+    }
+    
+    /* Floating text HTML container */
+    .floating-text-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      overflow: hidden;
+    }
+    
+    .floating-text {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+      animation: floatUp 1s ease-out forwards;
+    }
+    
+    @keyframes floatUp {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+    }
+    
+    /* Loading overlay */
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #00ffff;
+      font-size: 24px;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      z-index: 999;
+    }
+    
+    .loading-bar {
+      width: 200px;
+      height: 4px;
+      background: rgba(0, 255, 255, 0.2);
+      margin-top: 10px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .loading-bar-fill {
+      height: 100%;
+      background: #00ffff;
+      box-shadow: 0 0 10px #00ffff;
+      animation: loadingPulse 1s ease-in-out infinite;
+    }
+    
+    @keyframes loadingPulse {
+      0%, 100% { width: 30%; opacity: 0.5; }
+      50% { width: 80%; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="loading">
+      <div>INITIALIZING SYSTEMS...</div>
+      <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+    </div>
+  </div>
+  
+  <script type="module" src="/Space_Invaders/index.js"></script>
+</body>
+</html>

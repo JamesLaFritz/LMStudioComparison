@@ -1,0 +1,25 @@
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 28 modules transformed.
+[31mx[39m Build failed in 579ms
+[31merror during build:
+[31mgames/Space_Invaders/SpaceInvadersScene.ts (5:9): "TextureGenerator" is not exported by "games/Space_Invaders/assets/TextureGenerator.ts", imported by "games/Space_Invaders/SpaceInvadersScene.ts".[31m
+file: [36mC:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/games/Space_Invaders/SpaceInvadersScene.ts:5:9[31m
+[33m
+3: import { Input } from '../../shared/Input';
+4: import { AABBOverlap } from '../../shared/Physics';
+5: import { TextureGenerator, AlienType, ALIEN_COLORS } from './assets/TextureGenerator';
+            ^
+6: import { AudioSynth } from './assets/AudioSynth';
+7: import { Player } from './entities/Player';
+[31m
+    at getRollupError (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/parseAst.js:317:41)
+    at error (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/parseAst.js:313:42)
+    at Module.error (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:17233:16)
+    at Module.traceVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:17666:29)
+    at ModuleScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:15256:39)
+    at ChildScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at ClassBodyScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at ChildScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at ChildScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)
+    at FunctionScope.findVariable (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws/node_modules/rollup/dist/es/shared/node-entry.js:5449:38)[39m

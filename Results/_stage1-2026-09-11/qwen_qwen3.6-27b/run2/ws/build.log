@@ -1,0 +1,22 @@
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 40 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                              [39m[1m[2m  5.71 kB[22m[1m[22m[2m │ gzip:   1.86 kB[22m
+[2mdist/[22m[36massets/HitStop-CklnAh1c.js              [39m[1m[2m  0.29 kB[22m[1m[22m[2m │ gzip:   0.18 kB[22m
+[2mdist/[22m[36massets/CameraShake-etZdXyPS.js          [39m[1m[2m  0.64 kB[22m[1m[22m[2m │ gzip:   0.26 kB[22m
+[2mdist/[22m[36massets/ShockwaveRings-CflndKmT.js       [39m[1m[2m  1.11 kB[22m[1m[22m[2m │ gzip:   0.59 kB[22m
+[2mdist/[22m[36massets/InputManager-BUHzLBUK.js         [39m[1m[2m  1.40 kB[22m[1m[22m[2m │ gzip:   0.58 kB[22m
+[2mdist/[22m[36massets/MotionTrails-NDhulA6M.js         [39m[1m[2m  1.49 kB[22m[1m[22m[2m │ gzip:   0.74 kB[22m
+[2mdist/[22m[36massets/FloatingText-IlSb_pY8.js         [39m[1m[2m  1.51 kB[22m[1m[22m[2m │ gzip:   0.80 kB[22m
+[2mdist/[22m[36massets/ParticleManager-ybAgNZAp.js      [39m[1m[2m  3.30 kB[22m[1m[22m[2m │ gzip:   1.14 kB[22m
+[2mdist/[22m[36massets/AudioManager-DYyN690E.js         [39m[1m[2m  7.21 kB[22m[1m[22m[2m │ gzip:   1.79 kB[22m
+[2mdist/[22m[36massets/EffectComposerSetup-gyBih3ZC.js  [39m[1m[2m 15.66 kB[22m[1m[22m[2m │ gzip:   3.92 kB[22m
+[2mdist/[22m[36massets/index-DSSI86V-.js                [39m[1m[33m503.73 kB[39m[22m[2m │ gzip: 128.65 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 968ms[39m

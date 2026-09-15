@@ -1,0 +1,74 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen3.5-27b/run2/ws
+==========================================================================
+37 source files, 8070 lines, 6 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 1 BROKEN
+      space-invaders/main.js:37  MISSING EXPORT UFOManager <- UFO.js
+  cross-module contracts   : 6 BROKEN
+      shared/vfx/HitStopManager.js:104  TimeManager.isPaused()
+      space-invaders/main.js:306  AudioContextManager.ensureInitialized()
+      space-invaders/main.js:173  StarfieldGenerator.createParallaxStarfield()
+      space-invaders/entities/PowerUp.js:27  GeometryPool.getTorus()
+      space-invaders/entities/PowerUp.js:33  GeometryPool.getSphere()
+      space-invaders/mechanics/CollisionSystem.js:113  AABB.expand()
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 1 use(s) -- prompt mandates MeshStandardMaterial
+      shared/vfx/Particle.js  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/vfx/EffectComposerSetup.js
+  UnrealBloomPass            yes  shared/vfx/EffectComposerSetup.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  shared/vfx/CameraShake.js
+  particle bursts            yes  shared/vfx/Particle.js
+  hit-stop                   yes  shared/core/TimeManager.js
+  motion trails              yes  shared/rendering/PBRMaterialFactory.js
+  shockwave rings            yes  shared/rendering/PBRMaterialFactory.js
+  floating score text        NOT FOUND
+  ---> 5 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/core/ObjectPool.js
+  InstancedMesh              yes  shared/rendering/InstancedMeshManager.js
+  particle cap               MAX_PARTICLES = 500  [OK]  shared/utils/Constants.js:32
+  particle cap               maxParticles = 500  [OK]  shared/vfx/ParticleManager.js:9
+  disposal                   49 dispose() vs 67 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  shared/ui/FloatingText3D.js
+  Web Audio                  yes  shared/audio/AudioContextManager.js
+  procedural noise           yes  shared/utils/Noise.js
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  space-invaders/styles.css
+  neon glow (text/box-shadow) yes  space-invaders/styles.css
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             NOT FOUND
+  Gamepad API                yes  space-invaders/mechanics/InputHandler.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  120 turns, 117 tool calls, 33 run_command
+  ran a build                NEVER
+  installed deps             1 time(s)
+  served the game            9 time(s)
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

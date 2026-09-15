@@ -17,5 +17,8 @@ dist/
 test-results/
 playwright-report/
 
-# Playwright MCP session scratch.
+# Playwright MCP / playwright-cli session scratch. The models themselves write
+# .playwright-cli/ into their workspaces when they verify -- a 9.9 MB console
+# log in one case. audit.json records that they did it; the logs are noise.
 .playwright-mcp/
+.playwright-cli/

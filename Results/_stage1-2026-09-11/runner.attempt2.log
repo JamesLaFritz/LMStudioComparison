@@ -1,0 +1,126 @@
+22:52:42  =============== qwen/qwen3.8-27b - all 3 runs complete, skipping
+22:52:42  =============== qwen3.8-27b-mtp
+22:53:08    loaded: 22745 MiB (idle 881), ctx 128512
+22:53:08    --- run 1 already complete, skipping
+22:53:08    --- run 2 already complete, skipping
+22:53:08    --- run 3 incomplete on disk (turns < 3) - redoing
+rm: cannot remove 'C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run3/ws': Device or resource busy
+22:53:08    --- run 3 (seed 3)
+02:43:23      p1 94s · p2 488s · p3 13233s
+    done: 382 turns, 52 files, 0 continue(s), bails=[], 230m
+02:43:24  =============== qwen/qwen3.5-35b-a3b
+02:43:54    loaded: 23881 MiB (idle 812), ctx 128512
+02:43:55    --- run 1 (seed 1)
+02:55:15      p1 15s · p2 125s · p3 540s
+    done: 116 turns, 34 files, 0 continue(s), bails=[], 11m
+02:55:15    --- run 2 (seed 2)
+03:03:39      p1 12s · p2 43s · p3 449s
+    done: 82 turns, 27 files, 0 continue(s), bails=[], 8m
+03:03:40    --- run 3 (seed 3)
+03:21:56      p1 13s · p2 65s · p3 1018s
+    done: 288 turns, 22 files, 0 continue(s), bails=[], 18m
+03:21:57  =============== qwen.qwen3.6-35b-a3b
+03:22:18    loaded: 18054 MiB (idle 690), ctx 128512
+03:22:18    --- run 1 (seed 1)
+03:25:39      p1 13s · p2 66s · p3 122s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 3m
+03:25:39    --- run 2 (seed 2)
+03:34:17      p1 14s · p2 22s · p3 482s
+    done: 126 turns, 35 files, 0 continue(s), bails=[], 8m
+03:34:17    --- run 3 (seed 3)
+03:36:36      p1 16s · p2 27s · p3 96s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 2m
+03:36:37  =============== qwen-agentworld-35b-a3b-apex
+03:36:56    loaded: 17774 MiB (idle 690), ctx 128512
+03:36:56    --- run 1 (seed 1)
+03:39:21      p1 17s · p2 36s · p3 91s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 2m
+03:39:21    --- run 2 (seed 2)
+03:42:13      p1 18s · p2 36s · p3 118s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 2m
+03:42:14    --- run 3 (seed 3)
+03:44:25      p1 17s · p2 34s · p3 80s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 2m
+03:44:25  =============== qwen3.5-27b
+03:44:49    loaded: 20400 MiB (idle 666), ctx 128512
+03:44:49    --- run 1 (seed 1)
+04:19:10      p1 47s · p2 157s · p3 1857s
+    done: 117 turns, 33 files, 0 continue(s), bails=[], 34m
+04:19:10    --- run 2 (seed 2)
+05:04:00      p1 41s · p2 143s · p3 2506s
+    done: 120 turns, 42 files, 0 continue(s), bails=[], 44m
+05:04:01    --- run 3 (seed 3)
+05:38:50      p1 55s · p2 186s · p3 1848s
+    done: 105 turns, 45 files, 0 continue(s), bails=[], 34m
+05:38:50  =============== google/gemma-4-26b-a4b
+05:39:15    loaded: 19865 MiB (idle 699), ctx 128512
+05:39:15    --- run 1 (seed 1)
+05:42:23      p1 9s · p2 17s · p3 162s
+    done: 23 turns, 18 files, 0 continue(s), bails=[], 3m
+05:42:24    --- run 2 (seed 2)
+05:43:13      p1 11s · p2 16s · p3 22s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 0m
+05:43:14    --- run 3 (seed 3)
+05:44:11      p1 10s · p2 17s · p3 30s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 0m
+05:44:11  =============== qwen/qwen3.6-27b
+05:44:36    loaded: 20441 MiB (idle 699), ctx 128512
+05:44:36    --- run 1 (seed 1)
+06:17:26      p1 77s · p2 75s · p3 1818s
+    done: 86 turns, 31 files, 0 continue(s), bails=[], 32m
+06:17:26    --- run 2 (seed 2)
+07:45:58      p1 48s · p2 633s · p3 4631s
+    done: 159 turns, 34 files, 0 continue(s), bails=[], 88m
+07:45:58    --- run 3 (seed 3)
+08:24:20      p1 49s · p2 244s · p3 2009s
+    done: 133 turns, 39 files, 0 continue(s), bails=[], 38m
+08:24:21  =============== qwen3.6-35b-a3b-mtp@q3_k_m
+08:24:50    loaded: 20776 MiB (idle 756), ctx 128512
+08:24:50    --- run 1 (seed 1)
+08:42:12      p1 25s · p2 91s · p3 926s
+    done: 171 turns, 41 files, 0 continue(s), bails=[], 17m
+08:42:13    --- run 2 (seed 2)
+08:57:12      p1 19s · p2 64s · p3 816s
+    done: 152 turns, 33 files, 0 continue(s), bails=[], 14m
+08:57:13    --- run 3 (seed 3)
+09:07:29      p1 27s · p2 82s · p3 507s
+    done: 93 turns, 28 files, 0 continue(s), bails=[], 10m
+09:07:29  =============== prism-ml/bonsai-27b
+09:07:46    loaded: 9321 MiB (idle 771), ctx 128512
+09:07:46    --- run 1 (seed 1)
+09:20:02      p1 23s · p2 26s · p3 687s
+    done: 3 turns, 1 files, 0 continue(s), bails=[], 12m
+09:20:03    --- run 2 (seed 2)
+09:51:30      p1 20s · p2 47s · p3 1819s
+09:51:30      bail detected -> continue 1
+10:04:51      bail detected -> continue 2
+10:21:13      bail detected -> continue 3
+10:48:15      bail detected -> continue 4
+11:47:02      bail detected -> continue 5
+    done: 3002 turns, 28 files, 5 continue(s), bails=['max_hops', 'max_hops', 'max_hops', 'max_hops', 'max_hops', 'max_hops'], 170m
+12:10:40    --- run 3 (seed 3)
+12:40:44      p1 53s · p2 1576s · p3 175s
+    done: 213 turns, 24 files, 0 continue(s), bails=[], 30m
+12:40:44  =============== liquid/lfm2-24b-a2b
+12:41:00    loaded: 15973 MiB (idle 741), ctx 128000
+12:41:00    --- run 1 (seed 1)
+12:41:40      p1 3s · p2 8s · p3 28s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 0m
+12:41:40    --- run 2 (seed 2)
+12:42:04      p1 4s · p2 7s · p3 13s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 0m
+12:42:05    --- run 3 (seed 3)
+12:42:30      p1 2s · p2 8s · p3 15s
+    done: 3 turns, 0 files, 0 continue(s), bails=[], 0m
+12:42:31  =============== qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max
+12:42:58    loaded: 21037 MiB (idle 741), ctx 128512
+12:42:58    --- run 1 (seed 1)
+13:24:38      p1 82s · p2 705s · p3 1713s
+    done: 86 turns, 29 files, 0 continue(s), bails=[], 41m
+13:24:38    --- run 2 (seed 2)
+13:40:38      p1 39s · p2 91s · p3 829s
+    done: 41 turns, 28 files, 0 continue(s), bails=[], 15m
+13:40:39    --- run 3 (seed 3)
+13:48:54      p1 55s · p2 94s · p3 346s
+    done: 6 turns, 4 files, 0 continue(s), bails=[], 8m
+13:48:57  STAGE 1 COMPLETE

@@ -1,0 +1,94 @@
+22:52:42  =============== qwen/qwen3.8-27b - all 3 runs complete, skipping
+22:52:42  =============== qwen3.8-27b-mtp
+22:53:08    loaded: 22745 MiB (idle 881), ctx 128512
+22:53:08    --- run 1 already complete, skipping
+22:53:08    --- run 2 already complete, skipping
+22:53:08    --- run 3 incomplete on disk (turns < 3) - redoing
+22:53:08    --- run 3 (seed 3)
+02:43:23      p1 94s · p2 488s · p3 13233s
+02:43:24  =============== qwen/qwen3.5-35b-a3b
+02:43:54    loaded: 23881 MiB (idle 812), ctx 128512
+02:43:55    --- run 1 (seed 1)
+02:55:15      p1 15s · p2 125s · p3 540s
+02:55:15    --- run 2 (seed 2)
+03:03:39      p1 12s · p2 43s · p3 449s
+03:03:40    --- run 3 (seed 3)
+03:21:56      p1 13s · p2 65s · p3 1018s
+03:21:57  =============== qwen.qwen3.6-35b-a3b
+03:22:18    loaded: 18054 MiB (idle 690), ctx 128512
+03:22:18    --- run 1 (seed 1)
+03:25:39      p1 13s · p2 66s · p3 122s
+03:25:39    --- run 2 (seed 2)
+03:34:17      p1 14s · p2 22s · p3 482s
+03:34:17    --- run 3 (seed 3)
+03:36:36      p1 16s · p2 27s · p3 96s
+03:36:37  =============== qwen-agentworld-35b-a3b-apex
+03:36:56    loaded: 17774 MiB (idle 690), ctx 128512
+03:36:56    --- run 1 (seed 1)
+03:39:21      p1 17s · p2 36s · p3 91s
+03:39:21    --- run 2 (seed 2)
+03:42:13      p1 18s · p2 36s · p3 118s
+03:42:14    --- run 3 (seed 3)
+03:44:25      p1 17s · p2 34s · p3 80s
+03:44:25  =============== qwen3.5-27b
+03:44:49    loaded: 20400 MiB (idle 666), ctx 128512
+03:44:49    --- run 1 (seed 1)
+04:19:10      p1 47s · p2 157s · p3 1857s
+04:19:10    --- run 2 (seed 2)
+05:04:00      p1 41s · p2 143s · p3 2506s
+05:04:01    --- run 3 (seed 3)
+05:38:50      p1 55s · p2 186s · p3 1848s
+05:38:50  =============== google/gemma-4-26b-a4b
+05:39:15    loaded: 19865 MiB (idle 699), ctx 128512
+05:39:15    --- run 1 (seed 1)
+05:42:23      p1 9s · p2 17s · p3 162s
+05:42:24    --- run 2 (seed 2)
+05:43:13      p1 11s · p2 16s · p3 22s
+05:43:14    --- run 3 (seed 3)
+05:44:11      p1 10s · p2 17s · p3 30s
+05:44:11  =============== qwen/qwen3.6-27b
+05:44:36    loaded: 20441 MiB (idle 699), ctx 128512
+05:44:36    --- run 1 (seed 1)
+06:17:26      p1 77s · p2 75s · p3 1818s
+06:17:26    --- run 2 (seed 2)
+07:45:58      p1 48s · p2 633s · p3 4631s
+07:45:58    --- run 3 (seed 3)
+08:24:20      p1 49s · p2 244s · p3 2009s
+08:24:21  =============== qwen3.6-35b-a3b-mtp@q3_k_m
+08:24:50    loaded: 20776 MiB (idle 756), ctx 128512
+08:24:50    --- run 1 (seed 1)
+08:42:12      p1 25s · p2 91s · p3 926s
+08:42:13    --- run 2 (seed 2)
+08:57:12      p1 19s · p2 64s · p3 816s
+08:57:13    --- run 3 (seed 3)
+09:07:29      p1 27s · p2 82s · p3 507s
+09:07:29  =============== prism-ml/bonsai-27b
+09:07:46    loaded: 9321 MiB (idle 771), ctx 128512
+09:07:46    --- run 1 (seed 1)
+09:20:02      p1 23s · p2 26s · p3 687s
+09:20:03    --- run 2 (seed 2)
+09:51:30      p1 20s · p2 47s · p3 1819s
+09:51:30      bail detected -> continue 1
+10:04:51      bail detected -> continue 2
+10:21:13      bail detected -> continue 3
+10:48:15      bail detected -> continue 4
+11:47:02      bail detected -> continue 5
+12:10:40    --- run 3 (seed 3)
+12:40:44      p1 53s · p2 1576s · p3 175s
+12:40:44  =============== liquid/lfm2-24b-a2b
+12:41:00    loaded: 15973 MiB (idle 741), ctx 128000
+12:41:00    --- run 1 (seed 1)
+12:41:40      p1 3s · p2 8s · p3 28s
+12:41:40    --- run 2 (seed 2)
+12:42:04      p1 4s · p2 7s · p3 13s
+12:42:05    --- run 3 (seed 3)
+12:42:30      p1 2s · p2 8s · p3 15s
+12:42:31  =============== qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max
+12:42:58    loaded: 21037 MiB (idle 741), ctx 128512
+12:42:58    --- run 1 (seed 1)
+13:24:38      p1 82s · p2 705s · p3 1713s
+13:24:38    --- run 2 (seed 2)
+13:40:38      p1 39s · p2 91s · p3 829s
+13:40:39    --- run 3 (seed 3)
+13:48:54      p1 55s · p2 94s · p3 346s
+13:48:57  STAGE 1 COMPLETE

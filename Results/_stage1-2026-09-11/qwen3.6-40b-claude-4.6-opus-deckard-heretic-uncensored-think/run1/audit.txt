@@ -1,0 +1,65 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws
+==========================================================================
+25 source files, 2344 lines, 5 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : all resolve
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  materials                : MeshStandardMaterial only
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  src/shared/three/index.js
+  UnrealBloomPass            yes  src/shared/three/index.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  src/shared/camera/CameraShakeSystem.js
+  particle bursts            yes  src/shared/particles/ExplosionBurst.js
+  hit-stop                   NOT FOUND
+  motion trails              NOT FOUND
+  shockwave rings            yes  src/shared/particles/ExplosionBurst.js
+  floating score text        yes  src/Space_Invaders/ui/ScoreDisplay.js
+  ---> 4 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  src/shared/particles/ParticleManager.js
+  InstancedMesh              NOT FOUND
+  particle cap               maxParticles = 500  [OK]  src/shared/particles/ParticleManager.js:7
+  disposal                   13 dispose() vs 0 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  src/shared/procedural/NeonGlowTextures.js
+  Web Audio                  yes  src/shared/audio/AudioManager.js
+  procedural noise           yes  src/shared/procedural/NoiseTextures.js
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  src/Space_Invaders/ui/ScoreDisplay.js
+  neon glow (text/box-shadow) yes  src/Space_Invaders/ui/ScoreDisplay.js
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  src/shared/input/InputManager.js
+  Gamepad API                yes  src/shared/input/GamepadController.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  86 turns, 84 tool calls, 59 run_command
+  ran a build                1 time(s)
+  installed deps             1 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

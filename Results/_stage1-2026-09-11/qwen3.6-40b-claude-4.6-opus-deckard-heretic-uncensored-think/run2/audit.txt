@@ -1,0 +1,75 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run2/ws
+==========================================================================
+22 source files, 2793 lines, 7 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 25 BROKEN
+      Space_Invaders/main.js:8  MISSING EXPORT default <- inputController.js
+      Space_Invaders/main.js:11  MISSING EXPORT default <- pool.js
+      Space_Invaders/main.js:15  MISSING EXPORT default <- player.js
+      Space_Invaders/main.js:16  MISSING EXPORT default <- enemy.js
+      Space_Invaders/main.js:17  MISSING EXPORT default <- projectile.js
+      Space_Invaders/main.js:18  MISSING EXPORT default <- powerup.js
+      Space_Invaders/main.js:19  MISSING EXPORT default <- environment.js
+      Space_Invaders/main.js:21  MISSING FILE  <- ./game/gameState.js
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  materials                : MeshStandardMaterial only
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  Space_Invaders/main.js
+  UnrealBloomPass            yes  Space_Invaders/main.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               NOT FOUND
+  particle bursts            yes  shared/particleManager.js
+  hit-stop                   yes  Space_Invaders/main.js
+  motion trails              yes  Space_Invaders/entities/projectile.js
+  shockwave rings            NOT FOUND
+  floating score text        NOT FOUND
+  ---> 3 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/pool.js
+  InstancedMesh              NOT FOUND
+  particle cap               maxParticles = 500  [OK]  shared/particleManager.js:6
+  particle cap               maxParticles = 500  [OK]  shared/pool.js:60
+  particle cap               maxParticles = 500  [OK]  Space_Invaders/main.js:31
+  disposal                   15 dispose() vs 43 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  Space_Invaders/assets/textureGenerator.js
+  Web Audio                  yes  shared/audioSynth.js
+  procedural noise           yes  shared/noiseFunctions.js
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) NOT FOUND
+  neon glow (text/box-shadow) NOT FOUND
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/inputController.js
+  Gamepad API                yes  shared/inputController.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  41 turns, 38 tool calls, 2 run_command
+  ran a build                NEVER
+  installed deps             1 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

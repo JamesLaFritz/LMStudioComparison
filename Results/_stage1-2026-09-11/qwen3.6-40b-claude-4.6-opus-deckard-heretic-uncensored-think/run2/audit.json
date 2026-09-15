@@ -1,0 +1,344 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run2/ws",
+ "files": 22,
+ "lines": 2793,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "Space_Invaders/main.js",
+   8,
+   "inputController.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   11,
+   "pool.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   15,
+   "player.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   16,
+   "enemy.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   17,
+   "projectile.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   18,
+   "powerup.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   19,
+   "environment.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   21,
+   "./game/gameState.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/main.js",
+   24,
+   "renderSystem.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   25,
+   "physicsSystem.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   26,
+   "aiSystem.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/main.js",
+   27,
+   "audioSystem.js",
+   "MISSING EXPORT",
+   "default"
+  ],
+  [
+   "Space_Invaders/entities/enemy.js",
+   2,
+   "../shared/mathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/entities/enemy.js",
+   3,
+   "../shared/noiseFunctions.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/entities/environment.js",
+   2,
+   "../shared/mathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/entities/player.js",
+   2,
+   "../shared/mathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/entities/powerup.js",
+   2,
+   "../shared/mathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/entities/projectile.js",
+   2,
+   "../shared/mathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/game/gameLoop.js",
+   1,
+   "./gameState.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/game/gameLoop.js",
+   2,
+   "./scoreSystem.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/game/gameLoop.js",
+   4,
+   "enemy.js",
+   "MISSING EXPORT",
+   "EnemyManager"
+  ],
+  [
+   "Space_Invaders/game/gameLoop.js",
+   5,
+   "projectile.js",
+   "MISSING EXPORT",
+   "ProjectileManager"
+  ],
+  [
+   "Space_Invaders/game/gameLoop.js",
+   6,
+   "environment.js",
+   "MISSING EXPORT",
+   "Environment"
+  ],
+  [
+   "Space_Invaders/systems/audioSystem.js",
+   1,
+   "audioSynth.js",
+   "MISSING EXPORT",
+   "AudioSynth"
+  ],
+  [
+   "Space_Invaders/systems/physicsSystem.js",
+   1,
+   "collisionEngine.js",
+   "MISSING EXPORT",
+   "checkCollision"
+  ]
+ ],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "Space_Invaders/main.js",
+    2
+   ],
+   [
+    "Space_Invaders/systems/renderSystem.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "Space_Invaders/main.js",
+    4
+   ],
+   [
+    "Space_Invaders/systems/renderSystem.js",
+    2
+   ]
+  ],
+  "camera shake": [],
+  "particle bursts": [
+   [
+    "shared/particleManager.js",
+    3
+   ],
+   [
+    "Space_Invaders/main.js",
+    9
+   ],
+   [
+    "Space_Invaders/assets/soundGenerator.js",
+    41
+   ],
+   [
+    "Space_Invaders/game/gameLoop.js",
+    264
+   ]
+  ],
+  "hit-stop": [
+   [
+    "Space_Invaders/main.js",
+    81
+   ],
+   [
+    "Space_Invaders/game/gameLoop.js",
+    30
+   ]
+  ],
+  "motion trails": [
+   [
+    "Space_Invaders/entities/projectile.js",
+    146
+   ]
+  ],
+  "shockwave rings": [],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "shared/pool.js",
+    5
+   ],
+   [
+    "Space_Invaders/main.js",
+    11
+   ],
+   [
+    "Space_Invaders/entities/projectile.js",
+    29
+   ]
+  ],
+  "InstancedMesh": [],
+  "CanvasTexture": [
+   [
+    "Space_Invaders/assets/textureGenerator.js",
+    8
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audioSynth.js",
+    15
+   ],
+   [
+    "Space_Invaders/assets/soundGenerator.js",
+    10
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/noiseFunctions.js",
+    1
+   ],
+   [
+    "Space_Invaders/entities/enemy.js",
+    3
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/inputController.js",
+    26
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/inputController.js",
+    38
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [],
+  "neon glow (text/box-shadow)": []
+ },
+ "particle_caps": [
+  [
+   "shared/particleManager.js",
+   6,
+   "maxParticles",
+   500
+  ],
+  [
+   "shared/pool.js",
+   60,
+   "maxParticles",
+   500
+  ],
+  [
+   "Space_Invaders/main.js",
+   31,
+   "maxParticles",
+   500
+  ]
+ ],
+ "dispose_calls": 15,
+ "three_allocations": 43,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max",
+  "turns": 41,
+  "tool_calls": 38,
+  "run_commands": 2,
+  "verification": {
+   "ran a build": 0,
+   "installed deps": 1,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

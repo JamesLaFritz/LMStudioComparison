@@ -1,0 +1,46 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen.qwen3.6-35b-a3b/run2/ws",
+ "port": 5970,
+ "outcome": "renders",
+ "errors": [
+  "Cannot set property direction of #<UFOEntity> which has only a getter",
+  "Cannot set property direction of #<UFOEntity> which has only a getter",
+  "Cannot set property direction of #<UFOEntity> which has only a getter"
+ ],
+ "notes": [
+  "page errors present"
+ ],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5970/index.html",
+ "start_clicked": "START GAME",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 2,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 3,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  }
+ ],
+ "idle_bytes_differ": false,
+ "hud_before": "SCORE 0 SPACE INVADERS WASD / Arrow Keys to move • Space to fire Gamepad: Left Stick / D-Pad to move, A to fire START GAME",
+ "hud_after": "SCORE 0 SPACE INVADERS WASD / Arrow Keys to move • Space to fire Gamepad: Left Stick / D-Pad to move, A to fire START GAME",
+ "score_before": 0,
+ "score_after": 0,
+ "score_delta": 0
+}

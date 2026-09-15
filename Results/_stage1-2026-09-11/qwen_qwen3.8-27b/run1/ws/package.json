@@ -1,0 +1,18 @@
+{
+  "name": "neon-arcade",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AAA retro-futurist arcade collection — Three.js, 100% procedural assets",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "0.186.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.0"
+  }
+}

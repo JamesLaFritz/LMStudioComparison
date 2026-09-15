@@ -1,0 +1,28 @@
+
+> space-invaders-aa@1.0.0 dev
+> vite
+
+Port 5173 is in use, trying another one...
+Port 5174 is in use, trying another one...
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m318[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5175[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m10:06:26 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/entities/AlienFormation.js[22m
+[2m10:10:22 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m10:11:17 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/vfx/CameraShake.js[22m
+[2m10:11:23 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/vfx/CameraShake.js[22m
+[2m10:21:31 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/Game.js[22m
+[2m10:22:46 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/Game.js[22m
+[2m10:23:21 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/Game.js[22m
+[2m10:24:10 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/Game.js[22m
+[2m10:24:53 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/Game.js[22m
+[2m10:29:07 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/vfx/CameraShake.js[22m
+[2m10:38:16 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mSpace_Invaders/Game.js[22m
+[2m10:41:19 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/core/InputController.js[22m
+[2m10:41:33 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/core/InputController.js[22m
+[2m10:42:01 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/core/InputController.js[22m
+[2m10:43:01 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/core/InputController.js[22m
+[2m10:43:26 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/core/InputController.js[22m
+[2m10:43:33 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mshared/core/InputController.js[22m

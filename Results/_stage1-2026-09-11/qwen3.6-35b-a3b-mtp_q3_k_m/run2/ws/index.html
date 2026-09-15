@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Invaders — AAA Retro-Futurism</title>
+  <style>
+    /* ── Reset & full-screen canvas ─────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Courier New', monospace; }
+    canvas#gameCanvas { display: block; width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 1; }
+
+    /* ── Glassmorphism HUD overlay ──────────────────────────── */
+    #hudOverlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10; pointer-events: none; /* let clicks pass through to canvas */
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+
+    #hudTop {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 16px 24px;
+    }
+
+    .glass-panel {
+      background: rgba(10, 12, 30, 0.55);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border: 1px solid rgba(0, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 12px 20px;
+      color: #e0f7ff;
+      text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.08), inset 0 0 30px rgba(0, 255, 255, 0.03);
+    }
+
+    .hud-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0, 255, 255, 0.6); margin-bottom: 4px; }
+    .hud-value { font-size: 28px; font-weight: bold; letter-spacing: 1px; }
+
+    #livesContainer { display: flex; gap: 6px; align-items: center; }
+    .life-pip { width: 18px; height: 14px; background: #00ffff; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); box-shadow: 0 0 8px #00ffff; }
+    .life-pip.lost { opacity: 0.15; background: #444; box-shadow: none; }
+
+    #comboDisplay { font-size: 16px; color: #ff00ff; text-shadow: 0 0 10px #ff00ff; transition: transform 0.1s; }
+    #comboDisplay.pop { transform: scale(1.4); }
+
+    /* ── Game Over overlay ──────────────────────────────────── */
+    #gameOverOverlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 20; display: none; align-items: center; justify-content: center; flex-direction: column;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
+    }
+    #gameOverOverlay.visible { display: flex; }
+
+    #gameOverTitle { font-size: 52px; color: #ff3366; text-shadow: 0 0 30px #ff3366, 0 0 60px rgba(255, 51, 102, 0.4); margin-bottom: 12px; letter-spacing: 6px; }
+    #gameOverScore { font-size: 24px; color: #e0f7ff; margin-bottom: 32px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.4); }
+
+    #restartBtn {
+      pointer-events: all; cursor: pointer;
+      background: transparent; border: 2px solid #00ffff; color: #00ffff;
+      font-family: 'Courier New', monospace; font-size: 18px; letter-spacing: 3px;
+      padding: 14px 40px; border-radius: 8px; text-transform: uppercase;
+      transition: all 0.2s; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+    #restartBtn:hover { background: rgba(0, 255, 255, 0.15); box-shadow: 0 0 30px rgba(0, 255, 255, 0.6); transform: scale(1.05); }
+
+    /* ── Wave announcement ─────────────────────────────────── */
+    #waveAnnounce {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 15; font-size: 48px; color: #ffff00; letter-spacing: 8px;
+      text-shadow: 0 0 30px #ffff00, 0 0 60px rgba(255, 255, 0, 0.4);
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    #waveAnnounce.visible { opacity: 1; }
+
+    /* ── Floating score text (HTML-based fallback) ─────────── */
+    .floating-score {
+      position: fixed; z-index: 12; font-size: 20px; font-weight: bold;
+      pointer-events: none; animation: floatUp 1s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-60px) scale(0.7); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- HUD Overlay -->
+  <div id="hudOverlay">
+    <div id="hudTop">
+      <div class="glass-panel" id="scorePanel">
+        <div class="hud-label">Score</div>
+        <div class="hud-value" id="scoreValue">0</div>
+      </div>
+      <div class="glass-panel" style="text-align:center;">
+        <div class="hud-label">Wave</div>
+        <div class="hud-value" id="waveValue">1</div>
+      </div>
+      <div class="glass-panel" style="text-align:right;">
+        <div class="hud-label">Combo</div>
+        <div id="comboDisplay">&times;1.0</div>
+      </div>
+    </div>
+    <div style="padding: 16px 24px;" id="livesContainer"></div>
+  </div>
+
+  <!-- Wave Announcement -->
+  <div id="waveAnnounce">WAVE 1</div>
+
+  <!-- Game Over Overlay -->
+  <div id="gameOverOverlay">
+    <div id="gameOverTitle">GAME OVER</div>
+    <div id="gameOverScore">FINAL SCORE: 0</div>
+    <button id="restartBtn">RESTART</button>
+  </div>
+
+  <script type="module" src="./games/Space_Invaders/main.ts"></script>
+</body>
+</html>

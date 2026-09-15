@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AAA Retro-Futurism: Space Invaders</title>
+  <style>
+    :root {
+      --bg-color: #00030a;
+      --glass-bg: rgba(10, 15, 30, 0.3);
+      --neon: #00ffff;
+      --glow: #ff00ff;
+      --text: #00ffff;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+      color: var(--text);
+    }
+    
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    #ui-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--neon);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 0 15px var(--neon), inset 0 0 10px rgba(0, 255, 255, 0.3);
+      z-index: 1000;
+      font-size: 14px;
+      color: var(--neon);
+      text-shadow: 0 0 5px var(--neon);
+      width: 200px;
+    }
+    
+    #score {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    
+    #wave {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    
+    #input-hint {
+      font-size: 10px;
+      margin-top: 8px;
+      color: #888;
+      text-align: center;
+    }
+    
+    #game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--neon);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      z-index: 1001;
+      display: none;
+    }
+    
+    #game-over h2 {
+      color: var(--glow);
+      margin-bottom: 12px;
+      text-shadow: 0 0 10px var(--glow);
+    }
+    
+    #restart-btn {
+      background: var(--neon);
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--neon);
+      transition: all 0.2s;
+    }
+    
+    #restart-btn:hover {
+      background: #00ffff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="ui-overlay">
+      <div id="score">Score: 0</div>
+      <div id="wave">Wave: 1</div>
+      <div id="input-hint">
+        <div>Keyboard: WASD / Arrows</div>
+        <div>Gamepad: Left Stick</div>
+      </div>
+    </div>
+    <div id="game-over">
+      <h2 id="game-over-title">Game Over</h2>
+      <div id="final-score">Score: 0</div>
+      <button id="restart-btn">Restart</button>
+    </div>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

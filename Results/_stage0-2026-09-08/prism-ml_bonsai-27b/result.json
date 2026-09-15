@@ -1,0 +1,37 @@
+{
+ "model": "prism-ml/bonsai-27b",
+ "session": "fffc8118",
+ "load": "ok",
+ "vram_mib": 14282,
+ "tps": 50.2,
+ "p1_seconds": 14,
+ "p2_seconds": 381,
+ "step1_writes": 0,
+ "step1_commands": 0,
+ "turns": 6,
+ "bails": [],
+ "max_reasoning": 622,
+ "plan_bytes": 16880,
+ "plan_path": "ws/src/Space_Invaders/plan.md",
+ "files_after_p2": 5,
+ "plan_on_disk": 16571,
+ "plan_in_reply": 0,
+ "plan_route": "file",
+ "plan_effective_bytes": 16571,
+ "plan_on_disk_headings": 25,
+ "plan_in_reply_headings": 0,
+ "runaway": false,
+ "no_p2_response": false,
+ "bailed": false,
+ "step2_files_built": 4,
+ "step2_file_list": [
+  "ws/package.json",
+  "ws/public/index.html",
+  "ws/src/shared/utils/input.js",
+  "ws/vite.config.js"
+ ],
+ "step2_modules_built": 1,
+ "step2_module_list": [
+  "src/shared/utils/input.js"
+ ]
+}

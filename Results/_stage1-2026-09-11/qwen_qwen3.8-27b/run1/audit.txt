@@ -1,0 +1,66 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen_qwen3.8-27b/run1/ws
+==========================================================================
+39 source files, 5154 lines, 17 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : all resolve
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  materials                : MeshStandardMaterial only
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  src/shared/core/RendererSetup.js
+  UnrealBloomPass            yes  src/shared/core/RendererSetup.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  src/shared/core/CameraShake.js
+  particle bursts            yes  src/shared/core/ParticleManager.js
+  hit-stop                   yes  src/shared/core/GameLoop.js
+  motion trails              yes  src/shared/core/MotionTrail.js
+  shockwave rings            NOT FOUND
+  floating score text        yes  src/shared/core/GlassUI.js
+  ---> 5 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  src/shared/core/Entity.js
+  InstancedMesh              yes  src/shared/core/Environment.js
+  particle cap               maxParticles = 500  [OK]  src/shared/core/ParticleManager.js:20
+  particle cap               PARTICLE_CAP = 500  [OK]  src/Space_Invaders/config.js:122
+  disposal                   36 dispose() vs 62 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  src/shared/core/ProceduralTextures.js
+  Web Audio                  yes  src/shared/core/AudioManager.js
+  procedural noise           yes  src/shared/core/ProceduralGeometry.js
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  src/shared/core/GlassUI.js
+  neon glow (text/box-shadow) yes  src/shared/core/GlassUI.js
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  src/shared/core/InputController.js
+  Gamepad API                yes  src/shared/core/InputController.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  309 turns, 420 tool calls, 77 run_command
+  ran a build                5 time(s)
+  installed deps             1 time(s)
+  served the game            NEVER
+  looked for browser tools   53 time(s)
+  LAUNCHED a browser         1 time(s)
+  INTERACTED with it         41 time(s)
+  used playwright-cli        53 time(s)
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 4

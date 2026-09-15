@@ -1,0 +1,46 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run1/ws",
+ "port": 5972,
+ "outcome": "renders",
+ "errors": [
+  "obj.reset is not a function",
+  "obj.reset is not a function",
+  "obj.reset is not a function"
+ ],
+ "notes": [
+  "page errors present"
+ ],
+ "page": "games/Space_Invaders/index.html",
+ "url": "http://127.0.0.1:5972/games/Space_Invaders/index.html",
+ "start_clicked": null,
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 2,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 3,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  }
+ ],
+ "idle_bytes_differ": false,
+ "hud_before": "SCORE: 0 LIVES: ♥♥♥ WAVE 1 COMBO x1",
+ "hud_after": "SCORE: 0 LIVES: ♥♥♥ WAVE 1 COMBO x1",
+ "score_before": 0,
+ "score_after": 0,
+ "score_delta": 0
+}

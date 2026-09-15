@@ -1,0 +1,299 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run1/ws",
+ "files": 34,
+ "lines": 4373,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "games/Space_Invaders/Game.ts",
+   27,
+   "CollisionSystem.ts",
+   "MISSING EXPORT",
+   "type CollisionCallbacks"
+  ],
+  [
+   "shared/objects/ParticleObject.ts",
+   2,
+   "../utils/MathUtils.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "shared/physics/CollisionSystem.ts",
+   1,
+   "./AABB.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "shared/physics/CollisionSystem.ts",
+   2,
+   "./Sphere.js",
+   "MISSING FILE",
+   ""
+  ]
+ ],
+ "broken_calls": [
+  [
+   "shared/physics/CollisionSystem.ts",
+   53,
+   "AABB",
+   "fromCenter"
+  ],
+  [
+   "shared/physics/CollisionSystem.ts",
+   56,
+   "AABB",
+   "fromCenter"
+  ]
+ ],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/engine/PostProcessing.ts",
+    1
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/engine/PostProcessing.ts",
+    3
+   ]
+  ],
+  "camera shake": [
+   [
+    "games/Space_Invaders/Game.ts",
+    16
+   ],
+   [
+    "games/Space_Invaders/main.ts",
+    7
+   ],
+   [
+    "shared/vfx/CameraShake.ts",
+    4
+   ]
+  ],
+  "particle bursts": [
+   [
+    "games/Space_Invaders/Game.ts",
+    15
+   ],
+   [
+    "games/Space_Invaders/main.ts",
+    6
+   ],
+   [
+    "shared/audio/MusicEngine.ts",
+    87
+   ],
+   [
+    "shared/audio/Synth.ts",
+    64
+   ],
+   [
+    "shared/vfx/ParticleManager.ts",
+    12
+   ]
+  ],
+  "hit-stop": [
+   [
+    "games/Space_Invaders/Game.ts",
+    17
+   ],
+   [
+    "games/Space_Invaders/main.ts",
+    8
+   ],
+   [
+    "shared/vfx/HitStop.ts",
+    5
+   ]
+  ],
+  "motion trails": [
+   [
+    "games/Space_Invaders/Game.ts",
+    20
+   ],
+   [
+    "games/Space_Invaders/main.ts",
+    11
+   ],
+   [
+    "games/Space_Invaders/entities/Projectile.ts",
+    3
+   ],
+   [
+    "shared/vfx/MotionTrails.ts",
+    9
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "games/Space_Invaders/Game.ts",
+    288
+   ]
+  ],
+  "floating score text": [
+   [
+    "games/Space_Invaders/Game.ts",
+    19
+   ],
+   [
+    "games/Space_Invaders/main.ts",
+    10
+   ],
+   [
+    "games/Space_Invaders/systems/ScoringSystem.ts",
+    7
+   ],
+   [
+    "shared/vfx/FloatingText.ts",
+    9
+   ]
+  ],
+  "object pooling": [
+   [
+    "games/Space_Invaders/Game.ts",
+    455
+   ],
+   [
+    "games/Space_Invaders/entities/Alien.ts",
+    94
+   ],
+   [
+    "games/Space_Invaders/entities/Projectile.ts",
+    128
+   ],
+   [
+    "games/Space_Invaders/entities/UFO.ts",
+    162
+   ],
+   [
+    "shared/objects/Pool.ts",
+    2
+   ],
+   [
+    "shared/objects/ProjectilePool.ts",
+    1
+   ],
+   [
+    "shared/vfx/ParticleManager.ts",
+    2
+   ],
+   [
+    "shared/vfx/ShockwaveRings.ts",
+    2
+   ]
+  ],
+  "InstancedMesh": [],
+  "CanvasTexture": [
+   [
+    "games/Space_Invaders/assets/ProceduralAssets.ts",
+    9
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio/MusicEngine.ts",
+    7
+   ],
+   [
+    "shared/audio/Synth.ts",
+    7
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/utils/Noise.ts",
+    1
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/input/Gamepad.ts",
+    12
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/input/InputManager.ts",
+    24
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "shared/ui/UIOverlay.ts",
+    33
+   ],
+   [
+    "index.html",
+    21
+   ],
+   [
+    "games/Space_Invaders/index.html",
+    27
+   ],
+   [
+    "shared/ui/styles.css",
+    42
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "shared/ui/UIOverlay.ts",
+    36
+   ],
+   [
+    "shared/vfx/FloatingText.ts",
+    31
+   ],
+   [
+    "index.html",
+    23
+   ],
+   [
+    "games/Space_Invaders/index.html",
+    31
+   ],
+   [
+    "shared/ui/styles.css",
+    47
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/utils/Constants.ts",
+   9,
+   "PARTICLE_CAP",
+   500
+  ]
+ ],
+ "dispose_calls": 38,
+ "three_allocations": 0,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "qwen3.6-35b-a3b-mtp@q3_k_m",
+  "turns": 171,
+  "tool_calls": 166,
+  "run_commands": 25,
+  "verification": {
+   "ran a build": 6,
+   "installed deps": 1,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 2
+ }
+}

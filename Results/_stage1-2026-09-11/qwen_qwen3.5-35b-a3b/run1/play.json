@@ -1,0 +1,15 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run1/ws",
+ "port": 5977,
+ "outcome": "broken",
+ "errors": [
+  "THREE is not defined"
+ ],
+ "notes": [
+  "no canvas"
+ ],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5977/index.html",
+ "start_clicked": "START MISSION",
+ "has_canvas": false
+}

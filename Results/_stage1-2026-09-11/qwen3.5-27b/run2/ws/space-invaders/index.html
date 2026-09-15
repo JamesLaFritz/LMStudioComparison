@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders - AAA Retro-Futurism</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Canvas will be appended here by main.js -->
+        
+        <!-- UI Overlay Layer -->
+        <div id="ui-layer">
+            <!-- Main Menu Panel -->
+            <div id="menu-panel" class="glass-panel hidden">
+                <h1 class="neon-title glow-cyan">SPACE INVADERS</h1>
+                <p class="subtitle">AAA RETRO-FUTURISM EDITION</p>
+                
+                <div class="menu-buttons">
+                    <button id="btn-start" class="glass-button neon-border glow-green">
+                        START MISSION
+                    </button>
+                    <button id="btn-controls" class="glass-button neon-border glow-blue">
+                        CONTROLS
+                    </button>
+                </div>
+                
+                <div class="credits">
+                    <p>Built with Three.js + EffectComposer</p>
+                    <p>100% Procedural Assets | Zero External Files</p>
+                </div>
+            </div>
+
+            <!-- HUD Panel (visible during gameplay) -->
+            <div id="hud-panel" class="glass-panel hidden">
+                <div class="hud-left">
+                    <div class="stat-box">
+                        <span class="stat-label">SCORE</span>
+                        <span id="score-display" class="stat-value glow-yellow">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">HIGH SCORE</span>
+                        <span id="highscore-display" class="stat-value glow-cyan">0</span>
+                    </div>
+                </div>
+                
+                <div class="hud-center">
+                    <div id="level-display" class="level-indicator glow-purple">LEVEL 1</div>
+                    <div id="combo-display" class="combo-counter hidden">
+                        <span class="combo-label">COMBO</span>
+                        <span id="combo-value" class="combo-value glow-red">x1</span>
+                    </div>
+                </div>
+                
+                <div class="hud-right">
+                    <div class="stat-box">
+                        <span class="stat-label">LIVES</span>
+                        <span id="lives-display" class="stat-value glow-green">❤️❤️❤️</span>
+                    </div>
+                    <button id="btn-pause" class="glass-button neon-border glow-orange">
+                        PAUSE
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pause Panel -->
+            <div id="pause-panel" class="glass-panel hidden">
+                <h2 class="neon-title glow-orange">PAUSED</h2>
+                <div class="menu-buttons">
+                    <button id="btn-resume" class="glass-button neon-border glow-green">
+                        RESUME
+                    </button>
+                    <button id="btn-quit" class="glass-button neon-border glow-red">
+                        QUIT TO MENU
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Over Panel -->
+            <div id="gameover-panel" class="glass-panel hidden">
+                <h2 class="neon-title glow-red">MISSION FAILED</h2>
+                
+                <div class="final-score-box">
+                    <p class="score-label">FINAL SCORE</p>
+                    <span id="final-score-display" class="final-score-value glow-yellow">0</span>
+                </div>
+                
+                <div id="new-highscore-msg" class="hidden new-record-text glow-gold">
+                    🏆 NEW HIGH SCORE! 🏆
+                </div>
+                
+                <div class="menu-buttons">
+                    <button id="btn-restart" class="glass-button neon-border glow-green">
+                        TRY AGAIN
+                    </button>
+                    <button id="btn-menu" class="glass-button neon-border glow-blue">
+                        MAIN MENU
+                    </button>
+                </div>
+            </div>
+
+            <!-- Controls Help Panel -->
+            <div id="controls-panel" class="glass-panel hidden">
+                <h2 class="neon-title glow-cyan">CONTROLS</h2>
+                
+                <div class="controls-grid">
+                    <div class="control-section">
+                        <h3 class="section-title glow-blue">KEYBOARD</h3>
+                        <ul class="control-list">
+                            <li><kbd>A</kbd> / <kbd>←</kbd> — Move Left</li>
+                            <li><kbd>D</kbd> / <kbd>→</kbd> — Move Right</li>
+                            <li><kbd>SPACE</kbd> — Fire Laser</li>
+                            <li><kbd>P</kbd> — Pause Game</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="control-section">
+                        <h3 class="section-title glow-green">GAMEPAD</h3>
+                        <ul class="control-list">
+                            <li><span class="gamepad-btn">←/→</span> — Move Left/Right</li>
+                            <li><span class="gamepad-btn">A</span> or <span class="gamepad-btn">X</span> — Fire Laser</li>
+                            <li><span class="gamepad-btn">START</span> — Pause Game</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="menu-buttons">
+                    <button id="btn-back-controls" class="glass-button neon-border glow-cyan">
+                        BACK
+                    </button>
+                </div>
+            </div>
+
+            <!-- Power-up Notification -->
+            <div id="powerup-notification" class="notification hidden">
+                <span id="powerup-icon" class="powerup-icon"></span>
+                <span id="powerup-text" class="powerup-text">POWER-UP!</span>
+            </div>
+
+            <!-- Damage Flash Overlay -->
+            <div id="damage-flash" class="damage-overlay hidden"></div>
+        </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

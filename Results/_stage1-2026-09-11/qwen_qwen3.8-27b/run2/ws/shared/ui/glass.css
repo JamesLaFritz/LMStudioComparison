@@ -1,0 +1,268 @@
+/* ============================================================
+   Glassmorphism design system — shared across the collection.
+   Neon accents on translucent blurred panels.
+   Class names must match shared/ui/GlassUI.js + FloatingText.js.
+   ============================================================ */
+
+:root {
+  --neon-cyan: #00f0ff;
+  --neon-magenta: #ff2fd6;
+  --neon-amber: #ffc857;
+  --neon-green: #57ff9a;
+  --glass-bg: rgba(8, 14, 30, 0.55);
+  --glass-border: rgba(0, 240, 255, 0.35);
+  --glass-blur: 14px;
+  --text-dim: rgba(210, 235, 255, 0.72);
+  --font-mono: "Cascadia Code", "Consolas", "SF Mono", "Menlo", monospace;
+  --font-ui: "Segoe UI", "Avenir Next", "Helvetica Neue", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #04060f;
+  color: #eaf6ff;
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app { position: fixed; inset: 0; }
+#app canvas { display: block; }
+
+/* ---------- HUD ---------- */
+
+.glass-hud {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 22px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hud-cluster {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  box-shadow:
+    0 0 22px rgba(0, 240, 255, 0.12),
+    inset 0 0 18px rgba(0, 240, 255, 0.05);
+}
+
+.hud-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hud-label {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.hud-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+  line-height: 1;
+  min-width: 70px;
+}
+
+.hud-slot.wave .hud-value { text-shadow: 0 0 12px rgba(255, 47, 214, 0.8); }
+.hud-slot.lives .hud-value { text-shadow: 0 0 12px rgba(87, 255, 154, 0.8); }
+
+.combo-slot .hud-value {
+  color: var(--neon-amber);
+  text-shadow: 0 0 12px rgba(255, 200, 87, 0.9);
+}
+
+/* ---------- Center screens (menu / pause / game over) ---------- */
+
+.glass-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  z-index: 20;
+  background: radial-gradient(ellipse at center, rgba(4, 8, 20, 0.35) 0%, rgba(4, 6, 15, 0.72) 100%);
+  backdrop-filter: blur(6px) saturate(1.3);
+  -webkit-backdrop-filter: blur(6px) saturate(1.3);
+}
+
+.glass-screen[hidden] { display: none; }
+
+.screen-title {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+  background: linear-gradient(100deg, var(--neon-cyan) 10%, #ffffff 50%, var(--neon-magenta) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.55));
+  text-align: center;
+}
+
+.screen-sub {
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0;
+  text-align: center;
+}
+
+.screen-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 18px 30px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.screen-lines p {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+.screen-lines p b {
+  color: #ffffff;
+  font-family: var(--font-mono);
+}
+
+/* ---------- Buttons ---------- */
+
+.glass-btn {
+  appearance: none;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #eaf6ff;
+  padding: 13px 42px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.glass-btn:hover {
+  background: rgba(0, 240, 255, 0.18);
+  box-shadow: 0 0 24px rgba(0, 240, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.glass-btn:active { transform: translateY(1px) scale(0.98); }
+
+.glass-btn.primary {
+  color: #041018;
+  background: linear-gradient(100deg, var(--neon-cyan), #7df9ff);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 28px rgba(0, 240, 255, 0.5);
+}
+
+.glass-btn.primary:hover { box-shadow: 0 0 40px rgba(0, 240, 255, 0.75); }
+
+.glass-btn[hidden] { display: none; }
+
+/* ---------- Banner (wave announcements) ---------- */
+
+.banner {
+  position: fixed;
+  top: 38%;
+  left: 0; right: 0;
+  text-align: center;
+  z-index: 15;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.banner.visible { animation: bannerLife 1.6s ease forwards; }
+
+.banner-text {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow:
+    0 0 14px var(--neon-cyan),
+    0 0 44px rgba(0, 240, 255, 0.6);
+}
+
+.banner-sub {
+  margin-top: 8px;
+  font-size: 13px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@keyframes bannerLife {
+  0% { opacity: 0; transform: scale(0.92); }
+  14% { opacity: 1; transform: scale(1); }
+  78% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+/* ---------- Floating score text (world-projected) ----------
+   Positioning + rise/fade are driven inline by FloatingText.js
+   (transition-based), so no CSS animation here. */
+
+.float-text {
+  position: fixed;
+  z-index: 12;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* ---------- Vignette + scanline flavor ---------- */
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.016) 0px, rgba(255,255,255,0.016) 1px, transparent 1px, transparent 3px),
+    radial-gradient(ellipse at center, transparent 58%, rgba(2, 4, 12, 0.5) 100%);
+}

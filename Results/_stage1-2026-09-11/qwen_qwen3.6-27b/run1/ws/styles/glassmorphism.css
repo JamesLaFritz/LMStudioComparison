@@ -1,0 +1,127 @@
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #050510; }
+
+/* ── Canvas ─────────────────────────────────────────── */
+#gameCanvas {
+    display: block;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* ── UI Layer ───────────────────────────────────────── */
+#ui-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #e0f7ff;
+}
+
+/* ── Glass Panel ────────────────────────────────────── */
+.glass-panel {
+    background: rgba(10, 20, 40, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow:
+        0 4px 30px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── HUD ────────────────────────────────────────────── */
+#hud {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 24px;
+    padding: 10px 28px;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#hud .hud-item { display: flex; flex-direction: column; align-items: center; }
+#hud .hud-label { font-size: 10px; opacity: 0.6; margin-bottom: 2px; }
+#hud .hud-value { font-size: 20px; font-weight: 700; color: #00ffff; text-shadow: 0 0 8px rgba(0,255,255,0.5); }
+
+/* ── Menu / Game Over / Pause ───────────────────────── */
+.overlay-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.overlay-screen h1 {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #00ffff;
+    text-shadow: 0 0 20px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.2);
+    margin-bottom: 8px;
+}
+
+.overlay-screen h2 {
+    font-size: 24px;
+    font-weight: 400;
+    opacity: 0.7;
+    margin-bottom: 32px;
+}
+
+.overlay-screen .prompt {
+    font-size: 14px;
+    opacity: 0.5;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.overlay-screen .final-score {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffcc00;
+    text-shadow: 0 0 12px rgba(255,204,0,0.5);
+    margin-bottom: 24px;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+/* ── Level Transition ───────────────────────────────── */
+#level-transition {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #00ffff;
+    text-shadow: 0 0 20px rgba(0,255,255,0.6);
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: scale(0.8); }
+    20% { opacity: 1; transform: scale(1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.1); }
+}
+
+/* ── Hidden ─────────────────────────────────────────── */
+.hidden { display: none !important; }

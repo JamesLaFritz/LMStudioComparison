@@ -1,0 +1,18 @@
+{
+  "name": "retro-futurism-benchmark",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AAA Retro-Futurism benchmark: 14 classic arcade games rebuilt with vanilla Three.js, 100% procedural assets, hand-written physics.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "vite": "5.2.0"
+  }
+}

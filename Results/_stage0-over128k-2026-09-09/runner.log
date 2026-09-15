@@ -1,0 +1,21 @@
+23:32:53  === qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled-apex-mtp
+23:33:12    loaded: 19709 MiB used (idle 739), ctx 128512, 53.9 tok/s
+23:33:48    p1 13s · p2 23s
+  writes=0 cmds=0 plan=0B files=0
+23:33:49  === ud-2.0-qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled
+23:34:12    loaded: 22635 MiB used (idle 739), ctx 128512, 53.3 tok/s
+23:34:48    p1 12s · p2 24s
+  writes=0 cmds=0 plan=9715B files=1
+23:34:48  === qwen/qwen3.5-9b
+23:35:05    loaded: 8935 MiB used (idle 739), ctx 128512, 51.4 tok/s
+23:36:07    p1 8s · p2 54s
+  writes=0 cmds=0 plan=0B files=0
+23:36:08  === qwen3.8-27b-fable-distill
+23:36:30    loaded: 23591 MiB used (idle 739), ctx 128512, 41.8 tok/s
+23:42:43    p1 56s · p2 317s
+  writes=0 cmds=0 plan=13669B files=1
+23:42:43  === qwen/qwen3.5-35b-a3b
+23:43:06    loaded: 23947 MiB used (idle 707), ctx 128512, 55.3 tok/s
+23:43:48    p1 14s · p2 28s
+  writes=0 cmds=0 plan=0B files=0
+23:43:51  STAGE 0 COMPLETE

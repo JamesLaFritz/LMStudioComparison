@@ -1,0 +1,12 @@
+{
+  "name": "prism-ml_bonsai-27b-space-invaders",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "three": "^0.162.0"
+  }
+}

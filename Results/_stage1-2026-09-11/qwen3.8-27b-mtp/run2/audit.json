@@ -1,0 +1,272 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run2/ws",
+ "files": 30,
+ "lines": 3533,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/core/Engine.js",
+    41
+   ],
+   [
+    "shared/postfx/ComposerSetup.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/postfx/ComposerSetup.js",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/vfx/CameraShake.js",
+    2
+   ],
+   [
+    "Space_Invaders/config.js",
+    94
+   ],
+   [
+    "Space_Invaders/index.js",
+    13
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/audio/MusicSequencer.js",
+    91
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    23
+   ],
+   [
+    "Space_Invaders/config.js",
+    89
+   ],
+   [
+    "Space_Invaders/Game.js",
+    399
+   ],
+   [
+    "Space_Invaders/index.js",
+    15
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/vfx/HitStop.js",
+    2
+   ],
+   [
+    "shared/vfx/MotionTrails.js",
+    71
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    123
+   ],
+   [
+    "Space_Invaders/config.js",
+    96
+   ],
+   [
+    "Space_Invaders/Game.js",
+    31
+   ],
+   [
+    "Space_Invaders/index.js",
+    4
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/MotionTrails.js",
+    6
+   ],
+   [
+    "Space_Invaders/Game.js",
+    343
+   ],
+   [
+    "Space_Invaders/index.js",
+    17
+   ]
+  ],
+  "shockwave rings": [],
+  "floating score text": [
+   [
+    "shared/vfx/FloatingText.js",
+    4
+   ],
+   [
+    "Space_Invaders/index.js",
+    18
+   ]
+  ],
+  "object pooling": [
+   [
+    "shared/core/ObjectPool.js",
+    2
+   ],
+   [
+    "shared/vfx/FloatingText.js",
+    6
+   ],
+   [
+    "shared/vfx/MotionTrails.js",
+    2
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    6
+   ],
+   [
+    "shared/vfx/ShockwaveRings.js",
+    2
+   ],
+   [
+    "Space_Invaders/Game.js",
+    3
+   ],
+   [
+    "Space_Invaders/entities/Bullet.js",
+    9
+   ],
+   [
+    "Space_Invaders/entities/PlayerShip.js",
+    8
+   ],
+   [
+    "Space_Invaders/entities/PowerUp.js",
+    17
+   ],
+   [
+    "Space_Invaders/entities/UFO.js",
+    7
+   ],
+   [
+    "Space_Invaders/systems/FormationController.js",
+    32
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/vfx/ParticleManager.js",
+    6
+   ],
+   [
+    "Space_Invaders/entities/ShieldBunker.js",
+    5
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "shared/procedural/TextureFactory.js",
+    5
+   ],
+   [
+    "Space_Invaders/Game.js",
+    90
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio/AudioEngine.js",
+    19
+   ],
+   [
+    "shared/audio/MusicSequencer.js",
+    72
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/math/Noise.js",
+    2
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/core/InputController.js",
+    35
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/core/InputController.js",
+    11
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "shared/ui/GlassUI.js",
+    10
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "shared/ui/GlassUI.js",
+    10
+   ],
+   [
+    "shared/vfx/FloatingText.js",
+    15
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "Space_Invaders/config.js",
+   89,
+   "particleCap",
+   500
+  ]
+ ],
+ "dispose_calls": 28,
+ "three_allocations": 36,
+ "violations": [
+  [
+   "external asset file",
+   "verify-load.png",
+   ".png"
+  ]
+ ],
+ "non_standard_materials": [
+  [
+   "shared/vfx/MotionTrails.js",
+   "MeshBasicMaterial"
+  ],
+  [
+   "shared/vfx/ShockwaveRings.js",
+   "MeshBasicMaterial"
+  ]
+ ],
+ "session": {
+  "model": "qwen3.8-27b-mtp",
+  "turns": 289,
+  "tool_calls": 311,
+  "run_commands": 120,
+  "verification": {
+   "ran a build": 9,
+   "installed deps": 1,
+   "served the game": 1,
+   "looked for browser tools": 71,
+   "LAUNCHED a browser": 5,
+   "INTERACTED with it": 63,
+   "used playwright-cli": 71,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 2
+ }
+}

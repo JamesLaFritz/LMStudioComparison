@@ -1,0 +1,251 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run2/ws",
+ "files": 24,
+ "lines": 3185,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "space_invaders/Game.ts",
+   13,
+   "MotionTrails.ts",
+   "MISSING EXPORT",
+   "Color"
+  ],
+  [
+   "space_invaders/Game.ts",
+   21,
+   "ProceduralTextures.ts",
+   "MISSING EXPORT",
+   "EnemyType"
+  ],
+  [
+   "space_invaders/Game.ts",
+   22,
+   "Powerup.ts",
+   "MISSING EXPORT",
+   "PowerupType"
+  ],
+  [
+   "space_invaders/Enemies/Boss.ts",
+   2,
+   "ProceduralTextures.ts",
+   "MISSING EXPORT",
+   "EnemyType"
+  ],
+  [
+   "space_invaders/Enemies/Enemy.ts",
+   3,
+   "ProceduralTextures.ts",
+   "MISSING EXPORT",
+   "EnemyType"
+  ]
+ ],
+ "broken_calls": [
+  [
+   "space_invaders/Game.ts",
+   480,
+   "Bullet",
+   "deactivate"
+  ]
+ ],
+ "signals": {
+  "EffectComposer": [
+   [
+    "space_invaders/Game.ts",
+    2
+   ],
+   [
+    "space_invaders/PostProcessing.ts",
+    1
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "space_invaders/Game.ts",
+    4
+   ],
+   [
+    "space_invaders/PostProcessing.ts",
+    3
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/vfx/CameraShake.ts",
+    3
+   ],
+   [
+    "space_invaders/Game.ts",
+    11
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/vfx/ParticleSystem.ts",
+    21
+   ],
+   [
+    "space_invaders/Game.ts",
+    10
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/core/GameLoop.ts",
+    9
+   ],
+   [
+    "shared/vfx/HitStop.ts",
+    3
+   ],
+   [
+    "space_invaders/Game.ts",
+    12
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/MotionTrails.ts",
+    9
+   ],
+   [
+    "space_invaders/Game.ts",
+    13
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "space_invaders/Game.ts",
+    555
+   ],
+   [
+    "space_invaders/Enemies/Boss.ts",
+    87
+   ]
+  ],
+  "floating score text": [
+   [
+    "shared/vfx/FloatingText.ts",
+    5
+   ],
+   [
+    "space_invaders/Game.ts",
+    15
+   ]
+  ],
+  "object pooling": [
+   [
+    "shared/core/ObjectPool.ts",
+    8
+   ],
+   [
+    "space_invaders/Game.ts",
+    8
+   ],
+   [
+    "space_invaders/Enemies/Boss.ts",
+    3
+   ],
+   [
+    "space_invaders/Enemies/Enemy.ts",
+    2
+   ],
+   [
+    "space_invaders/Entities/Player.ts",
+    2
+   ],
+   [
+    "space_invaders/Projectiles/Bullet.ts",
+    2
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "space_invaders/Projectiles/Bullet.ts",
+    1
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "shared/utils/ProceduralTextures.ts",
+    1
+   ]
+  ],
+  "Web Audio": [
+   [
+    "space_invaders/Game.ts",
+    73
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/utils/Noise.ts",
+    1
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/core/InputManager.ts",
+    8
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/core/InputManager.ts",
+    35
+   ],
+   [
+    "space_invaders/Game.ts",
+    342
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "index.html",
+    29
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "index.html",
+    32
+   ]
+  ]
+ },
+ "particle_caps": [],
+ "dispose_calls": 38,
+ "three_allocations": 15,
+ "violations": [],
+ "non_standard_materials": [
+  [
+   "shared/vfx/FloatingText.ts",
+   "MeshBasicMaterial"
+  ],
+  [
+   "space_invaders/Projectiles/Bullet.ts",
+   "MeshBasicMaterial"
+  ]
+ ],
+ "session": {
+  "model": "qwen/qwen3.5-35b-a3b",
+  "turns": 82,
+  "tool_calls": 78,
+  "run_commands": 18,
+  "verification": {
+   "ran a build": 7,
+   "installed deps": 4,
+   "served the game": 2,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

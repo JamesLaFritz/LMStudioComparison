@@ -1,0 +1,404 @@
+/* Glassmorphism UI Styles for Space Invaders */
+
+:root {
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --neon-green: #00ff00;
+  --neon-yellow: #ffff00;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Glassmorphism Panel Base */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px var(--glass-shadow);
+  border-radius: 16px;
+}
+
+/* Main Menu Container */
+#main-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 48px 64px;
+  text-align: center;
+  min-width: 400px;
+  z-index: 100;
+}
+
+#main-menu h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  margin-bottom: 16px;
+  text-shadow: 
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan);
+  animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0%, 100% { 
+    text-shadow: 
+      0 0 10px var(--neon-cyan),
+      0 0 20px var(--neon-cyan),
+      0 0 40px var(--neon-cyan);
+  }
+  50% { 
+    text-shadow: 
+      0 0 20px var(--neon-cyan),
+      0 0 30px var(--neon-cyan),
+      0 0 60px var(--neon-cyan);
+  }
+}
+
+#main-menu .subtitle {
+  color: var(--neon-magenta);
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  margin-bottom: 32px;
+  text-shadow: 0 0 10px var(--neon-magenta);
+}
+
+/* Menu Buttons */
+.menu-button {
+  display: block;
+  width: 100%;
+  padding: 16px 32px;
+  margin: 12px 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #fff;
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px var(--neon-cyan);
+}
+
+.menu-button:hover {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow: 
+    0 0 20px var(--neon-cyan),
+    inset 0 0 20px var(--neon-cyan);
+  text-shadow: none;
+}
+
+.menu-button.secondary {
+  border-color: var(--neon-magenta);
+  text-shadow: 0 0 5px var(--neon-magenta);
+}
+
+.menu-button.secondary:hover {
+  background: var(--neon-magenta);
+  box-shadow: 
+    0 0 20px var(--neon-magenta),
+    inset 0 0 20px var(--neon-magenta);
+}
+
+/* Controls Section */
+#controls-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+}
+
+#controls-section h3 {
+  color: var(--neon-green);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  text-shadow: 0 0 8px var(--neon-green);
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.key {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  font-family: monospace;
+  color: var(--neon-yellow);
+  box-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+}
+
+/* HUD Overlay */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.hud-panel {
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
+#score-display {
+  color: var(--neon-yellow);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--neon-yellow);
+}
+
+#score-label {
+  font-size: 0.8rem;
+  color: #aaa;
+  letter-spacing: 2px;
+}
+
+#lives-display {
+  display: flex;
+  gap: 4px;
+}
+
+.life-icon {
+  width: 30px;
+  height: 20px;
+  background: var(--neon-cyan);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+#combo-display {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.combo-counter {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--neon-magenta);
+  text-shadow: 
+    0 0 10px var(--neon-magenta),
+    0 0 20px var(--neon-magenta);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.combo-counter.active {
+  opacity: 1;
+  animation: comboBounce 0.5s ease infinite;
+}
+
+@keyframes comboBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.combo-label {
+  font-size: 0.9rem;
+  color: var(--neon-magenta);
+  letter-spacing: 4px;
+}
+
+#wave-display {
+  position: absolute;
+  top: 80px;
+  right: 24px;
+  color: var(--neon-green);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--neon-green);
+}
+
+/* Power-up Indicator */
+#powerup-indicator {
+  position: absolute;
+  top: 80px;
+  left: 24px;
+  display: flex;
+  gap: 8px;
+}
+
+.powerup-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--neon-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.powerup-icon.active {
+  opacity: 1;
+}
+
+/* Game Over Screen */
+#game-over-screen,
+#victory-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 48px 64px;
+  text-align: center;
+  min-width: 400px;
+  z-index: 100;
+  display: none;
+}
+
+#game-over-screen h2,
+#victory-screen h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  margin-bottom: 16px;
+}
+
+#game-over-screen h2 {
+  color: #ff0000;
+  text-shadow: 
+    0 0 10px #ff0000,
+    0 0 20px #ff0000,
+    0 0 40px #ff0000;
+}
+
+#victory-screen h2 {
+  color: var(--neon-green);
+  text-shadow: 
+    0 0 10px var(--neon-green),
+    0 0 20px var(--neon-green),
+    0 0 40px var(--neon-green);
+}
+
+.final-score {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.high-score {
+  font-size: 1.1rem;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 8px var(--neon-yellow);
+  margin-bottom: 24px;
+}
+
+/* Floating Text Container (HTML mode) */
+.floating-text-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 60;
+  overflow: hidden;
+}
+
+.floating-text {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--neon-green);
+  text-shadow: 
+    0 0 10px var(--neon-green),
+    0 0 20px var(--neon-green);
+  pointer-events: none;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  #main-menu h1 {
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+  }
+  
+  .menu-button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+  }
+  
+  #controls-section h3 {
+    font-size: 0.95rem;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+}

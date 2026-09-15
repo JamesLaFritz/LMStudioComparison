@@ -1,0 +1,12 @@
+qwen/qwen3.8-27b
+qwen3.8-27b-mtp
+qwen/qwen3.5-35b-a3b
+qwen.qwen3.6-35b-a3b
+qwen-agentworld-35b-a3b-apex
+qwen3.5-27b
+google/gemma-4-26b-a4b
+qwen/qwen3.6-27b
+qwen3.6-35b-a3b-mtp@q3_k_m
+prism-ml/bonsai-27b
+liquid/lfm2-24b-a2b
+qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max

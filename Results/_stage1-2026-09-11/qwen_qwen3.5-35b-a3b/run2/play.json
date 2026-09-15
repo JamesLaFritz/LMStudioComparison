@@ -1,0 +1,49 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run2/ws",
+ "port": 5978,
+ "outcome": "renders",
+ "errors": [
+  "MotionTrails is not defined",
+  "game is not defined",
+  "MotionTrails is not defined",
+  "game is not defined",
+  "MotionTrails is not defined",
+  "game is not defined"
+ ],
+ "notes": [
+  "page errors present"
+ ],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5978/index.html",
+ "start_clicked": "START GAME",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 2,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 3,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  }
+ ],
+ "idle_bytes_differ": false,
+ "hud_before": "SCORE 0 HIGH SCORE 0 WAVE 1 LIVES 3 x1 SPACE INVADERS START GAME HIGH SCORE GAME OVER Final Score: 0 PLAY AGAIN LOADING...",
+ "hud_after": "SCORE 0 HIGH SCORE 0 WAVE 1 LIVES 3 x1 SPACE INVADERS START GAME HIGH SCORE GAME OVER Final Score: 0 PLAY AGAIN LOADING...",
+ "score_before": 0,
+ "score_after": 0,
+ "score_delta": 0
+}

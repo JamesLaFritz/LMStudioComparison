@@ -1,0 +1,64 @@
+# MISSION DIRECTIVE: AAA Retro-Futurism Architectural Planning & Implementation
+
+Act as an Elite Level Staff Game Architect and Lead Three.js Graphics Engineer. You are undergoing a rigorous benchmark to test your ability to plan complex software systems and execute high-fidelity, production-ready code with absolutely zero shortcuts.
+
+Think before you write, and spend that thinking where it is expensive to be wrong: architecture, memory ownership, the mathematics of the core mechanics, the render pipeline, and the edge cases of each. Your thinking budget is finite — do not spend it restating this brief back to yourself.
+
+### DEFINITION OF DONE
+The deliverable is a game a person can sit down and play: it launches, it responds to input, and its core loop runs through to a win or loss state. Code that compiles but does not play is not done. How you satisfy yourself that this is true is your decision.
+
+### CORE TECHNICAL CONSTRAINTS & STACK
+- **Engine:** Three.js (Vanilla JS + ES Modules). Do not use external game engines or physics wrappers (e.g. Cannon.js, Ammo.js, or Rapier). All physics and collision mechanics must be hand-written vanilla logic.
+- **Assets:** 100% Procedural Generation. No external files, `.gltf`, `.png/jpg`, or `.mp3` files. All assets must be generated via code (e.g. Canvas API for textures, Simplex noise/sine waves for geometry displacement, Web Audio API for synthesized SFX and music).
+- **Materials:** Strict use of `MeshStandardMaterial` for physically based rendering (PBR).
+- **UI/UX:** HTML/CSS Overlays using a "Glassmorphism" design system with vibrant neon glowing accents.
+- **Input:** Unified Dual-Input controller supporting Keyboard (WASD/Arrows) and the Gamepad API.
+- **Performance Constraints (Mandatory):**
+  - Strict Object Pooling for all projectiles, entities, and particles.
+  - A hard cap of 500 active particles at any time via a centralized Particle Manager.
+  - Usage of `InstancedMesh` or merged geometries where applicable.
+  - Strict adherence to Three.js memory management (explicitly calling `.dispose()` on unused geometries, materials, and textures to prevent memory leaks).
+- **Internal Consistency (Mandatory):** Every import must resolve to a real export, and every method you call on an imported module must exist on that module. A file written against an interface you never built is a defect, not a placeholder.
+- **Development Environment:** Assume the project is served via `Vite`. Localize file scoping to avoid deep import path confusion — use a clear `shared/` utility structure, and contain all game files within their own `[GameName]/` folder.
+
+### VISUAL & AESTHETIC DIRECTIVE
+Theme: **AAA Retro-Futurism**. The game must feel like a multi-million-dollar modern reimagining of a classic.
+- You MUST implement `EffectComposer` with `UnrealBloomPass` to create glowing neon emitters. Tune it: emissive surfaces should glow, not wash out to white.
+- **Required Shared VFX (all six):**
+  1. Camera Shake (trauma-based system, decaying intensity, scaling on impact velocity).
+  2. Procedural Particle Bursts (sparks, explosions).
+  3. Hit-Stop / Frame-Freeze (brief timescale dilation on heavy impacts).
+  4. Motion Trails for fast-moving objects.
+  5. Shockwave Rings (expanding emissive rings on impacts/deaths).
+  6. Floating dynamic 3D/HTML score text.
+
+### THE BUILD
+You will build **exactly one** game from the collection below — I will name it. The `shared/` layer you write must be reusable across the rest of the collection, but **do not implement any game I have not named.**
+
+Collection, easiest to hardest:
+`Pong` · `Snake` · `Breakout` · `Tetris` · `Space_Invaders` · `Pac-Man` · `Asteroids` · `Frogger` · `Centipede` · `Galaga` · `Defender` · `Donkey_Kong` · `Paperboy` · `TMNT`
+
+Each game lives in its own isolated, exactly-named directory.
+
+---
+
+### INTERACTIVE WORKFLOW PROTOCOL
+To maintain cross-prompt context, prevent output truncation, and ensure zero code skipping, we execute step-by-step. Do NOT generate the whole collection. Follow this protocol precisely.
+
+**STEP 1: Initialization**
+Output the master directory structure (including the Vite setup and shared-utilities strategy) **as text only — create no files and run no commands in this step.** Then briefly state your compliance with the "Anti-Lazy Directive", "Strict Memory Management", and "Sequential Output Protocol", and ask me which game we are starting with. Await my command.
+
+**STEP 2: The Planning Phase (triggered by "Begin [Game Name]")**
+Output a highly exhaustive `plan.md` tailored *specifically* for that game. The plan must contain:
+1. **Core Gameplay:** How the classic mechanics are mathematically modeled.
+2. **Modern Enhancements:** 15–20 specific AAA upgrades detailing the exact Three.js implementations.
+3. **Graphics Pipeline:** Custom post-processing stack configs and procedural generation math.
+4. **VFX Implementation:** Priority logic for Camera Shake, Hit-Stop, and Particles.
+5. **File Architecture:** Every ES module required, and the import path between each.
+
+**STEP 3: Full Implementation (triggered by "Plan approved")**
+Write EVERY file detailed in the `plan.md`.
+- **ANTI-LAZY DIRECTIVE:** You are explicitly banned from placeholder syntax such as `// ... rest of the function`, `// ... insert logic here`, or `// ... previously defined code`. Every function must be fully implemented and production-ready.
+- **TOKEN LIMIT OVERFLOW:** If a file is too long and your output truncates, simply stop. I will type the word "continue". Resume from the *exact character* where you were cut off, without apologizing, providing preamble, or restarting the code block.
+
+Execute **STEP 1** now.

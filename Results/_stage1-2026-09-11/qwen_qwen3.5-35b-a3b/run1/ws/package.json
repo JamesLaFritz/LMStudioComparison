@@ -1,0 +1,17 @@
+{
+  "name": "space-invaders-aaa",
+  "version": "1.0.0",
+  "description": "AAA Retro-Futurism Space Invaders - Three.js Implementation",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.168.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

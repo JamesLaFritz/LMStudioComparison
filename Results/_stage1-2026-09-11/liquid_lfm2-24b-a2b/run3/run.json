@@ -1,0 +1,18 @@
+{
+ "model": "liquid/lfm2-24b-a2b",
+ "seed": 3,
+ "session": "71cc77fa",
+ "p1_seconds": 2,
+ "p2_seconds": 8,
+ "p3_seconds": 15,
+ "continues": 0,
+ "total_seconds": 25,
+ "turns": 3,
+ "tokens_in": 18082,
+ "tokens_out": 6051,
+ "bails": [],
+ "compactions": 0,
+ "max_reasoning": 0,
+ "seed_recorded": 3,
+ "files": 0
+}

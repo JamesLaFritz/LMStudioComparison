@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Invaders — Retro-Futurism</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #050510; }
+
+    /* ── Glassmorphism UI Overlay ─────────────────────── */
+    #ui-layer {
+      position: fixed; inset: 0; pointer-events: none; z-index: 100;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+
+    .glass-panel {
+      background: rgba(10, 14, 35, 0.65);
+      backdrop-filter: blur(22px) saturate(180%);
+      -webkit-backdrop-filter: blur(22px) saturate(180%);
+      border: 1px solid rgba(0, 255, 255, 0.18);
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.06), inset 0 0 30px rgba(0, 255, 255, 0.03);
+      border-radius: 18px; padding: 40px 56px; text-align: center;
+      color: #e0f4ff; font-family: 'Courier New', monospace;
+    }
+
+    .glass-panel h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 8px;
+      text-transform: uppercase; margin-bottom: 6px;
+      background: linear-gradient(135deg, #00ffff, #7b2ff7, #ff0044);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px rgba(0,255,255,0.35));
+    }
+
+    .glass-panel h2 {
+      font-size: clamp(1rem, 3vw, 1.4rem); letter-spacing: 4px;
+      color: #7b9fff; margin-bottom: 28px; text-transform: uppercase;
+    }
+
+    .glass-panel p { color: rgba(200,220,255,0.65); font-size: 1rem; line-height: 1.7; max-width: 420px; margin-bottom: 32px; }
+
+    .neon-btn {
+      pointer-events: auto !important; display: inline-block; padding: 14px 48px;
+      font-family: 'Courier New', monospace; font-size: 1.1rem; letter-spacing: 5px;
+      text-transform: uppercase; color: #00ffff;
+      background: rgba(0,255,255,0.06); border: 1px solid rgba(0,255,255,0.35);
+      border-radius: 8px; cursor: pointer; transition: all .2s ease;
+      box-shadow: 0 0 14px rgba(0,255,255,0.12), inset 0 0 10px rgba(0,255,255,0.06);
+    }
+
+    .neon-btn:hover {
+      background: rgba(0,255,255,0.14); border-color: #00ffff;
+      box-shadow: 0 0 30px rgba(0,255,255,0.3), inset 0 0 20px rgba(0,255,255,0.12);
+    }
+
+    /* ── HUD (always visible during gameplay) ─────────── */
+    #hud {
+      position: fixed; top: 0; left: 0; right: 0; padding: 14px 36px;
+      display: flex; justify-content: space-between; align-items: center;
+      pointer-events: none; z-index: 50; font-family: 'Courier New', monospace;
+    }
+
+    .hud-score { color: #00ffff; font-size: 1.2rem; letter-spacing: 3px; text-shadow: 0 0 8px rgba(0,255,255,0.4); }
+    .hud-waves { color: #7b9fff; font-size: 1rem; letter-spacing: 2px; }
+    .hud-lives { color: #ff3366; font-size: 1.2rem; letter-spacing: 3px; text-shadow: 0 0 8px rgba(255,51,102,0.4); }
+
+    /* ── Floating Score Text Container ─────────────────── */
+    #score-texts { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+    .float-text {
+      position: absolute; font-family: 'Courier New', monospace; font-size: 1.4rem;
+      color: #ffdd00; text-shadow: 0 0 12px rgba(255,219,0,0.8);
+      pointer-events: none; animation: floatUp .7s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-60px) scale(1.3); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="hud-score" id="hud-score">SCORE: 0</div>
+  <div class="hud-waves" id="hud-wave">WAVE 1</div>
+  <div class="hud-lives" id="hud-lives">♥ ♥ ♥ ♥ ♥</div>
+</div>
+
+<!-- Floating Score Texts -->
+<div id="score-texts"></div>
+
+<!-- Game Over / Start Overlay -->
+<div id="ui-layer">
+  <div class="glass-panel" id="overlay">
+    <h1>Space Invaders</h1>
+    <h2 id="overlay-title">Welcome, Soldier</h2>
+    <p id="overlay-desc">Defend Earth from the alien invasion.<br>WASD / Arrows to move · Space to fire · Gamepad supported.</p>
+    <button class="neon-btn" id="start-btn">Initialize</button>
+  </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
+```
+
+<tool_call>
+<function=write_file>
+<parameter=path>
+src/shared/utils/input.js

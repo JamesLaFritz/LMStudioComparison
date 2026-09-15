@@ -1,0 +1,351 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen.qwen3.6-35b-a3b/run2/ws",
+ "files": 32,
+ "lines": 3001,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "games/Space_Invaders/Game.ts",
+   2,
+   "../../shared/input/InputManager.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   3,
+   "../../shared/audio/AudioEngine.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   4,
+   "../../shared/vfx/CameraShake.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   5,
+   "../../shared/vfx/ParticleManager.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   6,
+   "../../shared/vfx/ShockwaveRing.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   7,
+   "../../shared/vfx/FloatingScoreText.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   8,
+   "../../shared/vfx/HitStop.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   9,
+   "../../shared/rendering/PostProcessingStack.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   10,
+   "../../shared/rendering/GeometryFactory.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   11,
+   "./entities/PlayerEntity.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   12,
+   "./entities/ProjectileEntity.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   13,
+   "./entities/UFOEntity.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   15,
+   "./systems/CollisionSystem.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   16,
+   "./systems/LevelManager.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/Game.ts",
+   17,
+   "./constants.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/entities/PlayerEntity.ts",
+   2,
+   "../../../shared/input/InputManager.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/systems/CollisionSystem.ts",
+   3,
+   "../../../shared/math/AABB.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/systems/LevelManager.ts",
+   3,
+   "../../../shared/vfx/CameraShake.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/systems/LevelManager.ts",
+   4,
+   "../../../shared/vfx/ParticleManager.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/systems/LevelManager.ts",
+   5,
+   "../../../shared/vfx/ShockwaveRing.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/systems/LevelManager.ts",
+   6,
+   "../../../shared/vfx/FloatingScoreText.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/systems/SpawnerSystem.ts",
+   2,
+   "../entities/InvaderEntity.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "shared/audio/AudioEngine.ts",
+   2,
+   "./SynthPresets.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "shared/input/InputManager.ts",
+   1,
+   "./GamepadAPI.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "shared/pooling/ProjectilePool.ts",
+   2,
+   "./ObjectPool.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "src/main.ts",
+   1,
+   "../games/Space_Invaders/Game.js",
+   "MISSING FILE",
+   ""
+  ]
+ ],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/rendering/PostProcessingStack.ts",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/rendering/PostProcessingStack.ts",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "games/Space_Invaders/Game.ts",
+    4
+   ],
+   [
+    "games/Space_Invaders/systems/LevelManager.ts",
+    3
+   ],
+   [
+    "shared/vfx/CameraShake.ts",
+    4
+   ]
+  ],
+  "particle bursts": [
+   [
+    "games/Space_Invaders/Game.ts",
+    5
+   ],
+   [
+    "games/Space_Invaders/systems/LevelManager.ts",
+    4
+   ],
+   [
+    "shared/vfx/ParticleManager.ts",
+    14
+   ]
+  ],
+  "hit-stop": [
+   [
+    "games/Space_Invaders/Game.ts",
+    8
+   ],
+   [
+    "shared/vfx/HitStop.ts",
+    1
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/MotionTrail.ts",
+    8
+   ]
+  ],
+  "shockwave rings": [],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "shared/pooling/EntityPool.ts",
+    88
+   ],
+   [
+    "shared/pooling/ObjectPool.ts",
+    8
+   ],
+   [
+    "shared/pooling/ProjectilePool.ts",
+    2
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/rendering/GeometryFactory.ts",
+    60
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "shared/rendering/GeometryFactory.ts",
+    21
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio/AudioEngine.ts",
+    5
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/generation/Noise.ts",
+    1
+   ]
+  ],
+  "Gamepad API": [],
+  "keyboard input": [
+   [
+    "games/Space_Invaders/entities/PlayerEntity.ts",
+    68
+   ],
+   [
+    "shared/input/InputManager.ts",
+    50
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "index.html",
+    20
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "index.html",
+    23
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/vfx/ParticleManager.ts",
+   4,
+   "MAX_PARTICLES",
+   500
+  ]
+ ],
+ "dispose_calls": 54,
+ "three_allocations": 49,
+ "violations": [],
+ "non_standard_materials": [
+  [
+   "shared/vfx/ShockwaveRing.ts",
+   "MeshBasicMaterial"
+  ]
+ ],
+ "session": {
+  "model": "qwen.qwen3.6-35b-a3b",
+  "turns": 126,
+  "tool_calls": 123,
+  "run_commands": 14,
+  "verification": {
+   "ran a build": 0,
+   "installed deps": 0,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

@@ -1,0 +1,73 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/prism-ml_bonsai-27b/run3/ws
+==========================================================================
+21 source files, 2635 lines, 3 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 13 BROKEN
+      Space_Invaders/src/main.js:2  MISSING FILE  <- ../shared/core/GameEngine.js
+      Space_Invaders/src/main.js:3  MISSING FILE  <- ../shared/core/InputHandler.js
+      Space_Invaders/src/main.js:4  MISSING FILE  <- ../shared/vfs/ParticleSystem.js
+      Space_Invaders/src/main.js:5  MISSING FILE  <- ../shared/vfs/CameraShake.js
+      Space_Invaders/src/main.js:6  MISSING FILE  <- ../shared/vfs/HitStop.js
+      Space_Invaders/src/main.js:7  MISSING FILE  <- ../shared/vfs/MotionTrail.js
+      Space_Invaders/src/main.js:8  MISSING FILE  <- ../shared/vfs/Shockwave.js
+      Space_Invaders/src/main.js:9  MISSING EXPORT PostProcessor <- PostProcessor.js
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  materials                : MeshStandardMaterial only
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/vfs/PostProcessor.js
+  UnrealBloomPass            yes  shared/vfs/PostProcessor.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  shared/vfs/CameraShake.js
+  particle bursts            yes  shared/vfs/ParticleSystem.js
+  hit-stop                   yes  shared/vfs/HitStop.js
+  motion trails              yes  shared/vfs/MotionTrail.js
+  shockwave rings            yes  shared/vfs/Shockwave.js
+  floating score text        NOT FOUND
+  ---> 5 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/utils/Pool.js
+  InstancedMesh              NOT FOUND
+  particle cap               maxParticles = 3  [OK]  Space_Invaders/src/entities/Player.js:35
+  disposal                   28 dispose() vs 6 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              NOT FOUND
+  Web Audio                  yes  Space_Invaders/src/audio/SoundManager.js
+  procedural noise           NOT FOUND
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) NOT FOUND
+  neon glow (text/box-shadow) yes  Space_Invaders/public/index.html
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/core/InputHandler.js
+  Gamepad API                NOT FOUND
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  213 turns, 209 tool calls, 92 run_command
+  ran a build                NEVER
+  installed deps             1 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 1

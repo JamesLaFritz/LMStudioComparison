@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run2/ws",
+ "port": 5975,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5975/index.html",
+ "start_clicked": "Start Mission",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 10,
+   "delta": 10
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 0 WAVE 1 BEST · LIVES 0 · ▲▲▲",
+ "hud_after": "SCORE 10 WAVE 1 BEST · LIVES 0 · ▲▲▲ +10",
+ "score_before": 0,
+ "score_after": 10,
+ "score_delta": 10
+}

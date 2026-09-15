@@ -1,0 +1,1 @@
+{"reply":"Stopped after 500 tool hops (harness limit, not a model decision) — the turn was cut off mid-task. Raise EMBER_MAX_HOPS or split the task."}

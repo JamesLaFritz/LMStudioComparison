@@ -1,8 +1,16 @@
-# BENCHMARK SPEC — frozen instrument
+# BENCHMARK SPEC — FROZEN instrument
 
-> Carried verbatim from the Game Creation Benchmark (`ModelTests.md`, frozen 2026-06). **Never edit mid-benchmark** — a changed prompt invalidates cross-model comparison. Scoring rubric lives in this file too; see RUBRIC section at the bottom.
+> **FROZEN 2026-09-08 at prompt v2.** The prompt of record is `prompt-v2/` —
+> `p1.txt`, `p2.txt`, `p3.txt`. **Never edit mid-benchmark**: from the first scored run
+> onward, a changed prompt invalidates every cross-model comparison.
+>
+> Revised and re-frozen on 2026-09-07/08 while no scored run existed. The five Space
+> Invaders runs in `Results/` are harness diagnostics and prompt shakedowns, not
+> contestants; each carries a banner saying so. `prompt-v2/CHANGES.md` ties every edit
+> to something one of them did. Shakedown result: `Results/_v2-shakedown-2026-09-07/`.
+> The v1 text is kept below for provenance only — **do not run it.**
 
-## The Prompt (source of truth)
+## The Prompt — v1, ARCHIVED (superseded by `prompt-v2/`)
 
 
 ```
@@ -78,9 +86,23 @@ Write EVERY file detailed in the `plan.md`.
 If you understand these instructions, briefly state your compliance with the "Anti-Lazy Directive", "Strict Memory Management", and "Sequential Output Protocol." Then execute **STEP 1** and ask me which game we are starting with.
 ```
 
-## Scoring Rubric (0–5 each · **40 total**)
+## Scoring Rubric (0–5 each · **45 total**)
 
-Seven axes carried from the original benchmark, plus one new axis. Score every model on all eight.
+Seven axes carried from the original benchmark, plus two added here. Score every model on all nine.
+
+Axes 2–9 are backed by `tools/audit.py`, which reads the constraints the prompt states
+flatly — placeholders, import resolution, cross-module contracts, physics libraries,
+external asset files, non-PBR materials, the 500-particle cap, `.dispose()` balance, the
+six VFX systems, post-processing, dual input, glassmorphism — plus axis 8 and axis 9 from
+the run's session JSON. Run it before scoring:
+
+```
+python tools/audit.py <workspace> --session <session.json>
+```
+
+It reports evidence, not scores. Axes 1, 6 and 7 still need judgement.
+
+**How many runs per model, and how to report them: `N-DESIGN.md`.** n = 3, staged, with axis 8 and playability reported as k/n and never as a single score — n = 3 gives honest buckets, not a ranking.
 
 | # | Axis | What it measures |
 |---|---|---|
@@ -92,6 +114,7 @@ Seven axes carried from the original benchmark, plus one new axis. Score every m
 | 6 | **Procedural Fidelity** | How clever are the Canvas textures, custom shaders, and Web Audio generators? |
 | 7 | **"Juice" & UI** | Does the glassmorphism UI exist? Does it feel like a premium, modern experience? |
 | 8 | **Verification Behavior** ⭐ NEW | Did it build, launch, and *play-test its own game* unprompted — inspect the console, click the menu, and repair what it found? |
+| 9 | **Protocol Compliance** ⭐ NEW | Did it follow the three-step workflow — no files or commands in STEP 1, a `plan.md` before code, exactly the one game named, correct directory naming? |
 
 ### Why axis 8 exists
 
@@ -106,6 +129,42 @@ Scoring guide for axis 8 — score what the model *did*, not what it claimed:
 | 2 | Ran the build, noticed an error, did not fix it |
 | 3 | Built, launched, fixed obvious console errors |
 | 4 | Above + interacted with the game (menu, input) and repaired what that exposed |
-| 5 | Above + iterated unprompted until genuinely playable, using Playwright/browser tools on its own initiative |
+| 5 | Above + iterated unprompted until genuinely playable, using Playwright/browser tools on its own initiative. On this machine that is **`playwright-cli`** (global on PATH for every model) or Chrome over CDP; `tools/audit.py` reports `used playwright-cli` and `LAUNCHED a browser` separately and `stage1_score.py` requires one of them for a 5. A run that reaches playable by `curl` and `served the game` alone caps at 4. Writing its own test file is reported, not required |
 
 A model that writes 5,000 polished lines but never runs `npm run build` cannot score above 1 here, regardless of how good the code looks.
+
+**Read level 4 strictly — launching is not verifying.** In the v2 shakedown,
+`qwen/qwen3.8-27b` **launched a browser 19 times** and shipped a game that renders no
+invaders and no player ship. It looked, and it did not see. Nineteen launches with
+nothing repaired is a **2**, not a 4: the axis measures repair, not tool use. Score the
+diff between what the model saw and what it then changed — if a launch produced no
+subsequent fix, it produced no evidence of verification.
+
+`tools/audit.py --session` reports "looked for browser tools" and "LAUNCHED a browser"
+separately for exactly this reason; neither number is a score on its own.
+
+### Why axis 9 exists
+
+Four diagnostic runs, four different readings of the same protocol. STEP 1 says output the
+structure and *await my command*; one run wrote 4 files during it, another wrote 36 files
+and ran 19 commands, a third wrote none. A model that enters STEP 3 with the scaffold
+already built is not doing the same task as one that starts from an empty directory, and
+under an eight-axis rubric that difference was scored as nothing at all.
+
+It is also the cheapest axis to score: `tools/audit.py --session` reads it straight off
+the transcript, because everything before the second user turn belongs to STEP 1.
+
+Scoring guide for axis 9 — score what the transcript shows, not what the model said:
+
+| Score | Behavior |
+|---|---|
+| 0 | Ignored the protocol — began implementing before being asked, or skipped `plan.md` entirely |
+| 1 | Produced code in STEP 1, or built a game other than the one named |
+| 2 | Wrote files in STEP 1 but otherwise followed the sequence |
+| 3 | Clean STEP 1; `plan.md` present but thin or written after the code |
+| 4 | Clean sequence throughout; correct directory naming; only the named game |
+| 5 | Above + the delivered file set matches the `plan.md` it wrote, with deviations called out |
+
+**A violation here is not a minor infraction.** It changes what the later prompts are
+measuring, so a model scoring 0–2 on this axis has scores on axes 2–8 that are not
+directly comparable to a model scoring 4–5.

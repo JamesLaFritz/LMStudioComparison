@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders - Retro-Futurism Edition</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+    <!-- Main canvas container -->
+    <div id="canvas-container"></div>
+    
+    <!-- Glassmorphism UI Overlay -->
+    <div class="ui-overlay">
+        <!-- Score Display -->
+        <div class="glass-panel score-panel">
+            <h2 class="neon-text">SCORE</h2>
+            <span id="score-display" class="neon-number">0</span>
+        </div>
+        
+        <!-- Lives Display -->
+        <div class="glass-panel lives-panel">
+            <h2 class="neon-text">LIVES</h2>
+            <div id="lives-container"></div>
+        </div>
+        
+        <!-- Level Display -->
+        <div class="glass-panel level-panel">
+            <h2 class="neon-text">LEVEL</h2>
+            <span id="level-display" class="neon-number">1</span>
+        </div>
+    </div>
+    
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="overlay hidden">
+        <div class="glass-panel game-over-panel">
+            <h1 class="neon-text title">GAME OVER</h1>
+            <p class="final-score">Final Score: <span id="final-score">0</span></p>
+            <button id="restart-button" class="neon-button">PLAY AGAIN </button>
+        </div>
+    </div>
+    
+    <!-- Pause Screen -->
+    <div id="pause-screen" class="overlay hidden">
+        <div class="glass-panel pause-panel">
+            <h1 class="neon-text title">PAUSED</h1>
+            <button id="resume-button" class="neon-button"> RESUME </button>
+        </div>
+    </div>
+    
+    <!-- Floating Score Text Container -->
+    <div id="floating-scores"></div>
+    
+    <script type="module" src="../Space_Invaders/main.js"></script>
+</body>
+</html>

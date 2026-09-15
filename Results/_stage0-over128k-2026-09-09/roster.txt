@@ -1,0 +1,5 @@
+qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled-apex-mtp
+ud-2.0-qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled
+qwen/qwen3.5-9b
+qwen3.8-27b-fable-distill
+qwen/qwen3.5-35b-a3b

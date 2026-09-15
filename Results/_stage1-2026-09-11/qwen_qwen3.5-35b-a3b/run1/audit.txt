@@ -1,0 +1,82 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run1/ws
+==========================================================================
+30 source files, 5657 lines, 5 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 61 BROKEN
+      games/Space_Invaders/main.ts:1  MISSING FILE  <- ../../shared/core/GameEngine.js
+      games/Space_Invaders/main.ts:2  MISSING FILE  <- ../../shared/core/InputManager.js
+      games/Space_Invaders/main.ts:3  MISSING FILE  <- ../../shared/core/ParticleManager.js
+      games/Space_Invaders/main.ts:4  MISSING FILE  <- ../../shared/core/MemoryManager.js
+      games/Space_Invaders/main.ts:5  MISSING FILE  <- ../../shared/vfx/CameraShake.js
+      games/Space_Invaders/main.ts:6  MISSING FILE  <- ../../shared/vfx/HitStop.js
+      games/Space_Invaders/main.ts:7  MISSING FILE  <- ../../shared/vfx/MotionTrails.js
+      games/Space_Invaders/main.ts:8  MISSING FILE  <- ../../shared/vfx/ShockwaveRings.js
+  cross-module contracts   : 7 BROKEN
+      games/Space_Invaders/entities/PlayerShip.ts:27  NeonMaterials.createPlayerMaterial()
+      shared/graphics/ProceduralTextures.ts:32  MathUtils.hslToHex()
+      shared/graphics/ProceduralTextures.ts:33  MathUtils.hslToHex()
+      shared/vfx/CameraShake.ts:52  MathUtils.randomRange()
+      shared/vfx/CameraShake.ts:53  MathUtils.randomRange()
+      shared/vfx/CameraShake.ts:54  MathUtils.randomRange()
+      shared/vfx/ShockwaveRings.ts:141  ParticleManager.spawnExplosion()
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 2 use(s) -- prompt mandates MeshStandardMaterial
+      games/Space_Invaders/entities/PlayerShip.ts  MeshBasicMaterial
+      shared/core/ParticleManager.ts  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/graphics/EffectComposerSetup.ts
+  UnrealBloomPass            yes  shared/graphics/EffectComposerSetup.ts
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  games/Space_Invaders/main.ts
+  particle bursts            yes  games/Space_Invaders/main.ts
+  hit-stop                   yes  games/Space_Invaders/main.ts
+  motion trails              yes  games/Space_Invaders/main.ts
+  shockwave rings            yes  games/Space_Invaders/entities/Enemy.ts
+  floating score text        yes  games/Space_Invaders/main.ts
+  ---> 6 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  games/Space_Invaders/entities/Enemy.ts
+  InstancedMesh              yes  games/Space_Invaders/entities/Enemy.ts
+  particle cap               NO DECLARED CAP -- prompt mandates a hard 500 limit
+  disposal                   52 dispose() vs 21 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  games/Space_Invaders/assets/AlienSpriteGen.ts
+  Web Audio                  yes  shared/utils/AudioSynth.ts
+  procedural noise           yes  games/Space_Invaders/assets/BackgroundGen.ts
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  index.html
+  neon glow (text/box-shadow) yes  shared/vfx/FloatingText.ts
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/core/InputManager.ts
+  Gamepad API                yes  shared/core/InputManager.ts
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  116 turns, 113 tool calls, 23 run_command
+  ran a build                17 time(s)
+  installed deps             2 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

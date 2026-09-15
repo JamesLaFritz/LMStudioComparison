@@ -1,0 +1,18 @@
+{
+ "model": "google/gemma-4-26b-a4b",
+ "seed": 2,
+ "session": "8e95a0bd",
+ "p1_seconds": 11,
+ "p2_seconds": 16,
+ "p3_seconds": 22,
+ "continues": 0,
+ "total_seconds": 49,
+ "turns": 3,
+ "tokens_in": 16315,
+ "tokens_out": 5660,
+ "bails": [],
+ "compactions": 0,
+ "max_reasoning": 726,
+ "seed_recorded": 2,
+ "files": 0
+}

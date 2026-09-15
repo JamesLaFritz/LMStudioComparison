@@ -1,0 +1,18 @@
+{
+ "model": "qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max",
+ "seed": 1,
+ "session": "6a644d19",
+ "p1_seconds": 82,
+ "p2_seconds": 705,
+ "p3_seconds": 1713,
+ "continues": 0,
+ "total_seconds": 2500,
+ "turns": 86,
+ "tokens_in": 2807907,
+ "tokens_out": 77113,
+ "bails": [],
+ "compactions": 0,
+ "max_reasoning": 799,
+ "seed_recorded": 1,
+ "files": 29
+}

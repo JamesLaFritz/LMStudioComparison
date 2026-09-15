@@ -1,0 +1,18 @@
+{
+ "model": "qwen-agentworld-35b-a3b-apex",
+ "seed": 2,
+ "session": "9d63f621",
+ "p1_seconds": 18,
+ "p2_seconds": 36,
+ "p3_seconds": 118,
+ "continues": 0,
+ "total_seconds": 172,
+ "turns": 3,
+ "tokens_in": 19579,
+ "tokens_out": 22713,
+ "bails": [],
+ "compactions": 0,
+ "max_reasoning": 8182,
+ "seed_recorded": 2,
+ "files": 0
+}

@@ -1,0 +1,16 @@
+{
+  "name": "retro-futurism-space-invaders",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "three": "^0.164.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vanilla-extras": "^3.2.0",
+    "vite": "^5.4.0"
+  }
+}

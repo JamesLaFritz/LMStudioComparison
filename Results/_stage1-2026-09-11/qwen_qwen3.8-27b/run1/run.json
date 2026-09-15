@@ -1,0 +1,18 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "seed": 1,
+ "session": "991ec943",
+ "p1_seconds": 224,
+ "p2_seconds": 315,
+ "p3_seconds": 14400,
+ "continues": 0,
+ "total_seconds": 14939,
+ "turns": 309,
+ "tokens_in": 16959513,
+ "tokens_out": 512157,
+ "bails": [],
+ "compactions": 4,
+ "max_reasoning": 8191,
+ "seed_recorded": 1,
+ "files": 55
+}

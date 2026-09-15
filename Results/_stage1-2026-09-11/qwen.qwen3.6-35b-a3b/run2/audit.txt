@@ -1,0 +1,74 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen.qwen3.6-35b-a3b/run2/ws
+==========================================================================
+32 source files, 3001 lines, 5 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 26 BROKEN
+      games/Space_Invaders/Game.ts:2  MISSING FILE  <- ../../shared/input/InputManager.js
+      games/Space_Invaders/Game.ts:3  MISSING FILE  <- ../../shared/audio/AudioEngine.js
+      games/Space_Invaders/Game.ts:4  MISSING FILE  <- ../../shared/vfx/CameraShake.js
+      games/Space_Invaders/Game.ts:5  MISSING FILE  <- ../../shared/vfx/ParticleManager.js
+      games/Space_Invaders/Game.ts:6  MISSING FILE  <- ../../shared/vfx/ShockwaveRing.js
+      games/Space_Invaders/Game.ts:7  MISSING FILE  <- ../../shared/vfx/FloatingScoreText.js
+      games/Space_Invaders/Game.ts:8  MISSING FILE  <- ../../shared/vfx/HitStop.js
+      games/Space_Invaders/Game.ts:9  MISSING FILE  <- ../../shared/rendering/PostProcessingStack.js
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 1 use(s) -- prompt mandates MeshStandardMaterial
+      shared/vfx/ShockwaveRing.ts  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/rendering/PostProcessingStack.ts
+  UnrealBloomPass            yes  shared/rendering/PostProcessingStack.ts
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  games/Space_Invaders/Game.ts
+  particle bursts            yes  games/Space_Invaders/Game.ts
+  hit-stop                   yes  games/Space_Invaders/Game.ts
+  motion trails              yes  shared/vfx/MotionTrail.ts
+  shockwave rings            NOT FOUND
+  floating score text        NOT FOUND
+  ---> 4 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/pooling/EntityPool.ts
+  InstancedMesh              yes  shared/rendering/GeometryFactory.ts
+  particle cap               MAX_PARTICLES = 500  [OK]  shared/vfx/ParticleManager.ts:4
+  disposal                   54 dispose() vs 49 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  shared/rendering/GeometryFactory.ts
+  Web Audio                  yes  shared/audio/AudioEngine.ts
+  procedural noise           yes  shared/generation/Noise.ts
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  index.html
+  neon glow (text/box-shadow) yes  index.html
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  games/Space_Invaders/entities/PlayerEntity.ts
+  Gamepad API                NOT FOUND
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  126 turns, 123 tool calls, 14 run_command
+  ran a build                NEVER
+  installed deps             NEVER
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

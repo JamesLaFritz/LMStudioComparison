@@ -1,5 +1,10 @@
 # FROZEN — contestant evidence, read-only
 
+> **NOT A BENCHMARK RESULT.** This run was harness validation, executed against
+> prompt **v1** before the instrument was revised. It is not a scored contestant and
+> must not be compared against Phase 1a results, which run prompt `prompt-v2/` and
+> the nine-axis rubric. See `BENCHMARK-SPEC.md` and `prompt-v2/CHANGES.md`.
+
 Everything under this directory is **evidence**, not source. It records what specific
 contestants produced from the three-prompt Space Invaders workload on 2026-09-04.
 

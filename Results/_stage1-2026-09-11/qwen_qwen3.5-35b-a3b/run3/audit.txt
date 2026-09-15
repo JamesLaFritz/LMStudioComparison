@@ -1,0 +1,78 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run3/ws
+==========================================================================
+19 source files, 3351 lines, 4 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 8 BROKEN
+      main.js:15  MISSING EXPORT AlienType <- enemy.js
+      main.js:17  MISSING EXPORT PowerUpType <- powerUp.js
+      Space_Invaders/game/enemy.js:2  MISSING FILE  <- ../../../shared/utils/math.js
+      Space_Invaders/game/enemy.js:3  MISSING FILE  <- ../../../shared/utils/pool.js
+      Space_Invaders/game/entity.js:2  MISSING FILE  <- ../../../shared/utils/math.js
+      Space_Invaders/game/gameLogic.js:1  MISSING FILE  <- ../../../shared/utils/math.js
+      Space_Invaders/game/player.js:3  MISSING FILE  <- ../../../shared/utils/math.js
+      Space_Invaders/game/player.js:4  MISSING FILE  <- ../../../shared/input/controller.js
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 5 use(s) -- prompt mandates MeshStandardMaterial
+      main.js  MeshBasicMaterial
+      shared/vfx/shockwave.js  MeshBasicMaterial
+      Space_Invaders/game/player.js  MeshBasicMaterial
+      Space_Invaders/game/player.js  MeshBasicMaterial
+      Space_Invaders/game/player.js  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/postprocessing/composer.js
+  UnrealBloomPass            yes  shared/postprocessing/composer.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  main.js
+  particle bursts            yes  main.js
+  hit-stop                   yes  main.js
+  motion trails              yes  main.js
+  shockwave rings            yes  main.js
+  floating score text        yes  main.js
+  ---> 6 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/utils/particles.js
+  InstancedMesh              NOT FOUND
+  particle cap               maxParticles = 500  [OK]  shared/utils/particles.js:8
+  disposal                   52 dispose() vs 32 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  shared/vfx/floatingText.js
+  Web Audio                  yes  shared/utils/audio.js
+  procedural noise           NOT FOUND
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  main.js
+  neon glow (text/box-shadow) yes  main.js
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/input/controller.js
+  Gamepad API                yes  shared/input/controller.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  288 turns, 281 tool calls, 196 run_command
+  ran a build                NEVER
+  installed deps             3 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 2

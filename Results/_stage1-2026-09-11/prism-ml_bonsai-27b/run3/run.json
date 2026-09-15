@@ -1,0 +1,18 @@
+{
+ "model": "prism-ml/bonsai-27b",
+ "seed": 3,
+ "session": "68c7535b",
+ "p1_seconds": 53,
+ "p2_seconds": 1576,
+ "p3_seconds": 175,
+ "continues": 0,
+ "total_seconds": 1804,
+ "turns": 213,
+ "tokens_in": 12427946,
+ "tokens_out": 120301,
+ "bails": [],
+ "compactions": 1,
+ "max_reasoning": 1625,
+ "seed_recorded": 3,
+ "files": 24
+}

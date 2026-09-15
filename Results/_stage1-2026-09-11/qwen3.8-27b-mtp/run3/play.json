@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run3/ws",
+ "port": 5976,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5976/index.html",
+ "start_clicked": "LAUNCH DEFENSE GRID",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 323,
+   "delta": 323
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 0 BEST 0 SECTOR 01 SHIPS ▲▲▲ particles 0/596 · draws 1",
+ "hud_after": "SCORE 323 BEST 0 SECTOR 01 SHIPS ▲▲▲ particles 4/596 · draws 1",
+ "score_before": 0,
+ "score_after": 323,
+ "score_delta": 323
+}

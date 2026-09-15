@@ -1,0 +1,21 @@
+[36mvite v8.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 7 modules transformed.
+[31m✗[39m Build failed in 164ms
+[31merror during build:
+[31mBuild failed with 1 error:
+
+[31m[rolldown:vite-resolve] [0mplugin `rolldown:vite-resolve` threw an error
+
+Caused by:
+    "./examples/controls/OrbitControls.js" is not exported under the conditions ["module", "browser", "production", "import"] from package C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws\node_modules\three (see exports field in C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws\node_modules\three\package.json)
+[31m
+    at aggregateBindingErrorsIntoJsError (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/rolldown/dist/shared/error-CRNyaqoL.mjs:48:18)
+    at unwrapBindingResult (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/rolldown/dist/shared/error-CRNyaqoL.mjs:18:128)
+    at #build (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/rolldown/dist/shared/rolldown-B-jRyK4b.mjs:133:34)
+    at async buildEnvironment (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/vite/dist/node/chunks/node.js:34082:66)
+    at async Object.build (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/vite/dist/node/chunks/node.js:34503:19)
+    at async Object.buildApp (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/vite/dist/node/chunks/node.js:34500:153)
+    at async CAC.<anonymous> (file:///C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws/node_modules/vite/dist/node/cli.js:780:3) {
+  errors: [Getter/Setter]
+}[39m

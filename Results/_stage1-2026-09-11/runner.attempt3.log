@@ -1,0 +1,19 @@
+22:51:40  =============== qwen/qwen3.8-27b - all 3 runs complete, skipping
+22:51:40  =============== qwen3.8-27b-mtp - all 3 runs complete, skipping
+22:51:40  =============== qwen/qwen3.5-35b-a3b - all 3 runs complete, skipping
+22:51:41  =============== qwen.qwen3.6-35b-a3b - all 3 runs complete, skipping
+22:51:41  =============== qwen-agentworld-35b-a3b-apex - all 3 runs complete, skipping
+22:51:41  =============== qwen3.5-27b - all 3 runs complete, skipping
+22:51:41  =============== google/gemma-4-26b-a4b - all 3 runs complete, skipping
+22:51:42  =============== qwen/qwen3.6-27b - all 3 runs complete, skipping
+22:51:42  =============== qwen3.6-35b-a3b-mtp@q3_k_m - all 3 runs complete, skipping
+22:51:42  =============== prism-ml/bonsai-27b
+22:51:52    loaded: 9459 MiB (idle 910), ctx 128512
+22:51:52    --- run 1 already complete, skipping
+22:51:52    --- run 2 (seed 2)
+23:24:27      p1 20s · p2 48s · p3 1886s
+    done: 502 turns, 27 files, 0 continue(s), bails=['max_hops'], 32m
+23:24:30    --- run 3 already complete, skipping
+23:24:30  =============== liquid/lfm2-24b-a2b - all 3 runs complete, skipping
+23:24:30  =============== qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max - all 3 runs complete, skipping
+23:24:32  STAGE 1 COMPLETE

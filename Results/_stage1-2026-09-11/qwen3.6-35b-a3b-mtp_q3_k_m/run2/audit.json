@@ -1,0 +1,293 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws",
+ "files": 27,
+ "lines": 3275,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "games/Space_Invaders/SpaceInvadersScene.ts",
+   3,
+   "Input.ts",
+   "MISSING EXPORT",
+   "Input"
+  ],
+  [
+   "games/Space_Invaders/SpaceInvadersScene.ts",
+   4,
+   "Physics.ts",
+   "MISSING EXPORT",
+   "AABBOverlap"
+  ],
+  [
+   "games/Space_Invaders/SpaceInvadersScene.ts",
+   5,
+   "TextureGenerator.ts",
+   "MISSING EXPORT",
+   "TextureGenerator"
+  ],
+  [
+   "games/Space_Invaders/SpaceInvadersScene.ts",
+   5,
+   "TextureGenerator.ts",
+   "MISSING EXPORT",
+   "AlienType"
+  ],
+  [
+   "games/Space_Invaders/SpaceInvadersScene.ts",
+   5,
+   "TextureGenerator.ts",
+   "MISSING EXPORT",
+   "ALIEN_COLORS"
+  ],
+  [
+   "games/Space_Invaders/SpaceInvadersScene.ts",
+   14,
+   "ScoreComponent.ts",
+   "MISSING EXPORT",
+   "GameState"
+  ],
+  [
+   "games/Space_Invaders/components/ParticleBurstComponent.ts",
+   2,
+   "ShockwaveRings.ts",
+   "MISSING EXPORT",
+   "ShockwaveRings"
+  ],
+  [
+   "games/Space_Invaders/components/ParticleBurstComponent.ts",
+   3,
+   "FloatingScoreText.ts",
+   "MISSING EXPORT",
+   "FloatingScoreText"
+  ],
+  [
+   "games/Space_Invaders/components/ProjectilePool.ts",
+   3,
+   "../entities/Projectile.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/entities/Alien.ts",
+   2,
+   "../assets/TextureGenerator.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "games/Space_Invaders/entities/ShieldBlock.ts",
+   2,
+   "../assets/TextureGenerator.js",
+   "MISSING FILE",
+   ""
+  ]
+ ],
+ "broken_calls": [
+  [
+   "shared/vfx/ParticleBursts.ts",
+   16,
+   "ParticleManager",
+   "spawnBurst"
+  ],
+  [
+   "shared/vfx/ParticleBursts.ts",
+   28,
+   "ParticleManager",
+   "spawnBurst"
+  ],
+  [
+   "shared/vfx/ParticleBursts.ts",
+   39,
+   "ParticleManager",
+   "spawnBurst"
+  ],
+  [
+   "shared/vfx/ParticleBursts.ts",
+   52,
+   "ParticleManager",
+   "spawnBurst"
+  ],
+  [
+   "shared/vfx/ParticleBursts.ts",
+   64,
+   "ParticleManager",
+   "spawnBurst"
+  ]
+ ],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/Engine.ts",
+    2
+   ],
+   [
+    "shared/postprocessing/BloomSetup.ts",
+    1
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/postprocessing/BloomSetup.ts",
+    3
+   ]
+  ],
+  "camera shake": [
+   [
+    "games/Space_Invaders/vfx/SpaceInvadersVFX.ts",
+    2
+   ],
+   [
+    "shared/vfx/CameraShake.ts",
+    9
+   ]
+  ],
+  "particle bursts": [
+   [
+    "games/Space_Invaders/assets/AudioSynth.ts",
+    54
+   ],
+   [
+    "games/Space_Invaders/components/ParticleBurstComponent.ts",
+    1
+   ],
+   [
+    "games/Space_Invaders/vfx/SpaceInvadersVFX.ts",
+    40
+   ],
+   [
+    "shared/ParticleManager.ts",
+    16
+   ],
+   [
+    "shared/vfx/ParticleBursts.ts",
+    1
+   ]
+  ],
+  "hit-stop": [
+   [
+    "games/Space_Invaders/vfx/SpaceInvadersVFX.ts",
+    3
+   ]
+  ],
+  "motion trails": [
+   [
+    "games/Space_Invaders/entities/Projectile.ts",
+    61
+   ],
+   [
+    "shared/vfx/MotionTrails.ts",
+    8
+   ]
+  ],
+  "shockwave rings": [],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "games/Space_Invaders/SpaceInvadersScene.ts",
+    415
+   ],
+   [
+    "games/Space_Invaders/components/ProjectilePool.ts",
+    2
+   ],
+   [
+    "games/Space_Invaders/entities/Player.ts",
+    22
+   ],
+   [
+    "shared/ObjectPool.ts",
+    2
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/ParticleManager.ts",
+    18
+   ],
+   [
+    "shared/vfx/MotionTrails.ts",
+    11
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "games/Space_Invaders/assets/TextureGenerator.ts",
+    107
+   ],
+   [
+    "shared/vfx/FloatingScoreText.ts",
+    35
+   ]
+  ],
+  "Web Audio": [
+   [
+    "games/Space_Invaders/assets/AudioSynth.ts",
+    12
+   ]
+  ],
+  "procedural noise": [],
+  "Gamepad API": [
+   [
+    "shared/Input.ts",
+    48
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/Input.ts",
+    16
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "index.html",
+    27
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "index.html",
+    33
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/ParticleManager.ts",
+   13,
+   "MAX_PARTICLES",
+   500
+  ]
+ ],
+ "dispose_calls": 54,
+ "three_allocations": 29,
+ "violations": [],
+ "non_standard_materials": [
+  [
+   "shared/vfx/ShockwaveRings.ts",
+   "MeshBasicMaterial"
+  ]
+ ],
+ "session": {
+  "model": "qwen3.6-35b-a3b-mtp@q3_k_m",
+  "turns": 152,
+  "tool_calls": 151,
+  "run_commands": 47,
+  "verification": {
+   "ran a build": 27,
+   "installed deps": 4,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

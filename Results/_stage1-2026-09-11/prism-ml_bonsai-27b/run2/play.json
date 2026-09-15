@@ -1,0 +1,12 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/prism-ml_bonsai-27b/run2/ws",
+ "port": 5911,
+ "outcome": "broken",
+ "errors": [],
+ "notes": [
+  "goto: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5911/Space_Invaders/index.html\nCall log:\n",
+  "page did not load: no response"
+ ],
+ "page": "Space_Invaders/index.html",
+ "url": "http://127.0.0.1:5911/Space_Invaders/index.html"
+}

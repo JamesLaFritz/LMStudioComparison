@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retro-Futurism Arcade — Space Invaders</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: #000; font-family: 'Courier New', monospace;
+    }
+
+    /* ── Canvas ───────────────────────────────────────────── */
+    #game-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+    }
+
+    /* ── Glassmorphism HUD Overlay ────────────────────────── */
+    #hud-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10; pointer-events: none;
+    }
+
+    /* ── Score Panel (top-left) ───────────────────────────── */
+    .score-panel {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 255, 204, 0.3);
+      border-radius: 8px; padding: 16px 24px;
+      color: #00ffcc; font-size: 14px; line-height: 1.8;
+      text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+    }
+
+    .score-panel .label { color: rgba(0, 255, 204, 0.6); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .score-panel .value { font-size: 28px; font-weight: bold; color: #fff; text-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
+
+    /* ── Wave Indicator (top-center) ──────────────────────── */
+    .wave-indicator {
+      position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 0, 128, 0.3);
+      border-radius: 8px; padding: 12px 32px;
+      color: #ff0080; font-size: 16px; letter-spacing: 3px; text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 0, 128, 0.7);
+    }
+
+    /* ── Lives (top-right) ────────────────────────────────── */
+    .lives-panel {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      border-radius: 8px; padding: 16px 24px;
+      color: #00c8ff; font-size: 14px; line-height: 1.8;
+      text-shadow: 0 0 8px rgba(0, 200, 255, 0.6);
+    }
+
+    .lives-panel .label { color: rgba(0, 200, 255, 0.6); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .lives-panel .value { font-size: 28px; font-weight: bold; color: #fff; text-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
+
+    /* ── Controls Hint (bottom-center) ────────────────────── */
+    .controls-hint {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px; padding: 10px 24px;
+      color: rgba(255, 255, 255, 0.5); font-size: 11px; letter-spacing: 1px;
+    }
+
+    /* ── Floating Score Text (3D projected) ───────────────── */
+    .floating-score {
+      position: absolute; pointer-events: none; z-index: 20;
+      color: #fff; font-size: 20px; font-weight: bold;
+      text-shadow: 0 0 10px rgba(0, 255, 204, 0.8), 0 0 20px rgba(0, 255, 204, 0.4);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    /* ── Game Over / Start Screen ─────────────────────────── */
+    .game-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 100; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+
+    .game-overlay.hidden { display: none; }
+
+    .game-overlay h1 {
+      font-size: 64px; color: #fff; letter-spacing: 8px; text-transform: uppercase;
+      text-shadow: 0 0 30px rgba(0, 255, 204, 0.8), 0 0 60px rgba(0, 255, 204, 0.4);
+      margin-bottom: 16px;
+    }
+
+    .game-overlay h2 {
+      font-size: 32px; color: #ff0080; letter-spacing: 4px; text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(255, 0, 128, 0.6);
+      margin-bottom: 32px;
+    }
+
+    .game-overlay p {
+      font-size: 16px; color: rgba(255, 255, 255, 0.6); letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .game-overlay .start-btn {
+      margin-top: 32px; padding: 16px 48px; font-size: 18px; font-family: 'Courier New', monospace;
+      letter-spacing: 3px; text-transform: uppercase; color: #00ffcc;
+      background: rgba(0, 255, 204, 0.1); border: 2px solid rgba(0, 255, 204, 0.5);
+      border-radius: 8px; cursor: pointer; pointer-events: all;
+      text-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .game-overlay .start-btn:hover {
+      background: rgba(0, 255, 204, 0.25); border-color: #00ffcc;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+    }
+
+    /* ── Scanline Overlay (retro CRT effect) ──────────────── */
+    #scanlines {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 5; pointer-events: none; opacity: 0.04;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0px, transparent 2px, #000 2px, #000 4px
+      );
+    }
+
+    /* ── Vignette (post-processing fallback) ─────────────── */
+    #vignette {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 4; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WebGL Canvas -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Retro CRT Scanlines -->
+  <div id="scanlines"></div>
+
+  <!-- Vignette Overlay -->
+  <div id="vignette"></div>
+
+  <!-- HUD Overlay (Glassmorphism) -->
+  <div id="hud-overlay">
+    <div class="score-panel" id="score-panel">
+      <div class="label">Score</div>
+      <div class="value" id="score-value">0</div>
+    </div>
+
+    <div class="wave-indicator" id="wave-indicator">Wave 1</div>
+
+    <div class="lives-panel" id="lives-panel">
+      <div class="label">Lives</div>
+      <div class="value" id="lives-value">♥♥♥</div>
+    </div>
+
+    <div class="controls-hint" id="controls-hint">
+      WASD / Arrows to Move &nbsp;│&nbsp; Space / R1 to Fire &nbsp;│&nbsp; Gamepad Supported
+    </div>
+  </div>
+
+  <!-- Start Screen Overlay -->
+  <div class="game-overlay" id="start-screen">
+    <h1>Space Invaders</h1>
+    <p>Retro-Futurism Edition</p>
+    <button class="start-btn" id="start-btn">Start Game</button>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-overlay hidden" id="gameover-screen">
+    <h2>Game Over</h2>
+    <p>Final Score: <span id="final-score">0</span></p>
+    <button class="start-btn" id="restart-btn">Play Again</button>
+  </div>
+
+  <!-- Floating Text Container -->
+  <div id="floating-text-container"></div>
+
+  <script type="module" src="./Space_Invaders/index.js"></script>
+</body>
+</html>

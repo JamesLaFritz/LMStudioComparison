@@ -1,0 +1,12 @@
+qwen/qwen3.8-27b
+qwen3.8-27b-mtp
+qwen3.6-35b-a3b-mtp@q3_k_m
+qwen/qwen3.6-27b
+qwen.qwen3.6-35b-a3b
+qwen-agentworld-35b-a3b-apex
+qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max
+google/gemma-4-26b-a4b
+openai/gpt-oss-20b
+gemma-4-12b-agentic-fable5-composer2.5-v2-3.5x-tau2@q8_0
+prism-ml/bonsai-27b
+qwen3.5-27b

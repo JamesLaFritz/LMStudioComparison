@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Invaders - AAA Retro-Futurism</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #0a0a15; font-family: 'Courier New', monospace; }
+    
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    #game-container { position: relative; width: 100vw; height: 100vh; }
+
+    /* Start Screen */
+    #start-screen {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200;
+    }
+    #start-screen.hidden { display: none; }
+
+    .title { font-size: 72px; font-weight: bold; color: #ffffff; text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(255, 0, 136, 0.6); margin-bottom: 32px; letter-spacing: 8px; }
+    .subtitle { font-size: 20px; color: #aaaaaa; margin-bottom: 48px; text-align: center; line-height: 1.6; }
+
+    .controls-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 48px; text-align: left; }
+    .control-item { font-size: 16px; color: #cccccc; }
+    .key { display: inline-block; padding: 4px 12px; background: rgba(0, 255, 255, 0.2); border-radius: 6px; color: #00ffff; font-weight: bold; margin-right: 8px; }
+
+    #start-btn {
+      padding: 16px 48px; font-size: 24px; font-family: 'Courier New', monospace; font-weight: bold; color: #ffffff;
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(255, 0, 136, 0.3));
+      border: 2px solid rgba(0, 255, 255, 0.5); border-radius: 12px; cursor: pointer; transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(0, 255, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    #start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(0, 255, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3); border-color: #00ffff; }
+
+    /* Game Over Screen */
+    #game-over-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; }
+    #game-over-screen.hidden { display: none; }
+    .game-over-title { font-size: 64px; font-weight: bold; color: #ff0088; text-shadow: 0 0 30px rgba(255, 0, 136, 0.8), 0 0 60px rgba(255, 0, 136, 0.4); margin-bottom: 24px; }
+    .final-score { font-size: 32px; color: #ffffff; margin-bottom: 32px; }
+
+    /* Victory Screen */
+    #victory-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; }
+    #victory-screen.hidden { display: none; }
+    .victory-title { font-size: 64px; font-weight: bold; color: #00ff88; text-shadow: 0 0 30px rgba(0, 255, 136, 0.8), 0 0 60px rgba(0, 255, 136, 0.4); margin-bottom: 24px; }
+
+    /* Loading Screen */
+    #loading-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; z-index: 300; background: rgba(10, 10, 21, 0.95); }
+    #loading-screen.hidden { display: none; }
+    .loader { width: 64px; height: 64px; border: 4px solid rgba(0, 255, 255, 0.3); border-top-color: #00ffff; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { margin-top: 24px; font-size: 18px; color: #00ffff; letter-spacing: 2px; }
+
+    /* HUD */
+    #hud { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; padding: 16px 24px; z-index: 100; }
+    .hud-item { display: flex; align-items: center; gap: 12px; }
+    .hud-label { font-size: 14px; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); letter-spacing: 1px; }
+    .hud-value { font-size: 24px; font-weight: bold; color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.6); }
+    #health-container { width: 200px; height: 12px; background: rgba(0, 0, 0, 0.5); border-radius: 6px; overflow: hidden; border: 1px solid rgba(0, 255, 255, 0.3); }
+    #health-bar { height: 100%; background: linear-gradient(90deg, #ff0088, #ff6600); width: 100%; transition: width 0.2s ease-out; box-shadow: 0 0 15px rgba(255, 0, 136, 0.6); }
+    #shield-indicator { position: absolute; top: 80px; left: 20px; padding: 8px 16px; border-radius: 8px; background: rgba(0, 255, 255, 0.15); backdrop-filter: blur(8px); border: 1px solid rgba(0, 255, 255, 0.4); display: none; z-index: 90; }
+    #shield-indicator.active { display: block; animation: pulse-shield 1s infinite ease-in-out; }
+    @keyframes pulse-shield { 0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); } 50% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8); } }
+    #powerup-container { position: absolute; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 90; }
+    .powerup-indicator { padding: 8px 16px; border-radius: 8px; font-size: 14px; display: none; }
+    .powerup-indicator.active { display: block; }
+    #spread-shot { background: rgba(255, 0, 136, 0.2); border-color: rgba(255, 0, 136, 0.6); }
+    #rapid-fire { background: rgba(0, 255, 0, 0.2); border-color: rgba(0, 255, 0, 0.6); }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="loading-screen" class="glass-panel">
+      <div style="text-align: center;">
+        <div class="loader"></div>
+        <div class="loading-text">INITIALIZING SYSTEMS...</div>
+      </div>
+    </div>
+
+    <div id="start-screen" class="glass-panel">
+      <h1 class="title">SPACE INVADERS</h1>
+      <p class="subtitle">AAA Retro-Futurism Remaster<br>Defend Earth from the alien invasion!</p>
+      <div class="controls-info">
+        <div class="control-item"><span class="key">WASD</span> or <span class="key">Arrows</span> - Move</div>
+        <div class="control-item"><span class="key">Space</span> - Shoot</div>
+        <div class="control-item"><span class="key">Gamepad</span> - Controller Support</div>
+        <div class="control-item"><span class="key">ESC</span> - Pause</div>
+      </div>
+      <button id="start-btn">START MISSION</button>
+    </div>
+
+    <div id="game-over-screen" class="glass-panel hidden">
+      <h2 class="game-over-title">MISSION FAILED</h2>
+      <p class="final-score">Final Score: <span id="final-score-value">0</span></p>
+      <button id="restart-btn" style="padding: 16px 48px; font-size: 20px; background: rgba(255, 0, 136, 0.3); border: 2px solid rgba(255, 0, 136, 0.6); color: #fff; border-radius: 12px; cursor: pointer;">RETRY</button>
+    </div>
+
+    <div id="victory-screen" class="glass-panel hidden">
+      <h2 class="victory-title">MISSION COMPLETE!</h2>
+      <p class="final-score">Final Score: <span id="victory-score-value">0</span></p>
+      <button id="play-again-btn" style="padding: 16px 48px; font-size: 20px; background: rgba(0, 255, 136, 0.3); border: 2px solid rgba(0, 255, 136, 0.6); color: #fff; border-radius: 12px; cursor: pointer;">PLAY AGAIN</button>
+    </div>
+
+    <div id="hud" class="glass-panel hidden">
+      <div class="hud-item"><span class="hud-label">SCORE:</span><span class="hud-value" id="score-display">0</span></div>
+      <div class="hud-item"><span class="hud-label">WAVE:</span><span class="hud-value" id="wave-display">1</span></div>
+      <div class="hud-item"><span class="hud-label">ALIENS:</span><span class="hud-value" id="aliens-display">55</span></div>
+      <div class="hud-item"><span class="hud-label">SHIELD:</span><div id="health-container"><div id="health-bar"></div></div></div>
+    </div>
+
+    <div id="shield-indicator" class="glass-panel">SHIELD ACTIVE - BULLET TIME ENGAGED</div>
+    <div id="powerup-container">
+      <div id="spread-shot" class="glass-panel powerup-indicator">SPREAD SHOT</div>
+      <div id="rapid-fire" class="glass-panel powerup-indicator">RAPID FIRE</div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

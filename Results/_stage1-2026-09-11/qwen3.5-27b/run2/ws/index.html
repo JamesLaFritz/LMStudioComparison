@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders - AAA Retro-Futurism</title>
+    <link rel="stylesheet" href="./space-invaders/styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <!-- UI Overlay Layer -->
+        <div id="ui-layer">
+            <!-- Main Menu Panel -->
+            <div id="menu-panel" class="glass-panel hidden">
+                <h1 class="neon-title glow-cyan">SPACE INVADERS</h1>
+                <p class="subtitle">AAA RETRO-FUTURISM EDITION</p>
+                <button id="start-btn" class="neon-button glow-pink">START MISSION</button>
+                <div class="controls-info">
+                    <p><strong>Keyboard:</strong> WASD / Arrow Keys to Move | SPACE to Shoot</p>
+                    <p><strong>Gamepad:</strong> Left Stick / D-Pad to Move | A Button to Shoot</p>
+                </div>
+            </div>
+
+            <!-- HUD Panel -->
+            <div id="hud-panel" class="glass-panel hidden">
+                <div class="hud-section left">
+                    <span class="label glow-cyan">SCORE</span>
+                    <span id="score-display" class="value glow-white">0</span>
+                </div>
+                <div class="hud-section center">
+                    <span class="label glow-pink">LEVEL</span>
+                    <span id="level-display" class="value glow-white">1</span>
+                </div>
+                <div class="hud-section right">
+                    <span class="label glow-cyan">LIVES</span>
+                    <span id="lives-display" class="value glow-white">3</span>
+                </div>
+            </div>
+
+            <!-- Pause Panel -->
+            <div id="pause-panel" class="glass-panel hidden">
+                <h2 class="neon-title glow-yellow">PAUSED</h2>
+                <button id="resume-btn" class="neon-button glow-cyan">RESUME</button>
+                <button id="quit-btn" class="neon-button glow-pink">QUIT TO MENU</button>
+            </div>
+
+            <!-- Game Over Panel -->
+            <div id="gameover-panel" class="glass-panel hidden">
+                <h2 class="neon-title glow-red">MISSION FAILED</h2>
+                <p class="final-score">Final Score: <span id="final-score-display">0</span></p>
+                <button id="retry-btn" class="neon-button glow-cyan">RETRY MISSION</button>
+                <button id="menu-btn" class="neon-button glow-pink">MAIN MENU</button>
+            </div>
+
+            <!-- Level Complete Panel -->
+            <div id="level-complete-panel" class="glass-panel hidden">
+                <h2 class="neon-title glow-green">SECTOR CLEARED!</h2>
+                <p class="bonus-text">Bonus: <span id="bonus-display">0</span></p>
+                <button id="next-level-btn" class="neon-button glow-cyan">NEXT SECTOR</button>
+            </div>
+
+            <!-- Combo Counter -->
+            <div id="combo-panel" class="glass-panel hidden">
+                <span id="combo-display" class="combo-text glow-yellow">x1</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./space-invaders/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+18:39:23  === qwen/qwen3-30b-a3b-2507
+18:39:44    loaded: 22418 MiB used (idle 674), ctx 128512, 62.6 tok/s
+18:52:49    p1 6s · p2 778s
+18:52:49  === liquid/lfm2-24b-a2b
+18:53:09    loaded: 15906 MiB used (idle 674), ctx 128000, 51.5 tok/s
+18:53:21    p1 3s · p2 8s
+18:53:23  STAGE 0 COMPLETE

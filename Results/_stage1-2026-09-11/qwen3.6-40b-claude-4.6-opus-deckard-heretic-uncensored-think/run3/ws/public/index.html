@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders — Retro-Futurism</title>
+    <link href="/shared/ui/glassmorphism.css" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <!-- Glassmorphic HUD Overlay -->
+        <div class="hud-overlay">
+            <div class="hud-top">
+                <div class="score-display">SCORE: <span id="score-value">0</span></div>
+                <div class="level-display">LEVEL: <span id="level-value">1</span></div>
+            </div>
+            
+            <div class="lives-container">
+                <h2>LIVES</h2>
+                <div id="lives-indicator"></div>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div class="game-over-screen hidden">
+            <div class="game-over-content">
+                <h1 id="game-result">GAME OVER</h1>
+                <p class="final-score">Final Score: <span id="final-score">0</span></p>
+                <button class="restart-button" id="restart-btn">PLAY AGAIN </button>
+            </div>
+        </div>
+        
+        <!-- Start Screen -->
+        <div class="start-screen">
+            <h1>SPACE INVADERS</h1>
+            <h2 class="subtitle">RETRO-FUTURISM EDITION</h2>
+            <p class="instructions">WASD or Arrow Keys to Move<br>Space to Fire</p>
+            <button class="start-button" id="start-btn">START GAME</button>
+        </div>
+    </div>
+    
+    <script type="module" src="/Space_Invaders/index.js"></script>
+</body>
+</html>

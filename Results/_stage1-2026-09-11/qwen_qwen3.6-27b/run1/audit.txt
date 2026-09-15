@@ -1,0 +1,67 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen_qwen3.6-27b/run1/ws
+==========================================================================
+27 source files, 3882 lines, 5 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : all resolve
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 2 use(s) -- prompt mandates MeshStandardMaterial
+      shared/vfx/MotionTrails.js  MeshBasicMaterial
+      shared/vfx/ShockwaveRings.js  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/graphics/PostProcessing.js
+  UnrealBloomPass            yes  shared/graphics/PostProcessing.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  main.js
+  particle bursts            yes  main.js
+  hit-stop                   yes  main.js
+  motion trails              yes  main.js
+  shockwave rings            yes  shared/vfx/ShockwaveRings.js
+  floating score text        yes  main.js
+  ---> 6 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/core/ObjectPool.js
+  InstancedMesh              yes  shared/graphics/ProceduralAssets.js
+  particle cap               MAX_PARTICLES = 500  [OK]  shared/vfx/ParticleManager.js:3
+  disposal                   50 dispose() vs 33 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  shared/graphics/ProceduralAssets.js
+  Web Audio                  yes  shared/audio/AudioSynth.js
+  procedural noise           yes  shared/math/Noise.js
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  Space_Invaders/ui/HUD.js
+  neon glow (text/box-shadow) yes  Space_Invaders/ui/HUD.js
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/core/InputManager.js
+  Gamepad API                yes  shared/core/InputManager.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  86 turns, 172 tool calls, 5 run_command
+  ran a build                3 time(s)
+  installed deps             2 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 1

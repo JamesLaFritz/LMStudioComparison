@@ -1,0 +1,72 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/google_gemma-4-26b-a4b/run1/ws
+==========================================================================
+17 source files, 1387 lines, 1 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 6 BROKEN
+      Space_Invaders/Engine.js:1  MISSING FILE  <- ../../shared/core/TimeScale.js
+      Space_Invaders/Engine.js:2  MISSING FILE  <- ../../shared/audio/AudioEngine.js
+      Space_Invaders/Engine.js:3  MISSING FILE  <- ../../shared/math/MathUtils.js
+      Space_Invaders/Entities.js:1  MISSING FILE  <- ../../shared/entities/EntityBase.js
+      Space_Invaders/main.js:4  MISSING EXPORT Entities <- Entities.js
+      Space_Invaders/World.js:2  MISSING FILE  <- ../../shared/math/MathUtils.js
+  cross-module contracts   : all resolve
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 1 use(s) -- prompt mandates MeshStandardMaterial
+      shared/graphics/ParticleManager.js  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/graphics/PostProcessor.js
+  UnrealBloomPass            yes  shared/graphics/PostProcessor.js
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  shared/camera/CameraShake.js
+  particle bursts            yes  shared/graphics/ParticleManager.js
+  hit-stop                   yes  shared/core/TimeScale.js
+  motion trails              NOT FOUND
+  shockwave rings            NOT FOUND
+  floating score text        NOT FOUND
+  ---> 3 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  shared/entities/EntityManager.js
+  InstancedMesh              yes  shared/graphics/ParticleManager.js
+  particle cap               maxParticles = 500  [OK]  shared/graphics/ParticleManager.js:14
+  disposal                   20 dispose() vs 6 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              NOT FOUND
+  Web Audio                  yes  shared/audio/AudioEngine.js
+  procedural noise           NOT FOUND
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  Space_Invaders/index.html
+  neon glow (text/box-shadow) yes  Space_Invaders/index.html
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/core/InputManager.js
+  Gamepad API                yes  shared/core/InputManager.js
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  23 turns, 20 tool calls, 0 run_command
+  ran a build                NEVER
+  installed deps             NEVER
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

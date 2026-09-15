@@ -1,0 +1,5 @@
+03:24:06  === qwen3.5-27b
+03:24:33    loaded: 20492 MiB used (idle 758), ctx 128512, 29.8 tok/s
+03:29:26    p1 63s · p2 230s
+  writes=0 cmds=0 plan=0B files=0
+03:29:29  STAGE 0 COMPLETE

@@ -1,0 +1,375 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/prism-ml_bonsai-27b/run2/ws",
+ "files": 24,
+ "lines": 8180,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "shared/particle.js",
+   6,
+   "../utils/math.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/aliens.js",
+   11,
+   "particles.js",
+   "MISSING EXPORT",
+   "createInstancedMesh"
+  ],
+  [
+   "Space_Invaders/audioManager.js",
+   1,
+   "audio.js",
+   "MISSING EXPORT",
+   "AudioSynth"
+  ],
+  [
+   "Space_Invaders/main.js",
+   4,
+   "aliens.js",
+   "MISSING EXPORT",
+   "Aliens"
+  ],
+  [
+   "Space_Invaders/main.js",
+   5,
+   "projectiles.js",
+   "MISSING EXPORT",
+   "Projectiles"
+  ],
+  [
+   "Space_Invaders/main.js",
+   6,
+   "collision.js",
+   "MISSING EXPORT",
+   "CollisionSystem"
+  ],
+  [
+   "Space_Invaders/main.js",
+   7,
+   "scoring.js",
+   "MISSING EXPORT",
+   "ScoringSystem"
+  ],
+  [
+   "Space_Invaders/main.js",
+   11,
+   "spriteGenerator.js",
+   "MISSING EXPORT",
+   "SpriteGenerator"
+  ],
+  [
+   "Space_Invaders/main.js",
+   14,
+   "input.js",
+   "MISSING EXPORT",
+   "InputHandler"
+  ],
+  [
+   "Space_Invaders/main.js",
+   17,
+   "hitStop.js",
+   "MISSING EXPORT",
+   "HitStop"
+  ],
+  [
+   "Space_Invaders/player.js",
+   3,
+   "input.js",
+   "MISSING EXPORT",
+   "InputManager"
+  ],
+  [
+   "Space_Invaders/projectiles.js",
+   2,
+   "particle.js",
+   "MISSING EXPORT",
+   "Pool"
+  ],
+  [
+   "Space_Invaders/vfxManager.js",
+   3,
+   "hitStop.js",
+   "MISSING EXPORT",
+   "HitStop"
+  ],
+  [
+   "Space_Invaders/utils/gridBackground.js",
+   5,
+   "../shared/utils/math.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/utils/spriteGenerator.js",
+   6,
+   "../shared/utils/math.js",
+   "MISSING FILE",
+   ""
+  ]
+ ],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/vfx/bloomPass.js",
+    2
+   ],
+   [
+    "shared/vfx/scoreText.js",
+    10
+   ],
+   [
+    "Space_Invaders/main.js",
+    2
+   ],
+   [
+    "Space_Invaders/uiManager.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/vfx/bloomPass.js",
+    3
+   ],
+   [
+    "Space_Invaders/main.js",
+    2
+   ],
+   [
+    "Space_Invaders/uiManager.js",
+    3
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/core/cameraShake.js",
+    1
+   ],
+   [
+    "Space_Invaders/main.js",
+    16
+   ],
+   [
+    "Space_Invaders/vfxManager.js",
+    2
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/audio.js",
+    73
+   ],
+   [
+    "shared/particle.js",
+    2
+   ],
+   [
+    "shared/vfx/particles.js",
+    2
+   ],
+   [
+    "Space_Invaders/audioManager.js",
+    82
+   ],
+   [
+    "Space_Invaders/main.js",
+    15
+   ],
+   [
+    "Space_Invaders/vfxManager.js",
+    1
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/core/gameLoop.js",
+    9
+   ],
+   [
+    "shared/core/hitStop.js",
+    2
+   ],
+   [
+    "Space_Invaders/main.js",
+    17
+   ],
+   [
+    "Space_Invaders/vfxManager.js",
+    3
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/particles.js",
+    60
+   ],
+   [
+    "Space_Invaders/player.js",
+    35
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "shared/vfx/particles.js",
+    39
+   ],
+   [
+    "shared/vfx/shockwave.js",
+    4
+   ],
+   [
+    "Space_Invaders/vfxManager.js",
+    4
+   ]
+  ],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "shared/particle.js",
+    11
+   ],
+   [
+    "shared/vfx/scoreText.js",
+    134
+   ],
+   [
+    "Space_Invaders/projectiles.js",
+    2
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/particle.js",
+    19
+   ],
+   [
+    "Space_Invaders/aliens.js",
+    5
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "shared/utils/noise.js",
+    185
+   ],
+   [
+    "shared/vfx/scoreText.js",
+    29
+   ],
+   [
+    "shared/vfx/shockwave.js",
+    31
+   ],
+   [
+    "Space_Invaders/uiManager.js",
+    98
+   ],
+   [
+    "Space_Invaders/utils/gridBackground.js",
+    21
+   ],
+   [
+    "Space_Invaders/utils/spriteGenerator.js",
+    19
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio.js",
+    12
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/utils/math.js",
+    244
+   ],
+   [
+    "shared/utils/noise.js",
+    2
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/utils/input.js",
+    69
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/utils/input.js",
+    17
+   ],
+   [
+    "Space_Invaders/main.js",
+    155
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "Space_Invaders/uiManager.js",
+    35
+   ],
+   [
+    "Space_Invaders/index.html",
+    42
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "Space_Invaders/uiManager.js",
+    41
+   ],
+   [
+    "Space_Invaders/index.html",
+    24
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/particle.js",
+   9,
+   "maxParticles",
+   500
+  ],
+  [
+   "shared/vfx/scoreText.js",
+   132,
+   "maxParticles",
+   50
+  ]
+ ],
+ "dispose_calls": 22,
+ "three_allocations": 12,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "prism-ml/bonsai-27b",
+  "turns": 502,
+  "tool_calls": 501,
+  "run_commands": 464,
+  "verification": {
+   "ran a build": 0,
+   "installed deps": 423,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [
+   "max_hops"
+  ],
+  "compactions": 1
+ }
+}

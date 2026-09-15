@@ -1,0 +1,79 @@
+==========================================================================
+AUDIT  Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run2/ws
+==========================================================================
+27 source files, 3275 lines, 7 non-code files
+
+-- AXIS 2  Code Completeness --------------------------------------------
+  placeholder syntax       : none
+  imports resolving        : 11 BROKEN
+      games/Space_Invaders/SpaceInvadersScene.ts:3  MISSING EXPORT Input <- Input.ts
+      games/Space_Invaders/SpaceInvadersScene.ts:4  MISSING EXPORT AABBOverlap <- Physics.ts
+      games/Space_Invaders/SpaceInvadersScene.ts:5  MISSING EXPORT TextureGenerator <- TextureGenerator.ts
+      games/Space_Invaders/SpaceInvadersScene.ts:5  MISSING EXPORT AlienType <- TextureGenerator.ts
+      games/Space_Invaders/SpaceInvadersScene.ts:5  MISSING EXPORT ALIEN_COLORS <- TextureGenerator.ts
+      games/Space_Invaders/SpaceInvadersScene.ts:14  MISSING EXPORT GameState <- ScoreComponent.ts
+      games/Space_Invaders/components/ParticleBurstComponent.ts:2  MISSING EXPORT ShockwaveRings <- ShockwaveRings.ts
+      games/Space_Invaders/components/ParticleBurstComponent.ts:3  MISSING EXPORT FloatingScoreText <- FloatingScoreText.ts
+  cross-module contracts   : 5 BROKEN
+      shared/vfx/ParticleBursts.ts:16  ParticleManager.spawnBurst()
+      shared/vfx/ParticleBursts.ts:28  ParticleManager.spawnBurst()
+      shared/vfx/ParticleBursts.ts:39  ParticleManager.spawnBurst()
+      shared/vfx/ParticleBursts.ts:52  ParticleManager.spawnBurst()
+      shared/vfx/ParticleBursts.ts:64  ParticleManager.spawnBurst()
+
+-- HARD CONSTRAINTS  (the prompt states these flatly) --------------------
+  no physics libraries, no asset loaders, no external asset files
+  non-PBR materials        : 1 use(s) -- prompt mandates MeshStandardMaterial
+      shared/vfx/ShockwaveRings.ts  MeshBasicMaterial
+
+-- AXIS 3  Post-processing ----------------------------------------------
+  EffectComposer             yes  shared/Engine.ts
+  UnrealBloomPass            yes  shared/postprocessing/BloomSetup.ts
+
+-- AXIS 4  VFX  (all six are mandatory) ---------------------------------
+  camera shake               yes  games/Space_Invaders/vfx/SpaceInvadersVFX.ts
+  particle bursts            yes  games/Space_Invaders/assets/AudioSynth.ts
+  hit-stop                   yes  games/Space_Invaders/vfx/SpaceInvadersVFX.ts
+  motion trails              yes  games/Space_Invaders/entities/Projectile.ts
+  shockwave rings            NOT FOUND
+  floating score text        NOT FOUND
+  ---> 4 of 6 present
+
+-- AXIS 5  Resource Discipline ------------------------------------------
+  object pooling             yes  games/Space_Invaders/SpaceInvadersScene.ts
+  InstancedMesh              yes  shared/ParticleManager.ts
+  particle cap               MAX_PARTICLES = 500  [OK]  shared/ParticleManager.ts:13
+  disposal                   54 dispose() vs 29 THREE allocations
+
+-- AXIS 6  Procedural Fidelity  (evidence only; judge the quality) -------
+  CanvasTexture              yes  games/Space_Invaders/assets/TextureGenerator.ts
+  Web Audio                  yes  games/Space_Invaders/assets/AudioSynth.ts
+  procedural noise           NOT FOUND
+
+-- AXIS 7  Juice & UI  (evidence only) ----------------------------------
+  glassmorphism (backdrop-filter) yes  index.html
+  neon glow (text/box-shadow) yes  index.html
+
+-- INPUT ----------------------------------------------------------------
+  keyboard input             yes  shared/Input.ts
+  Gamepad API                yes  shared/Input.ts
+
+-- AXIS 8  Verification Behavior ----------------------------------------
+  152 turns, 151 tool calls, 47 run_command
+  ran a build                27 time(s)
+  installed deps             4 time(s)
+  served the game            NEVER
+  looked for browser tools   NEVER
+  LAUNCHED a browser         NEVER
+  INTERACTED with it         NEVER
+  used playwright-cli        NEVER
+  wrote its own test         NEVER
+
+-- AXIS 9  Protocol Compliance ------------------------------------------
+  STEP 1 forbids creating files and running commands before "Begin".
+  files written in STEP 1    0  compliant
+  commands run in STEP 1     0  compliant
+
+-- HARNESS  (context for every axis above) ------------------------------
+  bails        : none
+  compactions  : 0

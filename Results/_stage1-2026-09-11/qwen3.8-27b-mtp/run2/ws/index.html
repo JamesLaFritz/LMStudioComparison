@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEON INVADERS — Retro-Futurist Arcade</title>
+  <style>
+    :root {
+      --neon-cyan: #22e6ff;
+      --neon-magenta: #ff3df0;
+      --neon-lime: #b8ff2e;
+      --glass-bg: rgba(10, 14, 30, 0.55);
+      --glass-border: rgba(120, 220, 255, 0.28);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #04060f; }
+    body { font-family: "Segoe UI", system-ui, sans-serif; color: #dfe9ff; }
+    #app-canvas { position: fixed; inset: 0; display: block; }
+    #ui-root { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+    #float-text-layer { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 12; }
+  </style>
+</head>
+<body>
+  <canvas id="app-canvas"></canvas>
+  <div id="ui-root"></div>
+  <div id="float-text-layer"></div>
+  <script type="module" src="/Space_Invaders/index.js"></script>
+</body>
+</html>

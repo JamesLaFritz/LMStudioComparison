@@ -1,0 +1,288 @@
+{
+ "workspace": "Results/_stage1-2026-09-11/prism-ml_bonsai-27b/run3/ws",
+ "files": 21,
+ "lines": 2635,
+ "placeholders": [],
+ "broken_imports": [
+  [
+   "Space_Invaders/src/main.js",
+   2,
+   "../shared/core/GameEngine.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   3,
+   "../shared/core/InputHandler.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   4,
+   "../shared/vfs/ParticleSystem.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   5,
+   "../shared/vfs/CameraShake.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   6,
+   "../shared/vfs/HitStop.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   7,
+   "../shared/vfs/MotionTrail.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   8,
+   "../shared/vfs/Shockwave.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/main.js",
+   9,
+   "PostProcessor.js",
+   "MISSING EXPORT",
+   "PostProcessor"
+  ],
+  [
+   "Space_Invaders/src/entities/EnemyFormation.js",
+   3,
+   "../../shared/utils/Pool.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/entities/ParticleEmitter.js",
+   3,
+   "../../shared/utils/Pool.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/entities/Player.js",
+   3,
+   "../../shared/utils/Pool.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/entities/Projectile.js",
+   3,
+   "../../shared/utils/Pool.js",
+   "MISSING FILE",
+   ""
+  ],
+  [
+   "Space_Invaders/src/post-processing/PostProcessor.js",
+   3,
+   "UnrealBloomPass.js",
+   "MISSING EXPORT",
+   "UnrealBloomPass"
+  ]
+ ],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/vfs/PostProcessor.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/post-processing/PostProcessor.js",
+    2
+   ],
+   [
+    "Space_Invaders/src/post-processing/UnrealBloomPass.js",
+    6
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/vfs/PostProcessor.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/post-processing/PostProcessor.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/post-processing/UnrealBloomPass.js",
+    2
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/vfs/CameraShake.js",
+    2
+   ],
+   [
+    "Space_Invaders/src/main.js",
+    5
+   ],
+   [
+    "Space_Invaders/src/entities/EnemyFormation.js",
+    255
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/vfs/ParticleSystem.js",
+    2
+   ],
+   [
+    "Space_Invaders/src/main.js",
+    4
+   ],
+   [
+    "Space_Invaders/src/audio/SoundManager.js",
+    63
+   ],
+   [
+    "Space_Invaders/src/entities/EnemyFormation.js",
+    249
+   ],
+   [
+    "Space_Invaders/src/entities/Player.js",
+    173
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/vfs/HitStop.js",
+    2
+   ],
+   [
+    "Space_Invaders/src/main.js",
+    6
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfs/MotionTrail.js",
+    2
+   ],
+   [
+    "Space_Invaders/src/main.js",
+    7
+   ],
+   [
+    "Space_Invaders/src/entities/Projectile.js",
+    36
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "shared/vfs/Shockwave.js",
+    2
+   ],
+   [
+    "Space_Invaders/src/main.js",
+    8
+   ],
+   [
+    "Space_Invaders/src/entities/EnemyFormation.js",
+    260
+   ]
+  ],
+  "floating score text": [],
+  "object pooling": [
+   [
+    "shared/utils/Pool.js",
+    2
+   ],
+   [
+    "shared/vfs/Shockwave.js",
+    50
+   ],
+   [
+    "Space_Invaders/src/entities/EnemyFormation.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/entities/ParticleEmitter.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/entities/Player.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/entities/Projectile.js",
+    3
+   ]
+  ],
+  "InstancedMesh": [],
+  "CanvasTexture": [],
+  "Web Audio": [
+   [
+    "Space_Invaders/src/audio/SoundManager.js",
+    21
+   ]
+  ],
+  "procedural noise": [],
+  "Gamepad API": [],
+  "keyboard input": [
+   [
+    "shared/core/InputHandler.js",
+    21
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [],
+  "neon glow (text/box-shadow)": [
+   [
+    "Space_Invaders/public/index.html",
+    22
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "Space_Invaders/src/entities/Player.js",
+   35,
+   "maxParticles",
+   3
+  ]
+ ],
+ "dispose_calls": 28,
+ "three_allocations": 6,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "prism-ml/bonsai-27b",
+  "turns": 213,
+  "tool_calls": 209,
+  "run_commands": 92,
+  "verification": {
+   "ran a build": 0,
+   "installed deps": 1,
+   "served the game": 0,
+   "looked for browser tools": 0,
+   "LAUNCHED a browser": 0,
+   "INTERACTED with it": 0,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 1
+ }
+}

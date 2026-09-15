@@ -1,0 +1,46 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.6-27b/run2/ws",
+ "port": 5980,
+ "outcome": "renders",
+ "errors": [
+  "Cannot read properties of undefined (reading '0')",
+  "Cannot read properties of undefined (reading '0')",
+  "Cannot read properties of undefined (reading '0')"
+ ],
+ "notes": [
+  "page errors present"
+ ],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5980/index.html",
+ "start_clicked": "START",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 2,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  },
+  {
+   "attempt": 3,
+   "idle": false,
+   "scoreBefore": 0,
+   "scoreAfter": 0,
+   "delta": 0
+  }
+ ],
+ "idle_bytes_differ": false,
+ "hud_before": "SCORE 0 ×1 WAVE 1 HP GAME OVER Final Score: 0 Wave Reached: 1 Invaders Killed: 0 Accuracy: 0% PLAY AGAIN WAVE 1 COMPLETE",
+ "hud_after": "SCORE 0 ×1 WAVE 1 HP GAME OVER Final Score: 0 Wave Reached: 1 Invaders Killed: 0 Accuracy: 0% PLAY AGAIN WAVE 1 COMPLETE",
+ "score_before": 0,
+ "score_after": 0,
+ "score_delta": 0
+}
