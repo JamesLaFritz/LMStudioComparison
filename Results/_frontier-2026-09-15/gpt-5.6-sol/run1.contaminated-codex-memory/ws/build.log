@@ -1,0 +1,10 @@
+[36mvite v8.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 66 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.15 kB │ gzip:   0.63 kB
+dist/assets/index-C4mClaP0.css    7.90 kB │ gzip:   2.72 kB
+dist/assets/index-DdPjWPP8.js   773.44 kB │ gzip: 200.63 kB │ map: 3,443.12 kB
+
+[32m✓ built in 852ms[39m

@@ -1,0 +1,415 @@
+{
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws",
+ "files": 54,
+ "lines": 7906,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/render/PostPipeline.js",
+    1
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/render/PostPipeline.js",
+    1
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/core/Engine.js",
+    164
+   ],
+   [
+    "shared/render/CameraRig.js",
+    2
+   ],
+   [
+    "shared/render/PostPipeline.js",
+    92
+   ],
+   [
+    "shared/vfx/CameraShake.js",
+    1
+   ],
+   [
+    "shared/vfx/VFXDirector.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/config.js",
+    182
+   ],
+   [
+    "Space_Invaders/src/SpaceInvadersGame.js",
+    110
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/vfx/ParticleManager.js",
+    28
+   ],
+   [
+    "shared/vfx/VFXDirector.js",
+    7
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/core/Engine.js",
+    2
+   ],
+   [
+    "shared/vfx/HitStop.js",
+    6
+   ],
+   [
+    "shared/vfx/VFXDirector.js",
+    22
+   ],
+   [
+    "Space_Invaders/src/config.js",
+    183
+   ],
+   [
+    "Space_Invaders/src/SpaceInvadersGame.js",
+    145
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/TrailRenderer.js",
+    1
+   ],
+   [
+    "shared/vfx/VFXDirector.js",
+    8
+   ],
+   [
+    "Space_Invaders/src/entities/UFO.js",
+    77
+   ],
+   [
+    "Space_Invaders/src/systems/ProjectileSystem.js",
+    72
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "shared/vfx/ShockwaveRing.js",
+    9
+   ],
+   [
+    "shared/vfx/VFXDirector.js",
+    9
+   ]
+  ],
+  "floating score text": [
+   [
+    "shared/vfx/FloatingText.js",
+    9
+   ],
+   [
+    "shared/vfx/VFXDirector.js",
+    10
+   ]
+  ],
+  "object pooling": [
+   [
+    "shared/core/ObjectPool.js",
+    1
+   ],
+   [
+    "shared/vfx/FloatingText.js",
+    4
+   ],
+   [
+    "shared/vfx/ShockwaveRing.js",
+    4
+   ],
+   [
+    "shared/vfx/TrailRenderer.js",
+    12
+   ],
+   [
+    "Space_Invaders/src/config.js",
+    127
+   ],
+   [
+    "Space_Invaders/src/entities/PowerUps.js",
+    4
+   ],
+   [
+    "Space_Invaders/src/entities/UFO.js",
+    89
+   ],
+   [
+    "Space_Invaders/src/systems/ProjectileSystem.js",
+    5
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/procgen/MaterialLibrary.js",
+    106
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    1
+   ],
+   [
+    "Space_Invaders/src/entities/Bunkers.js",
+    1
+   ],
+   [
+    "Space_Invaders/src/entities/InvaderFormation.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/world/Environment.js",
+    9
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "shared/procgen/TextureFactory.js",
+    3
+   ],
+   [
+    "shared/render/EnvironmentMap.js",
+    10
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio/AudioEngine.js",
+    1
+   ],
+   [
+    "shared/audio/MusicSequencer.js",
+    46
+   ],
+   [
+    "shared/audio/SFXSynth.js",
+    162
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/procgen/GeometryUtils.js",
+    71
+   ],
+   [
+    "shared/procgen/SimplexNoise.js",
+    1
+   ],
+   [
+    "shared/procgen/TextureFactory.js",
+    139
+   ],
+   [
+    "shared/vfx/CameraShake.js",
+    3
+   ],
+   [
+    "Space_Invaders/src/world/Environment.js",
+    1
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/input/GamepadSource.js",
+    30
+   ],
+   [
+    "tests/smoke.playwright.mjs",
+    41
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/input/InputManager.js",
+    22
+   ],
+   [
+    "shared/input/KeyboardSource.js",
+    5
+   ],
+   [
+    "tests/smoke.playwright.mjs",
+    53
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "shared/ui/glass.css",
+    66
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "shared/ui/glass.css",
+    70
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/core/Engine.js",
+   29,
+   "particleCapacity",
+   500
+  ],
+  [
+   "shared/vfx/VFXDirector.js",
+   22,
+   "particleCapacity",
+   500
+  ],
+  [
+   "Space_Invaders/src/config.js",
+   177,
+   "particleCapacity",
+   500
+  ]
+ ],
+ "dispose_calls": 78,
+ "three_allocations": 53,
+ "violations": [
+  [
+   "external asset file",
+   ".playwright-mcp/bright_a_current.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/bright_b_nobloom.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/bright_c_halfcopy.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/cannon.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/cannon2.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/final_play.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/final_title.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/final_victory.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/gameover.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/invaded.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/play1.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/play2.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/play3.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/play4.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/sun_a.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/sun_b.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/title.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/title2.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/title3.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/ufo.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   ".playwright-mcp/victory.png",
+   ".png"
+  ]
+ ],
+ "non_standard_materials": [],
+ "session": {
+  "model": "claude-opus-5",
+  "turns": 249,
+  "tool_calls": 140,
+  "run_commands": 21,
+  "verification": {
+   "ran a build": 2,
+   "installed deps": 2,
+   "served the game": 3,
+   "looked for browser tools": 6,
+   "LAUNCHED a browser": 4,
+   "INTERACTED with it": 24,
+   "used playwright-cli": 0,
+   "wrote its own test": 2
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [
+   "spend_limit",
+   "spend_limit"
+  ],
+  "compactions": 0
+ }
+}

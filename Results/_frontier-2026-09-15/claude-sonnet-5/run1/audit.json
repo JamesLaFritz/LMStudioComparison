@@ -1,0 +1,224 @@
+{
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-sonnet-5/run1/ws",
+ "files": 43,
+ "lines": 4119,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/postfx/PostProcessingStack.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/postfx/PostProcessingStack.js",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/vfx/CameraShake.js",
+    9
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    4
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/audio/SynthVoice.js",
+    85
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    18
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    6
+   ]
+  ],
+  "hit-stop": [
+   [
+    "shared/vfx/HitStop.js",
+    2
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    5
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/MotionTrail.js",
+    5
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    7
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "shared/vfx/ShockwaveRing.js",
+    11
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    8
+   ]
+  ],
+  "floating score text": [
+   [
+    "shared/vfx/FloatingText.js",
+    11
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    9
+   ],
+   [
+    "Space_Invaders/systems/ScoringSystem.js",
+    8
+   ]
+  ],
+  "object pooling": [
+   [
+    "shared/core/ObjectPool.js",
+    1
+   ],
+   [
+    "shared/vfx/FloatingText.js",
+    2
+   ],
+   [
+    "shared/vfx/ShockwaveRing.js",
+    2
+   ],
+   [
+    "Space_Invaders/entities/Projectile.js",
+    2
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/vfx/ParticleManager.js",
+    13
+   ],
+   [
+    "Space_Invaders/entities/Bunker.js",
+    19
+   ],
+   [
+    "Space_Invaders/entities/EnemyFormation.js",
+    62
+   ],
+   [
+    "Space_Invaders/entities/Projectile.js",
+    12
+   ],
+   [
+    "Space_Invaders/procgen/BunkerGeometryFactory.js",
+    18
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "shared/procgen/CanvasTextureFactory.js",
+    18
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio/AudioEngine.js",
+    15
+   ],
+   [
+    "shared/audio/SynthVoice.js",
+    33
+   ]
+  ],
+  "procedural noise": [
+   [
+    "shared/procgen/GeometryDisplace.js",
+    14
+   ],
+   [
+    "shared/procgen/NoiseField.js",
+    7
+   ]
+  ],
+  "Gamepad API": [
+   [
+    "shared/core/InputManager.js",
+    82
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/core/InputManager.js",
+    2
+   ],
+   [
+    "Space_Invaders/input/InputBindings.js",
+    4
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "shared/ui/glass.css",
+    16
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "index.html",
+    26
+   ],
+   [
+    "shared/ui/glass.css",
+    18
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "shared/utils/Constants.js",
+   1,
+   "MAX_ACTIVE_PARTICLES",
+   500
+  ]
+ ],
+ "dispose_calls": 37,
+ "three_allocations": 27,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "claude-sonnet-5",
+  "turns": 274,
+  "tool_calls": 137,
+  "run_commands": 7,
+  "verification": {
+   "ran a build": 1,
+   "installed deps": 1,
+   "served the game": 0,
+   "looked for browser tools": 1,
+   "LAUNCHED a browser": 4,
+   "INTERACTED with it": 33,
+   "used playwright-cli": 0,
+   "wrote its own test": 0
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [
+   "reasoning_overrun"
+  ],
+  "compactions": 0
+ }
+}

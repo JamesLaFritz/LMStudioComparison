@@ -1,0 +1,131 @@
+:root {
+  color-scheme: dark;
+  font-family: "Bahnschrift", "Arial Narrow", "Trebuchet MS", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink-0: #02040a;
+  --ink-1: #050812;
+  --ink-2: #0a1020;
+  --ink-3: #121c31;
+  --glass: rgba(10, 18, 35, 0.68);
+  --glass-strong: rgba(7, 12, 25, 0.86);
+  --glass-edge: rgba(163, 221, 255, 0.24);
+  --glass-highlight: rgba(228, 252, 255, 0.42);
+  --text: #ecf8ff;
+  --muted: #8fa8bd;
+  --cyan: #60ecff;
+  --cyan-rgb: 96, 236, 255;
+  --violet: #9c86ff;
+  --violet-rgb: 156, 134, 255;
+  --magenta: #fa5bda;
+  --amber: #ffc45d;
+  --danger: #ff6b78;
+  --success: #82ffbf;
+  --ui-shadow: 0 18px 70px rgba(0, 0, 0, 0.46);
+  --focus-ring: 0 0 0 2px var(--ink-0), 0 0 0 4px var(--cyan);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  min-height: 100%;
+  background: var(--ink-0);
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 50% -20%, rgba(var(--cyan-rgb), 0.11), transparent 39rem),
+    radial-gradient(circle at 100% 100%, rgba(var(--violet-rgb), 0.13), transparent 44rem),
+    var(--ink-0);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+canvas {
+  display: block;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--cyan);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  line-height: 1.25;
+}
+
+.boot-failure {
+  width: min(28rem, calc(100vw - 2rem));
+  margin: min(24vh, 10rem) auto 0;
+  padding: 2.2rem;
+  text-align: center;
+}
+
+.boot-failure h1 {
+  margin: 0.7rem 0 0;
+  font-size: clamp(1.65rem, 6vw, 2.7rem);
+  letter-spacing: 0.08em;
+}
+
+.boot-failure__detail {
+  margin: 0.9rem 0 1.5rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

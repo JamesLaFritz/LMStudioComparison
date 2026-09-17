@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run3/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run3/ws",
  "files": 19,
  "lines": 3351,
  "placeholders": [],
@@ -123,12 +123,20 @@
    [
     "main.js",
     11
+   ],
+   [
+    "shared/vfx/shockwave.js",
+    3
    ]
   ],
   "floating score text": [
    [
     "main.js",
     12
+   ],
+   [
+    "shared/vfx/floatingText.js",
+    3
    ]
   ],
   "object pooling": [

@@ -1,0 +1,56 @@
+export const PHASE = Object.freeze({
+  ATTRACT: 'attract',
+  PLAYING: 'playing',
+  LIFE_LOST: 'life-lost',
+  WAVE_CLEAR: 'wave-clear',
+  GAME_OVER: 'game-over',
+  VICTORY: 'victory',
+});
+
+export const OWNER = Object.freeze({ PLAYER: 'player', ENEMY: 'enemy' });
+
+export const EVENT = Object.freeze({
+  RUN_STARTED: 'run-started',
+  WAVE_STARTED: 'wave-started',
+  FORMATION_STEP: 'formation-step',
+  FORMATION_DROP: 'formation-drop',
+  PLAYER_FIRED: 'player-fired',
+  ENEMY_FIRED: 'enemy-fired',
+  PROJECTILE_INTERCEPTED: 'projectile-intercepted',
+  BUNKER_HIT: 'bunker-hit',
+  BUNKER_ERODED: 'bunker-eroded',
+  INVADER_HIT: 'invader-hit',
+  UFO_SPAWNED: 'ufo-spawned',
+  UFO_HIT: 'ufo-hit',
+  PLAYER_HIT: 'player-hit',
+  PLAYER_RESPAWNED: 'player-respawned',
+  EXTRA_LIFE: 'extra-life',
+  WAVE_CLEAR: 'wave-clear',
+  VICTORY: 'victory',
+  GAME_OVER: 'game-over',
+  PAUSED: 'paused',
+  RESUMED: 'resumed',
+});
+
+export const EVENT_PRIORITY = Object.freeze({
+  [EVENT.PLAYER_FIRED]: 20,
+  [EVENT.ENEMY_FIRED]: 25,
+  [EVENT.FORMATION_STEP]: 15,
+  [EVENT.FORMATION_DROP]: 35,
+  [EVENT.BUNKER_HIT]: 35,
+  [EVENT.BUNKER_ERODED]: 45,
+  [EVENT.PROJECTILE_INTERCEPTED]: 55,
+  [EVENT.INVADER_HIT]: 60,
+  [EVENT.UFO_SPAWNED]: 50,
+  [EVENT.UFO_HIT]: 85,
+  [EVENT.PLAYER_HIT]: 100,
+  [EVENT.PLAYER_RESPAWNED]: 50,
+  [EVENT.EXTRA_LIFE]: 75,
+  [EVENT.WAVE_CLEAR]: 85,
+  [EVENT.VICTORY]: 100,
+  [EVENT.GAME_OVER]: 100,
+  [EVENT.RUN_STARTED]: 75,
+  [EVENT.WAVE_STARTED]: 75,
+  [EVENT.PAUSED]: 70,
+  [EVENT.RESUMED]: 70,
+});

@@ -180,8 +180,10 @@ SIGNALS = {
     'particle bursts':     re.compile(r'\b(particlemanager|particlesystem|emitburst|spawnburst|burst)\b', re.I),
     'hit-stop':            re.compile(r'\b(hitstop|hit_stop|freezeframe|timescale|timedilation)\b', re.I),
     'motion trails':       re.compile(r'\b(motiontrail|trailrenderer|\btrail\b)', re.I),
-    'shockwave rings':     re.compile(r'\b(shockwave|shock_wave|ringwave)\b', re.I),
-    'floating score text': re.compile(r'\b(floatingtext|scorepopup|floatingscore|damagetext)\b', re.I),
+    'shockwave rings':     re.compile(r'\b(shockwave|shock_wave|ringwave)', re.I),   # ShockwavePool, ShockwaveManager
+    # No trailing \b: `FloatingScoreManager` is the common class name and the
+    # boundary after `floatingscore` never matches it (missed on the Sol run).
+    'floating score text': re.compile(r'\b(floatingtext|scorepopup|floatingscore|damagetext|scorefloat|score-float|scoretext)', re.I),
     # axis 5 — resource discipline
     'object pooling':      re.compile(r'\b(objectpool|entitypool|\bPool\b|acquire\(|release\()', re.I),
     'InstancedMesh':       re.compile(r'\bInstancedMesh\b'),
@@ -216,9 +218,17 @@ def find_signals(code, texts, patterns):
 
 def particle_cap(code, texts):
     """The prompt mandates a hard 500-particle cap. Find a declared ceiling."""
-    rx = re.compile(r'(MAX_?PARTICLES?|PARTICLE_?CAP|maxParticles|particleCap)\s*[:=]\s*(\d+)', re.I)
+    # MAX_ACTIVE_PARTICLES / PARTICLE_BUDGET / maxActiveParticles are as common
+    # as MAX_PARTICLES; the first form was missed on the Sol run.
+    rx = re.compile(r'(MAX_?(?:ACTIVE_?|LIVE_?)?PARTICLES?|PARTICLE_?(?:CAP|BUDGET|LIMIT)'
+                    r'|max(?:Active|Live)?Particles|particle(?:Cap|Budget|Limit|Capacity|_capacity))\s*[:=]\s*(\d+)', re.I)
+    # A cap can also live in a config table: `pools: { …, particles: 500 }` — a
+    # `particles:` key within a few lines of a pools/limits/caps/budget key.
+    rx_table = re.compile(r'\b(pools?|limits?|caps?|budgets?|maxCounts?)\s*[:=]\s*(?:Object\.freeze\()?\{[^}]{0,400}?\b(particles?)\s*:\s*(\d+)', re.I)
     out = []
     for p in code:
+        for m in rx_table.finditer(texts[p]):
+            out.append((p, texts[p][:m.start()].count('\n') + 1, m.group(1) + '.' + m.group(2), int(m.group(3))))
         for m in rx.finditer(texts[p]):
             out.append((p, texts[p][:m.start()].count('\n') + 1, m.group(1), int(m.group(2))))
     return out
@@ -230,7 +240,8 @@ def dispose_balance(code, texts):
     for p in code:
         s = texts[p]
         disposes += len(re.findall(r'\.dispose\s*\(', s))
-        allocs += len(re.findall(r'new\s+THREE\.\w*(Geometry|Material|Texture)\b', s))
+        # `new THREE.BoxGeometry(` and, with named imports, `new BoxGeometry(`
+        allocs += len(re.findall(r'new\s+(?:THREE\.)?[A-Z]\w*(Geometry|Material|Texture)\s*\(', s))
     return disposes, allocs
 
 
@@ -269,7 +280,47 @@ VERIFY_PATTERNS = [
 ]
 
 
-def audit_session(path):
+NPM_RUN_RX = re.compile(r'\b(?:npm|pnpm|yarn)\s+(?:run\s+(\S+)|(test)\b)')
+PW_TEST_RX = re.compile(r'\bplaywright\s+test\b', re.I)
+PAGE_ACT_RX = re.compile(r'\bpage\.(click|keyboard|press|evaluate|fill|goto)\b|\bkeyboard\.(press|down|up)\b')
+TEST_FILE_RX = re.compile(r'(?:^|[\\/])[\w.-]*(?:spec|test|smoke|e2e|playtest)[\w.-]*\.(?:mjs|js|ts)\b', re.I)
+
+
+def npm_scripts(ws):
+    try:
+        return json.load(open(os.path.join(ws, 'package.json'), encoding='utf-8')).get('scripts') or {}
+    except Exception:
+        return {}
+
+
+def expand_scripts(cmd, scripts):
+    """`npm run test:browser` -> the same string plus the script body, so the
+    patterns see `playwright test` / `vite preview` behind an npm alias. The
+    clean Sol run hid every browser launch behind `npm run test:browser`."""
+    extra = []
+    for m in NPM_RUN_RX.finditer(cmd):
+        name = m.group(1) or m.group(2)
+        body = scripts.get(name)
+        if body:
+            extra.append(body)
+    return cmd + (' :: ' + ' ; '.join(extra) if extra else '')
+
+
+def spec_interactions(ws):
+    """page.* interactions in the workspace's own test files."""
+    n = 0
+    for dp, dn, fn in os.walk(ws):
+        dn[:] = [d for d in dn if d not in ('node_modules', 'dist', '.git', 'test-results')]
+        for f in fn:
+            if TEST_FILE_RX.search(f):
+                try:
+                    n += len(PAGE_ACT_RX.findall(open(os.path.join(dp, f), encoding='utf-8', errors='replace').read()))
+                except OSError:
+                    pass
+    return n
+
+
+def audit_session(path, ws=None):
     """Verification behaviour (axis 8) and protocol compliance (axis 9)."""
     try:
         d = json.load(open(path, encoding='utf-8'))
@@ -277,9 +328,27 @@ def audit_session(path):
         return {'error': str(e)}
 
     hist = d.get('history', [])
-    cmds = [str(e.get('args', '')) for e in hist
+    scripts = npm_scripts(ws) if ws else {}
+    cmds = [expand_scripts(str(e.get('args', '')), scripts) for e in hist
             if e.get('kind') == 'tool' and e.get('tool') == 'run_command']
-    behaviour = {label: sum(1 for c in cmds if rx.search(c)) for label, rx in VERIFY_PATTERNS}
+    # A harness with a native browser tool (Claude Code's Playwright MCP) records
+    # `browser` entries whose args are already in the page.* idiom -- scanned by
+    # the same patterns, not counted as shell commands.
+    browser = [str(e.get('args', '')) for e in hist
+               if e.get('kind') == 'tool' and e.get('tool') == 'browser']
+    behaviour = {label: sum(1 for c in cmds + browser if rx.search(c)) for label, rx in VERIFY_PATTERNS}
+
+    # The Playwright *library* is a browser too. A run that wrote a spec and ran
+    # `playwright test` launched Chromium and drove the page from the spec file,
+    # not from the command line, so the interactions live in the tree.
+    pw_runs = sum(1 for c in cmds if PW_TEST_RX.search(c))
+    if pw_runs and ws:
+        behaviour['LAUNCHED a browser'] += pw_runs
+        behaviour['INTERACTED with it'] += spec_interactions(ws) * pw_runs
+    # Test files written through the write tool, not only named on a command line.
+    behaviour['wrote its own test'] += sum(
+        1 for e in hist if e.get('kind') == 'tool' and e.get('tool') == 'write_file'
+        and TEST_FILE_RX.search(str(e.get('args', ''))))
 
     # Axis 9: STEP 1 forbids creating files before the first "Begin" prompt.
     # Everything up to the SECOND user turn belongs to STEP 1.
@@ -343,7 +412,7 @@ def main():
                     for m in NON_STANDARD_MAT.finditer(texts[p])]
 
     lines = sum(texts[p].count('\n') + 1 for p in code)
-    session = audit_session(args.session) if args.session else None
+    session = audit_session(args.session, root) if args.session else None
 
     if args.json:
         print(json.dumps({

@@ -8,14 +8,14 @@
      "1": 4,
      "2": 5,
      "3": 3,
-     "4": 3,
+     "4": 5,
      "5": 4,
      "6": 2,
      "7": 2,
      "8": 5,
      "9": 4
     },
-    "total": 32,
+    "total": 34,
     "outcome": "plays",
     "plays": true,
     "printed": false,
@@ -34,14 +34,14 @@
      "1": 3,
      "2": 5,
      "3": 3,
-     "4": 4,
+     "4": 5,
      "5": 4,
      "6": 3,
      "7": 2,
      "8": 5,
      "9": 5
     },
-    "total": 34,
+    "total": 35,
     "outcome": "plays",
     "plays": true,
     "printed": false,
@@ -85,7 +85,7 @@
    "1": 4,
    "2": 5,
    "3": 3,
-   "4": 4,
+   "4": 5,
    "5": 4,
    "6": 3,
    "7": 2,
@@ -106,7 +106,7 @@
     3
    ],
    "4": [
-    3,
+    5,
     5
    ],
    "5": [
@@ -136,7 +136,7 @@
   "printed_k": 0,
   "pwcli_k": 3,
   "pwcli_cmds": 147,
-  "median_total": 34,
+  "median_total": 35,
   "n": 3
  },
  {
@@ -148,14 +148,14 @@
      "1": 4,
      "2": 5,
      "3": 3,
-     "4": 4,
+     "4": 5,
      "5": 5,
      "6": 3,
      "7": 2,
      "8": 5,
      "9": 4
     },
-    "total": 35,
+    "total": 36,
     "outcome": "plays",
     "plays": true,
     "printed": false,
@@ -200,14 +200,14 @@
      "1": 4,
      "2": 5,
      "3": 3,
-     "4": 3,
+     "4": 5,
      "5": 4,
      "6": 3,
      "7": 2,
      "8": 3,
      "9": 4
     },
-    "total": 31,
+    "total": 33,
     "outcome": "plays",
     "plays": true,
     "printed": false,
@@ -216,7 +216,7 @@
     "score_after": 680,
     "turns": 455,
     "pwcli": 0,
-    "own_tests": 0,
+    "own_tests": 4,
     "bails": [],
     "p3s": 12184
    }
@@ -225,7 +225,7 @@
    "1": 4,
    "2": 5,
    "3": 3,
-   "4": 4,
+   "4": 5,
    "5": 4,
    "6": 3,
    "7": 2,
@@ -246,7 +246,7 @@
     3
    ],
    "4": [
-    3,
+    5,
     5
    ],
    "5": [
@@ -276,7 +276,147 @@
   "printed_k": 0,
   "pwcli_k": 2,
   "pwcli_cmds": 85,
-  "median_total": 31,
+  "median_total": 33,
+  "n": 3
+ },
+ {
+  "model": "qwen/qwen3.6-27b",
+  "runs": [
+   {
+    "seed": 1,
+    "axes": {
+     "1": 3,
+     "2": 2,
+     "3": 3,
+     "4": 5,
+     "5": 4,
+     "6": 3,
+     "7": 2,
+     "8": 1,
+     "9": 4
+    },
+    "total": 27,
+    "outcome": "broken",
+    "plays": false,
+    "printed": false,
+    "built": true,
+    "src": 27,
+    "score_after": null,
+    "turns": 86,
+    "pwcli": 0,
+    "own_tests": 0,
+    "bails": [],
+    "p3s": 1818
+   },
+   {
+    "seed": 2,
+    "axes": {
+     "1": 4,
+     "2": 2,
+     "3": 3,
+     "4": 5,
+     "5": 5,
+     "6": 3,
+     "7": 2,
+     "8": 2,
+     "9": 5
+    },
+    "total": 31,
+    "outcome": "broken",
+    "plays": false,
+    "printed": false,
+    "built": true,
+    "src": 30,
+    "score_after": 0,
+    "turns": 159,
+    "pwcli": 0,
+    "own_tests": 0,
+    "bails": [],
+    "p3s": 4631
+   },
+   {
+    "seed": 3,
+    "axes": {
+     "1": 5,
+     "2": 1,
+     "3": 3,
+     "4": 5,
+     "5": 5,
+     "6": 3,
+     "7": 2,
+     "8": 1,
+     "9": 5
+    },
+    "total": 30,
+    "outcome": "nobuild",
+    "plays": false,
+    "printed": false,
+    "built": false,
+    "src": 34,
+    "score_after": null,
+    "turns": 133,
+    "pwcli": 0,
+    "own_tests": 0,
+    "bails": [],
+    "p3s": 2009
+   }
+  ],
+  "median": {
+   "1": 4,
+   "2": 2,
+   "3": 3,
+   "4": 5,
+   "5": 5,
+   "6": 3,
+   "7": 2,
+   "8": 1,
+   "9": 5
+  },
+  "range": {
+   "1": [
+    3,
+    5
+   ],
+   "2": [
+    1,
+    2
+   ],
+   "3": [
+    3,
+    3
+   ],
+   "4": [
+    5,
+    5
+   ],
+   "5": [
+    4,
+    5
+   ],
+   "6": [
+    3,
+    3
+   ],
+   "7": [
+    2,
+    2
+   ],
+   "8": [
+    1,
+    2
+   ],
+   "9": [
+    4,
+    5
+   ]
+  },
+  "plays_k": 0,
+  "verified_k": 0,
+  "built_k": 2,
+  "printed_k": 0,
+  "pwcli_k": 0,
+  "pwcli_cmds": 0,
+  "median_total": 30,
   "n": 3
  },
  {
@@ -289,13 +429,13 @@
      "2": 2,
      "3": 3,
      "4": 5,
-     "5": 3,
+     "5": 4,
      "6": 3,
      "7": 2,
      "8": 1,
      "9": 5
     },
-    "total": 28,
+    "total": 29,
     "outcome": "broken",
     "plays": false,
     "printed": false,
@@ -314,14 +454,14 @@
      "1": 4,
      "2": 1,
      "3": 3,
-     "4": 3,
+     "4": 5,
      "5": 4,
      "6": 2,
      "7": 2,
      "8": 1,
      "9": 5
     },
-    "total": 25,
+    "total": 27,
     "outcome": "nobuild",
     "plays": false,
     "printed": false,
@@ -340,14 +480,14 @@
      "1": 4,
      "2": 2,
      "3": 3,
-     "4": 4,
+     "4": 5,
      "5": 4,
      "6": 2,
      "7": 2,
      "8": 2,
      "9": 5
     },
-    "total": 28,
+    "total": 29,
     "outcome": "broken",
     "plays": false,
     "printed": false,
@@ -365,7 +505,7 @@
    "1": 4,
    "2": 2,
    "3": 3,
-   "4": 4,
+   "4": 5,
    "5": 4,
    "6": 2,
    "7": 2,
@@ -386,11 +526,11 @@
     3
    ],
    "4": [
-    3,
+    5,
     5
    ],
    "5": [
-    3,
+    4,
     4
    ],
    "6": [
@@ -413,6 +553,146 @@
   "plays_k": 0,
   "verified_k": 0,
   "built_k": 2,
+  "printed_k": 0,
+  "pwcli_k": 0,
+  "pwcli_cmds": 0,
+  "median_total": 29,
+  "n": 3
+ },
+ {
+  "model": "qwen3.5-27b",
+  "runs": [
+   {
+    "seed": 1,
+    "axes": {
+     "1": 4,
+     "2": 2,
+     "3": 3,
+     "4": 5,
+     "5": 3,
+     "6": 2,
+     "7": 2,
+     "8": 0,
+     "9": 4
+    },
+    "total": 25,
+    "outcome": "broken",
+    "plays": false,
+    "printed": false,
+    "built": true,
+    "src": 29,
+    "score_after": null,
+    "turns": 117,
+    "pwcli": 0,
+    "own_tests": 0,
+    "bails": [],
+    "p3s": 1857
+   },
+   {
+    "seed": 2,
+    "axes": {
+     "1": 4,
+     "2": 1,
+     "3": 3,
+     "4": 5,
+     "5": 4,
+     "6": 3,
+     "7": 2,
+     "8": 2,
+     "9": 4
+    },
+    "total": 28,
+    "outcome": "nobuild",
+    "plays": false,
+    "printed": false,
+    "built": false,
+    "src": 37,
+    "score_after": null,
+    "turns": 120,
+    "pwcli": 0,
+    "own_tests": 0,
+    "bails": [],
+    "p3s": 2506
+   },
+   {
+    "seed": 3,
+    "axes": {
+     "1": 5,
+     "2": 1,
+     "3": 3,
+     "4": 5,
+     "5": 3,
+     "6": 3,
+     "7": 2,
+     "8": 2,
+     "9": 4
+    },
+    "total": 28,
+    "outcome": "nobuild",
+    "plays": false,
+    "printed": false,
+    "built": false,
+    "src": 37,
+    "score_after": null,
+    "turns": 105,
+    "pwcli": 0,
+    "own_tests": 0,
+    "bails": [],
+    "p3s": 1848
+   }
+  ],
+  "median": {
+   "1": 4,
+   "2": 1,
+   "3": 3,
+   "4": 5,
+   "5": 3,
+   "6": 3,
+   "7": 2,
+   "8": 2,
+   "9": 4
+  },
+  "range": {
+   "1": [
+    4,
+    5
+   ],
+   "2": [
+    1,
+    2
+   ],
+   "3": [
+    3,
+    3
+   ],
+   "4": [
+    5,
+    5
+   ],
+   "5": [
+    3,
+    4
+   ],
+   "6": [
+    2,
+    3
+   ],
+   "7": [
+    2,
+    2
+   ],
+   "8": [
+    0,
+    2
+   ],
+   "9": [
+    4,
+    4
+   ]
+  },
+  "plays_k": 0,
+  "verified_k": 0,
+  "built_k": 1,
   "printed_k": 0,
   "pwcli_k": 0,
   "pwcli_cmds": 0,
@@ -560,286 +840,6 @@
   "n": 3
  },
  {
-  "model": "qwen/qwen3.6-27b",
-  "runs": [
-   {
-    "seed": 1,
-    "axes": {
-     "1": 3,
-     "2": 2,
-     "3": 3,
-     "4": 5,
-     "5": 4,
-     "6": 3,
-     "7": 2,
-     "8": 1,
-     "9": 4
-    },
-    "total": 27,
-    "outcome": "broken",
-    "plays": false,
-    "printed": false,
-    "built": true,
-    "src": 27,
-    "score_after": null,
-    "turns": 86,
-    "pwcli": 0,
-    "own_tests": 0,
-    "bails": [],
-    "p3s": 1818
-   },
-   {
-    "seed": 2,
-    "axes": {
-     "1": 4,
-     "2": 2,
-     "3": 3,
-     "4": 5,
-     "5": 5,
-     "6": 3,
-     "7": 2,
-     "8": 2,
-     "9": 5
-    },
-    "total": 31,
-    "outcome": "broken",
-    "plays": false,
-    "printed": false,
-    "built": true,
-    "src": 30,
-    "score_after": 0,
-    "turns": 159,
-    "pwcli": 0,
-    "own_tests": 0,
-    "bails": [],
-    "p3s": 4631
-   },
-   {
-    "seed": 3,
-    "axes": {
-     "1": 5,
-     "2": 1,
-     "3": 3,
-     "4": 3,
-     "5": 5,
-     "6": 3,
-     "7": 2,
-     "8": 1,
-     "9": 5
-    },
-    "total": 28,
-    "outcome": "nobuild",
-    "plays": false,
-    "printed": false,
-    "built": false,
-    "src": 34,
-    "score_after": null,
-    "turns": 133,
-    "pwcli": 0,
-    "own_tests": 0,
-    "bails": [],
-    "p3s": 2009
-   }
-  ],
-  "median": {
-   "1": 4,
-   "2": 2,
-   "3": 3,
-   "4": 5,
-   "5": 5,
-   "6": 3,
-   "7": 2,
-   "8": 1,
-   "9": 5
-  },
-  "range": {
-   "1": [
-    3,
-    5
-   ],
-   "2": [
-    1,
-    2
-   ],
-   "3": [
-    3,
-    3
-   ],
-   "4": [
-    3,
-    5
-   ],
-   "5": [
-    4,
-    5
-   ],
-   "6": [
-    3,
-    3
-   ],
-   "7": [
-    2,
-    2
-   ],
-   "8": [
-    1,
-    2
-   ],
-   "9": [
-    4,
-    5
-   ]
-  },
-  "plays_k": 0,
-  "verified_k": 0,
-  "built_k": 2,
-  "printed_k": 0,
-  "pwcli_k": 0,
-  "pwcli_cmds": 0,
-  "median_total": 28,
-  "n": 3
- },
- {
-  "model": "qwen3.5-27b",
-  "runs": [
-   {
-    "seed": 1,
-    "axes": {
-     "1": 4,
-     "2": 2,
-     "3": 3,
-     "4": 5,
-     "5": 3,
-     "6": 2,
-     "7": 2,
-     "8": 0,
-     "9": 4
-    },
-    "total": 25,
-    "outcome": "broken",
-    "plays": false,
-    "printed": false,
-    "built": true,
-    "src": 29,
-    "score_after": null,
-    "turns": 117,
-    "pwcli": 0,
-    "own_tests": 0,
-    "bails": [],
-    "p3s": 1857
-   },
-   {
-    "seed": 2,
-    "axes": {
-     "1": 4,
-     "2": 1,
-     "3": 3,
-     "4": 4,
-     "5": 4,
-     "6": 3,
-     "7": 2,
-     "8": 2,
-     "9": 4
-    },
-    "total": 27,
-    "outcome": "nobuild",
-    "plays": false,
-    "printed": false,
-    "built": false,
-    "src": 37,
-    "score_after": null,
-    "turns": 120,
-    "pwcli": 0,
-    "own_tests": 0,
-    "bails": [],
-    "p3s": 2506
-   },
-   {
-    "seed": 3,
-    "axes": {
-     "1": 5,
-     "2": 1,
-     "3": 3,
-     "4": 5,
-     "5": 3,
-     "6": 3,
-     "7": 2,
-     "8": 2,
-     "9": 4
-    },
-    "total": 28,
-    "outcome": "nobuild",
-    "plays": false,
-    "printed": false,
-    "built": false,
-    "src": 37,
-    "score_after": null,
-    "turns": 105,
-    "pwcli": 0,
-    "own_tests": 0,
-    "bails": [],
-    "p3s": 1848
-   }
-  ],
-  "median": {
-   "1": 4,
-   "2": 1,
-   "3": 3,
-   "4": 5,
-   "5": 3,
-   "6": 3,
-   "7": 2,
-   "8": 2,
-   "9": 4
-  },
-  "range": {
-   "1": [
-    4,
-    5
-   ],
-   "2": [
-    1,
-    2
-   ],
-   "3": [
-    3,
-    3
-   ],
-   "4": [
-    4,
-    5
-   ],
-   "5": [
-    3,
-    4
-   ],
-   "6": [
-    2,
-    3
-   ],
-   "7": [
-    2,
-    2
-   ],
-   "8": [
-    0,
-    2
-   ],
-   "9": [
-    4,
-    4
-   ]
-  },
-  "plays_k": 0,
-  "verified_k": 0,
-  "built_k": 1,
-  "printed_k": 0,
-  "pwcli_k": 0,
-  "pwcli_cmds": 0,
-  "median_total": 27,
-  "n": 3
- },
- {
   "model": "prism-ml/bonsai-27b",
   "runs": [
    {
@@ -874,14 +874,14 @@
      "1": 4,
      "2": 1,
      "3": 3,
-     "4": 4,
+     "4": 5,
      "5": 5,
      "6": 3,
      "7": 2,
      "8": 0,
      "9": 4
     },
-    "total": 26,
+    "total": 27,
     "outcome": "broken",
     "plays": false,
     "printed": false,
@@ -902,14 +902,14 @@
      "1": 5,
      "2": 1,
      "3": 3,
-     "4": 4,
+     "4": 5,
      "5": 4,
      "6": 1,
      "7": 1,
      "8": 0,
      "9": 5
     },
-    "total": 24,
+    "total": 25,
     "outcome": "nobuild",
     "plays": false,
     "printed": false,
@@ -927,7 +927,7 @@
    "1": 4,
    "2": 1,
    "3": 3,
-   "4": 4,
+   "4": 5,
    "5": 4,
    "6": 1,
    "7": 1,
@@ -949,7 +949,7 @@
    ],
    "4": [
     0,
-    4
+    5
    ],
    "5": [
     0,
@@ -978,7 +978,7 @@
   "printed_k": 0,
   "pwcli_k": 0,
   "pwcli_cmds": 0,
-  "median_total": 24,
+  "median_total": 25,
   "n": 3
  },
  {
@@ -991,13 +991,13 @@
      "2": 1,
      "3": 3,
      "4": 3,
-     "5": 3,
+     "5": 4,
      "6": 3,
      "7": 2,
      "8": 1,
      "9": 5
     },
-    "total": 24,
+    "total": 25,
     "outcome": "nobuild",
     "plays": false,
     "printed": false,
@@ -1093,7 +1093,7 @@
    ],
    "5": [
     0,
-    3
+    4
    ],
    "6": [
     0,
@@ -1156,14 +1156,14 @@
      "1": 3,
      "2": 2,
      "3": 3,
-     "4": 3,
+     "4": 5,
      "5": 4,
      "6": 3,
      "7": 2,
      "8": 0,
      "9": 4
     },
-    "total": 24,
+    "total": 26,
     "outcome": "broken",
     "plays": false,
     "printed": false,
@@ -1229,7 +1229,7 @@
    ],
    "4": [
     0,
-    3
+    5
    ],
    "5": [
     0,

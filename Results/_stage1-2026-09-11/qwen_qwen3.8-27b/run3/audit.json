@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen_qwen3.8-27b/run3/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.8-27b/run3/ws",
  "files": 36,
  "lines": 5328,
  "placeholders": [],
@@ -86,8 +86,26 @@
     6
    ]
   ],
-  "shockwave rings": [],
-  "floating score text": [],
+  "shockwave rings": [
+   [
+    "shared/vfx/ShockwaveRingPool.js",
+    6
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    10
+   ]
+  ],
+  "floating score text": [
+   [
+    "shared/vfx/FloatingTextPool.js",
+    2
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    12
+   ]
+  ],
   "object pooling": [
    [
     "shared/core/ObjectPool.js",
@@ -245,7 +263,7 @@
    "LAUNCHED a browser": 0,
    "INTERACTED with it": 1,
    "used playwright-cli": 0,
-   "wrote its own test": 0
+   "wrote its own test": 4
   },
   "step1_writes": [],
   "step1_commands": [],

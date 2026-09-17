@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run3/ws",
  "files": 37,
  "lines": 6506,
  "placeholders": [],
@@ -192,6 +192,10 @@
   ],
   "shockwave rings": [
    [
+    "shared/constants.js",
+    102
+   ],
+   [
     "shared/vfx/index.js",
     6
    ],
@@ -200,11 +204,19 @@
     1
    ],
    [
+    "Space_Invaders/index.js",
+    69
+   ],
+   [
     "Space_Invaders/entities/alien.js",
     139
    ]
   ],
   "floating score text": [
+   [
+    "shared/vfx/floatingText.js",
+    4
+   ],
    [
     "shared/vfx/index.js",
     7
@@ -329,7 +341,7 @@
   ]
  ],
  "dispose_calls": 62,
- "three_allocations": 44,
+ "three_allocations": 46,
  "violations": [],
  "non_standard_materials": [
   [

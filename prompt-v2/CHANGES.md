@@ -9,10 +9,10 @@ Each change below is tied to something observed in those four runs.
 
 ## 1. The skill invocation is gone from p2 and p3 — **the important one**
 
-| | v1 | v2 |
-|---|---|---|
-| p2 | `Use the openai-game-studio skill: Begin Space Invaders` | `Begin Space Invaders` |
-| p3 | `Use the openai-game-studio skill: plan approved` | `Plan approved` |
+|     | v1                                                       | v2                     |
+| --- | -------------------------------------------------------- | ---------------------- |
+| p2  | `Use the openai-game-studio skill: Begin Space Invaders` | `Begin Space Invaders` |
+| p3  | `Use the openai-game-studio skill: plan approved`        | `Plan approved`        |
 
 **Why.** All four runs loaded `openai-game-studio`, and its `SKILL.md` line 67 reads:
 
@@ -23,10 +23,13 @@ being told to.** The run that scored highest on that axis was following an instr
 the runs that did not were ignoring one. Axis 8 was an instruction-following test with a
 diligence label on it.
 
-Second reason: `~/.claude/skills/` is a Claude Code convention. Codex CLI has no
-`use_skill` tool and no access to that bundle — roughly 5.5 KB of extra guidance, plus
-whatever sub-skill it routes to. The frontier reference would have run with **less**
-instruction than the local models, biasing the comparison in the wrong direction.
+Second reason: the skill is a harness dependency, and the frontier contestants do not share
+one harness. Claude Code and Codex CLI both have `openai-game-studio` installed
+(`~/.claude/skills/` and `~/.agents/skills/` respectively), but each loads it through its
+own mechanism and each may route to different sub-skills; the workbench loads it through
+`use_skill`. Naming the skill in the prompt made the comparison "prompt + whichever bundle
+your harness serves", which is not the same prompt. (An earlier draft of this note claimed
+Codex had no access to the skill at all — wrong; James corrected it 2026-09-15.)
 
 The new p2/p3 match the protocol the prompt itself declares ("I will say: 'Begin [Game
 Name]'" / "Plan approved"), so nothing is lost but the dependency.
@@ -42,11 +45,11 @@ yourself."*
 
 **Why.** Peak reasoning tokens observed, against a hard 8,192 clamp:
 
-| Run | Peak |
-|---|---|
-| q3_k_m 09-04 | 8,131 |
-| q3_k_m 09-06 | 1,134 |
-| 3.8-27b spec-on | **8,191** |
+| Run              | Peak      |
+| ---------------- | --------- |
+| q3_k_m 09-04     | 8,131     |
+| q3_k_m 09-06     | 1,134     |
+| 3.8-27b spec-on  | **8,191** |
 | 3.8-27b spec-off | **8,191** |
 
 Three of four runs pressed the ceiling. v1 commanded exhaustive analysis while the

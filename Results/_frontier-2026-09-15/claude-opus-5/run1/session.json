@@ -1,0 +1,1638 @@
+{
+ "id": "5e555602-f0d4-459c-b4a9-ef6c9e9517f1",
+ "model": "claude-opus-5",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1\\ws",
+ "preset": "claude-code",
+ "mode": "bypassPermissions",
+ "seed": 1,
+ "history": [
+  {
+   "at": "1789532667403",
+   "kind": "user",
+   "text": "# MISSION DIRECTIVE: AAA Retro-Futurism Architectural Planning & Implementation\n\nAct as an Elite Level Staff Game Architect and Lead Three.js Graphics Engineer. You are undergoing a rigorous benchmark to test your ability to plan complex software systems and execute high-fidelity, production-ready code with absolutely zero shortcuts.\n\nThink before you write, and spend that thinking where it is expensive to be wrong: architecture, memory ownership, the mathematics of the core mechanics, the render pipeline, and the edge cases of each. Your thinking budget is finite — do not spend it restating this brief back to yourself.\n\n### DEFINITION OF DONE\nThe deliverable is a game a person can sit down and play: it launches, it responds to input, and its core loop runs through to a win or loss state. Code that compiles but does not play is not done. How you satisfy yourself that this is true is your decision.\n\n### CORE TECHNICAL CONSTRAINTS & STACK\n- **Engine:** Three.js (Vanilla JS + ES Modules). Do not use external game engines or physics wrappers (e.g. Cannon.js, Ammo.js, or Rapier). All physics and collision mechanics must be hand-written vanilla logic.\n- **Assets:** 100% Procedural Generation. No external files, `.gltf`, `.png/jpg`, or `.mp3` files. All assets must be generated via code (e.g. Canvas API for textures, Simplex noise/sine waves for geometry displacement, Web Audio API for synthesized SFX and music).\n- **Materials:** Strict use of `MeshStandardMaterial` for physically based rendering (PBR).\n- **UI/UX:** HTML/CSS Overlays using a \"Glassmorphism\" design system with vibrant neon glowing accents.\n- **Input:** Unified Dual-Input controller supporting Keyboard (WASD/Arrows) and the Gamepad API.\n- **Performance Constraints (Mandatory):**\n  - Strict Object Pooling for all projectiles, entities, and particles.\n  - A hard cap of 500 active particles at any time via a centralized Particle Manager.\n  - Usage of `InstancedMesh` or merged geometries where applicable.\n  - Strict adherence to Three.js memory management (explicitly calling `.dispose()` on unused geometries, materials, and textures to prevent memory leaks).\n- **Internal Consistency (Mandatory):** Every import must resolve to a real export, and every method you call on an imported module must exist on that module. A file written against an interface you never built is a defect, not a placeholder.\n- **Development Environment:** Assume the project is served via `Vite`. Localize file scoping to avoid deep import path confusion — use a clear `shared/` utility structure, and contain all game files within their own `[GameName]/` folder.\n\n### VISUAL & AESTHETIC DIRECTIVE\nTheme: **AAA Retro-Futurism**. The game must feel like a multi-million-dollar modern reimagining of a classic.\n- You MUST implement `EffectComposer` with `UnrealBloomPass` to create glowing neon emitters. Tune it: emissive surfaces should glow, not wash out to white.\n- **Required Shared VFX (all six):**\n  1. Camera Shake (trauma-based system, decaying intensity, scaling on impact velocity).\n  2. Procedural Particle Bursts (sparks, explosions).\n  3. Hit-Stop / Frame-Freeze (brief timescale dilation on heavy impacts).\n  4. Motion Trails for fast-moving objects.\n  5. Shockwave Rings (expanding emissive rings on impacts/deaths).\n  6. Floating dynamic 3D/HTML score text.\n\n### THE BUILD\nYou will build **exactly one** game from the collection below — I will name it. The `shared/` layer you write must be reusable across the rest of the collection, but **do not implement any game I have not named.**\n\nCollection, easiest to hardest:\n`Pong` · `Snake` · `Breakout` · `Tetris` · `Space_Invaders` · `Pac-Man` · `Asteroids` · `Frogger` · `Centipede` · `Galaga` · `Defender` · `Donkey_Kong` · `Paperboy` · `TMNT`\n\nEach game lives in its own isolated, exactly-named directory.\n\n---\n\n### INTERACTIVE WORKFLOW PROTOCOL\nTo maintain cross-prompt context, prevent output truncation, and ensure zero code skipping, we execute step-by-step. Do NOT generate the whole collection. Follow this protocol precisely.\n\n**STEP 1: Initialization**\nOutput the master directory structure (including the Vite setup and shared-utilities strategy) **as text only — create no files and run no commands in this step.** Then briefly state your compliance with the \"Anti-Lazy Directive\", \"Strict Memory Management\", and \"Sequential Output Protocol\", and ask me which game we are starting with. Await my command.\n\n**STEP 2: The Planning Phase (triggered by \"Begin [Game Name]\")**\nOutput a highly exhaustive `plan.md` tailored *specifically* for that game. The plan must contain:\n1. **Core Gameplay:** How the classic mechanics are mathematically modeled.\n2. **Modern Enhancements:** 15–20 specific AAA upgrades detailing the exact Three.js implementations.\n3. **Graphics Pipeline:** Custom post-processing stack configs and procedural generation math.\n4. **VFX Implementation:** Priority logic for Camera Shake, Hit-Stop, and Particles.\n5. **File Architecture:** Every ES module required, and the import path between each.\n\n**STEP 3: Full Implementation (triggered by \"Plan approved\")**\nWrite EVERY file detailed in the `plan.md`.\n- **ANTI-LAZY DIRECTIVE:** You are explicitly banned from placeholder syntax such as `// ... rest of the function`, `// ... insert logic here`, or `// ... previously defined code`. Every function must be fully implemented and production-ready.\n- **TOKEN LIMIT OVERFLOW:** If a file is too long and your output truncates, simply stop. I will type the word \"continue\". Resume from the *exact character* where you were cut off, without apologizing, providing preamble, or restarting the code block.\n\nExecute **STEP 1** now.\n"
+  },
+  {
+   "at": "1789532726958",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 4661
+  },
+  {
+   "at": "1789532758907",
+   "kind": "assistant",
+   "text": "# STEP 1 — Initialization\n\n## Master Directory Structure\n\n```\nproject-root/\n├── package.json                      # deps: three (r160+) · devDeps: vite\n├── vite.config.js                    # multi-page build (one entry per game) + `@shared` alias → ./shared\n├── index.html                        # Collection hub: glass launcher linking to each built game\n│\n├── shared/                           # Engine-agnostic layer, reused by all 14 games\n│   ├── core/\n│   │   ├── Engine.js                 # RAF loop, fixed-step accumulator (120 Hz sim), dt clamp,\n│   │   │                             #   timescale hook (HitStop), visibility pause, resize, teardown\n│   │   ├── GameBase.js               # Abstract lifecycle: init / fixedUpdate / update / render / dispose\n│   │   ├── StateMachine.js           # BOOT → TITLE → PLAY ⇄ PAUSE → WIN | LOSE, enter/exit/update\n│   │   ├── EventBus.js               # Typed pub/sub (score, hit, death, wave) — decouples VFX/audio/UI\n│   │   ├── ObjectPool.js             # Generic pool: factory/reset/acquire/release, hard-cap, iterate-live\n│   │   └── ResourceTracker.js        # track(obj) → sweeps geometries/materials/textures on dispose()\n│   │\n│   ├── input/\n│   │   ├── InputManager.js           # Unified action map; pressed / held / released edges; analog axes\n│   │   ├── KeyboardSource.js         # WASD + Arrows + Space/Enter/Esc, keydown repeat suppression\n│   │   └── GamepadSource.js          # Gamepad API poll, radial deadzone, connect/disconnect, rumble hook\n│   │\n│   ├── render/\n│   │   ├── RendererFactory.js        # WebGLRenderer, ACES tone-mapping, sRGB output, DPR cap (≤2)\n│   │   ├── PostPipeline.js           # EffectComposer: RenderPass → UnrealBloomPass → RetroPass → OutputPass\n│   │   ├── RetroShader.js            # Post GLSL: chromatic aberration, vignette, subtle scanlines, grain\n│   │   ├── CameraRig.js              # Base transform + additive shake offset (never mutates base pose)\n│   │   └── Lighting.js               # Neon key/rim/fill + hemisphere presets\n│   │\n│   ├── vfx/                          # The six mandated systems + orchestrator\n│   │   ├── VFXDirector.js            # Facade with priority/budget logic; single call-site for games\n│   │   ├── CameraShake.js            # Trauma ∈ [0,1], intensity = trauma², noise-driven, linear decay,\n│   │   │                             #   addImpulse(velocity) scales trauma by impact speed\n│   │   ├── HitStop.js                # Timescale dilation: duration, floor scale, ease-out, priority override\n│   │   ├── ParticleManager.js        # ONE InstancedMesh (500 hard cap), pooled slots, burst presets\n│   │   ├── TrailRenderer.js          # Pooled ribbon geometries, position history, emissive alpha fade\n│   │   ├── ShockwaveRing.js          # Pooled RingGeometry, scale-up + opacity/emissive decay\n│   │   └── FloatingText.js           # Pooled HTML labels, world→screen projection, drift + fade\n│   │\n│   ├── audio/\n│   │   ├── AudioEngine.js            # AudioContext, master/sfx/music buses, compressor, gesture unlock\n│   │   ├── SFXSynth.js               # Osc + noise + ADSR presets: blip, laser, hit, boom, powerup, ui\n│   │   └── MusicSequencer.js         # Lookahead step-sequencer; procedural synthwave bass/lead/drums\n│   │\n│   ├── procgen/\n│   │   ├── SimplexNoise.js           # Hand-written 2D/3D simplex + fBm\n│   │   ├── Random.js                 # Seeded PRNG (mulberry32): range, int, pick, chance, gaussian\n│   │   ├── TextureFactory.js         # Canvas API → CanvasTexture: grid, hex panel, scanline, glow, noise\n│   │   ├── MaterialLibrary.js        # MeshStandardMaterial presets: neon emitter, chrome, dark glass, floor\n│   │   └── GeometryUtils.js          # Noise displacement, BufferGeometryUtils merge, instancing helpers\n│   │\n│   ├── math/\n│   │   ├── MathUtils.js              # clamp, lerp, damp (frame-rate independent), remap, wrap, approach\n│   │   ├── Easing.js                 # quad/cubic/expo/back/elastic in-out\n│   │   └── Collision.js              # AABB, circle, swept circle–segment (CCD), OBB SAT, grid hash\n│   │\n│   └── ui/\n│       ├── glass.css                 # Glassmorphism tokens (blur, borders, neon glow, typography)\n│       ├── UIOverlay.js              # HUD builder: panels, counters, bars, toasts\n│       └── MenuSystem.js             # Title / pause / win / lose screens; keyboard + gamepad focus nav\n│\n├── Pong/                             # ← each game: exactly-named, self-contained\n│   ├── index.html                    # Own Vite entry\n│   ├── main.js                       # Bootstrap: Engine + game class\n│   ├── plan.md\n│   └── src/\n│       ├── config.js                 # All tuning constants in one place\n│       ├── PongGame.js               # extends GameBase\n│       ├── entities/                 # Paddle, Ball, …\n│       ├── systems/                  # Physics, AI, Scoring, …\n│       └── world/                    # Arena, environment, lighting composition\n│\n├── Snake/ … Breakout/ … TMNT/        # Same pattern — created ONLY when you name them\n```\n\n**Import path strategy**\n- Game → shared: `import { Engine } from '@shared/core/Engine.js'` (Vite `resolve.alias`; no `../../` guessing).\n- Inside `shared/`: relative only (`../math/MathUtils.js`).\n- Inside a game: relative within `src/`.\n- Three.js: `three` + `three/addons/postprocessing/*` and `three/addons/utils/BufferGeometryUtils.js`. No other runtime dependencies.\n\n**Vite setup:** `vite.config.js` declares `build.rollupOptions.input` with the hub plus one entry per existing game folder; `npm run dev` serves everything, `npm run build` emits a static multi-page site.\n\n**Ownership rules baked into the architecture**\n- Every mesh, material and texture a scene creates is registered with a `ResourceTracker`; scene teardown disposes all of it. Pools own their GPU resources and dispose them on `destroy()`.\n- `ParticleManager` is the only thing that can spawn a particle; 500 is a hard slot cap, oldest-lowest-priority is evicted when full.\n- `HitStop` alters `Engine.timeScale` only; game logic never touches the clock.\n- `CameraShake` writes to `CameraRig.shakeOffset`, never to the camera's base pose.\n\n## Compliance\n\n- **Anti-Lazy Directive:** Every file will be complete — no `// ...` elisions, no stubs, no interfaces referenced but never written. Every import resolves to a real export.\n- **Strict Memory Management:** `ResourceTracker` + pool ownership guarantee explicit `.dispose()` on geometries, materials, textures, render targets and the composer; no per-frame allocations in hot loops (scratch vectors reused).\n- **Sequential Output Protocol:** One game at a time, plan before code, and on truncation I resume from the exact cut character on \"continue\".\n\nWhich game are we starting with?"
+  },
+  {
+   "at": "1789532767159",
+   "kind": "user",
+   "text": "Begin Space Invaders"
+  },
+  {
+   "at": "1789533086139",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 22945
+  },
+  {
+   "at": "1789533087697",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "ls -la \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && node --version && npm --version",
+   "name": "Bash"
+  },
+  {
+   "at": "1789533140676",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 4401
+  },
+  {
+   "at": "1789533311036",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "mkdir -p \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws/Space_Invaders\" && cat > \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws/Space_Invaders/plan.md\" <<'EOF'\n# Space_Invaders — Implementation Plan\n\nAAA retro-futurist reimagining of Taito's 1978 *Space Invaders*. Three.js + vanilla ES modules, served by Vite,\n100 % procedural assets, hand-written physics, strict pooling, strict disposal.\n\n---\n\n## 0. Scope, states, and Definition of Done\n\n**Playable loop**\n\n```\nBOOT ─► TITLE ─► WAVE_INTRO ─► PLAY ─┬─► PAUSED ─► PLAY\n                     ▲               ├─► PLAYER_DEATH ─┬─► WAVE_INTRO/PLAY (lives > 0)\n                     │               │                 └─► GAME_OVER (lives = 0)\n                     │               ├─► GAME_OVER (invasion line breached)\n                     └── WAVE_CLEAR ◄┘ (all 55 dead) ── wave 5 cleared ─► VICTORY\nGAME_OVER / VICTORY ─► TITLE  (or VICTORY ─► endless mode ─► WAVE_INTRO)\n```\n\n- **Win:** clear `WAVES_TO_WIN = 5` waves → VICTORY screen (stats: score, accuracy, time, kills), option to continue endless.\n- **Loss:** lives reach 0, or the lowest living invader's bottom edge ≤ `INVASION_Y`.\n- **Done means:** `npm run dev` → `/Space_Invaders/` boots with zero console errors, keyboard + gamepad drive it, both terminal states are reachable. I verify by driving the page with Playwright (real key events at the browser input boundary), reading a DEV-only `window.__SI__` inspection hook for state/score, and checking `renderer.info.memory` returns to baseline after a full teardown/restart.\n\n---\n\n## 1. Core Gameplay — mathematical model\n\n### 1.1 Coordinate system\nGameplay is strictly 2-D on the XY plane at z = 0; rendering is 3-D. +X right, +Y up, +Z toward camera. All units are world units (wu).\n\n| Constant | Value | Meaning |\n|---|---|---|\n| `HALF_WIDTH` | 16 | playfield x ∈ [−16, 16] |\n| `PLAYER_Y` | 0 | cannon centre line |\n| `INVASION_Y` | 1.4 | invader bottom ≤ this ⇒ game over |\n| `BUNKER_Y` / `BUNKER_XS` | 4.0 / [−10.5, −3.5, 3.5, 10.5] | four bunkers |\n| `FORMATION_TOP_Y` | 20.5 | top-row centre on wave 1 |\n| `UFO_Y` | 23.5 | mystery-ship lane |\n| `CULL_TOP_Y` / `CULL_BOTTOM_Y` | 26 / −2 | projectile despawn |\n| `VOXEL` | 0.14 | invader bitmap pixel size |\n\nCamera-fit (computed on resize so the whole field is always visible, any aspect):\n```\nhalfH = 13.5, halfW = 17, centreY = 12\ndist  = max( halfH / tan(fov/2),  halfW / (tan(fov/2) · aspect) ) · 1.08\nrig.basePosition = (0, centreY + 4.5, dist),  rig.baseTarget = (0, centreY, 0)\n```\nGentle top-down tilt keeps 2-D readability while showing depth; the rig adds a parallax lean `offset.x = player.x · 0.06`.\n\n### 1.2 Formation (the heart of the game)\n55 invaders: 5 rows × 11 cols. Row 0 = **squid** (30 pts), rows 1–2 = **crab** (20), rows 3–4 = **octopus** (10).\nLogical position of invader (r, c): `x = originX + c·COL_PITCH`, `y = originY − r·ROW_PITCH`, `COL_PITCH = 2.2`, `ROW_PITCH = 1.8`.\nWave `w` starts with `originY = FORMATION_TOP_Y − min(w−1, 4)·DROP_Y` (formation starts lower, as in the original, capped).\n\n**Tempo.** The 1978 machine moved one alien per frame, so a full formation step took `alive` frames. Model:\n```\ninterval(alive, wave) = clamp(alive / 60, MIN_STEP_INTERVAL = 0.045, 1.0) / speedMul(wave)\nspeedMul(wave) = 1 + 0.10·(wave − 1)\n```\n55 alive ⇒ 0.92 s per step; last alien ⇒ 0.045 s. The march bass note fires on each step, so the music accelerates organically.\n\n**Stepping (fixed 120 Hz step).**\n```\ntimer += step\nif timer ≥ interval:\n    timer -= interval\n    if pendingDrop:  originY -= DROP_Y (0.9);  dir = −dir;  pendingDrop = false;  emit 'invader:drop'\n    else:            originX += dir·STEP_X (0.275)\n                     b = aliveBounds()           // min/max x over living invaders\n                     if (dir>0 && b.maxX + HALF_INVADER_W ≥ HALF_WIDTH − EDGE_MARGIN) ||\n                        (dir<0 && b.minX − HALF_INVADER_W ≤ −HALF_WIDTH + EDGE_MARGIN):  pendingDrop = true\n    frame ^= 1;  hop ripple starts;  emit 'invader:step'\n    if lowestAliveBottom() ≤ INVASION_Y:  emit 'invader:invaded'\n```\nEdge detection uses only living invaders, so a thinned formation sweeps wider — exactly the classic behaviour.\nIn TITLE (attract mode) `demo = true`: reverse without dropping.\n\n**Shooting.**\n```\nmaxShots(wave)   = min(3 + floor((wave−1)/2), 5)\nfireInterval     = rand(0.35, 1.10) · (0.55 + 0.45·alive/55) · max(1 − 0.06·(wave−1), 0.5)\non timer ≤ 0 and liveInvaderBullets < maxShots:\n    col = chance(0.35) ? aliveColumnNearest(player.x) : randomAliveColumn()\n    shooter = bottom-most living invader in col\n    spawn invader bullet at (shooter.x, shooter.y − 0.7), kind ∈ {plunger, rolling, squiggly} (weighted 40/35/25)\n```\nSquiggly bullets zig-zag: `x = x0 + 0.25·sin(2π·9·age)`. Rolling bullets spin about Y. Speed `9 + 0.6·(wave−1)` wu/s.\n\n**Fly-in.** On WAVE_INTRO each invader's visual starts at `logical + (0, +14)` and eases (easeOutCubic, 0.7 s) after delay `0.06·r + 0.03·c`. Formation logic is frozen until the last invader lands (≈ 1.7 s), then a shockwave ring pulses under the formation.\n\n**Hop animation (visual only, per step).** Each column starts its hop `8 ms · c` after the step (ripple). With `t` = normalised hop time:\n`offsetY = 0.12·sin(πt)`, `scaleY = 1 + 0.18·sin(πt)`, `scaleX = 1 − 0.10·sin(πt)`. Collision always uses logical positions.\n\n### 1.3 Player cannon\nVelocity-based control with snappy acceleration (frame-rate-independent):\n```\ntarget = axis('moveX') · PLAYER_SPEED (13)\nvx = approach(vx, target, PLAYER_ACCEL (140) · step)\nx  = clamp(x + vx·step, −HALF_WIDTH + 1.1, HALF_WIDTH − 1.1)\nbank = damp(bank, −vx/PLAYER_SPEED · 0.35 rad, 12, dt)   // visual roll\n```\nFiring: one bullet in flight (classic) unless a power-up raises the cap; `FIRE_COOLDOWN = 0.16 s`. Fire is read with `input.takePress(FIRE)` (latched edge) so a press is never lost on frames where zero fixed steps run (144 Hz displays vs 120 Hz sim). Holding fire auto-repeats at the cooldown.\nHit: if `shield` → shield consumed (ring + sound), else life lost → PLAYER_DEATH. Respawn after 1.6 s with 2.5 s invulnerability (blink at 8 Hz, 40 % emissive).\n\n### 1.4 Projectiles\nPooled (`ObjectPool`): 6 player bullets, 8 invader bullets. Every bullet stores `prevX/prevY` so collisions are **swept segment vs AABB** (slab test) — no tunnelling even at 30 wu/s. Player bullet: speed 30, half-extents (0.08, 0.35). Invader bullet half-extents (0.12, 0.40). Player bullet vs invader bullet ⇒ both cancel (classic) with a spark.\n\n### 1.5 Bunkers\n4 bunkers, each a 12 × 8 cell bitmap (`CELL = 0.32`, classic silhouette with the bottom notch). One `InstancedMesh` (384 cells). Cell HP = 2: first hit scorches (instance colour → dark amber, emissive drops), second removes (matrix scaled to 0, cell dead).\nBullet vs bunker: coarse AABB, then walk the bullet's segment through cells (≤ 4 cells at these speeds); first live cell hit → `damage(cell, radius 1)`: centre −2 HP, 4-neighbours −1 HP with p = 0.6. Invader overlap vs bunker: any live cell inside an invader AABB is erased each step (the formation \"eats\" the shields). Bunkers are rebuilt every wave.\n\n### 1.6 UFO (mystery ship)\nAppears every `rand(18, 28)` s while `alive ≥ 8` (classic rule), from a random side at 6.5 wu/s along `UFO_Y`, with a warbling synth loop and a scanning emissive beam.\nScore — the original's easter egg is preserved: `shotsFired == 23 || (shotsFired − 23) % 15 == 0` ⇒ 300, else weighted pick 50 (40 %) / 100 (30 %) / 150 (20 %) / 300 (10 %).\n\n### 1.7 Scoring, combo, lives, waves\n- Combo: kills within `COMBO_WINDOW = 1.0 s` chain; multiplier = 1 (chain < 3), 2 (3–5), 3 (6–8), 4 (≥ 9). Awarded = base · multiplier, shown as floating text `+60 ×2`.\n- Extra life at 1500, then every 10 000 (max 6 lives).\n- Wave clear: `bonus = 100·wave + 5·survivingBunkerCells`, WAVE_CLEAR state 2.4 s, then WAVE_INTRO with rebuilt bunkers, `originY` lowered per formula, faster tempo, more concurrent shots.\n- Hi-score persisted in `localStorage['si.hiscore']`.\n\n### 1.8 Power-ups (modern)\n7 % drop chance per kill (never while one is on-screen); descend at 3 wu/s, spin, glow ring. Types: **SPREAD** (3-bullet volley at ±12°, cap 3, 10 s), **RAPID** (cap 2, cooldown 0.09 s, 10 s), **SHIELD** (absorb one hit, until used). HUD chip shows the remaining time.\n\n### 1.9 Fixed-step loop\n`Engine`: real dt clamped to 0.1 s → `HitStop.timeScale` → accumulator → up to 8 × `fixedUpdate(1/120)` → `update(dt, realDt)` → VFX → render. Particles/trails/rings/sim use scaled dt (they freeze during hit-stop, which reads as dramatic), camera shake and floating text use real dt.\n\n---\n\n## 2. Modern Enhancements (19)\n\n1. **Instanced voxel invaders** — classic 12×8 bitmaps → merged `BoxGeometry` (via `BufferGeometryUtils.mergeGeometries`) per type × frame → 6 `InstancedMesh`es (55 instances each, `count` set per type). Frame toggling swaps which pair is visible; 55 aliens = 3 draw calls.\n2. **Hop ripple** — per-column delayed squash-stretch on every formation step (matrix recompose per frame from logical grid).\n3. **2-HP destructible voxel bunkers** — single `InstancedMesh`, per-instance scorch colour, debris particles on every chip, invaders eat them on contact.\n4. **Tempo-locked audio** — the four-note descending march (E2 D#2 D2 C#2 square-bass thumps) fires on each formation step, so the soundtrack accelerates with the kill count, exactly like the cabinet; `MusicSequencer` pads raise filter cutoff and arp gain with invasion pressure.\n5. **Mystery ship with scan beam** — lathe-profile saucer (`LatheGeometry` from a procedural profile), rotating emissive rim lights, cone-shaped `MeshStandardMaterial` beam (transparent, emissive), warble loop via two detuned triangle oscillators + LFO.\n6. **Player ship feel** — banking roll on movement, thruster particle stream (priority 0), pooled muzzle-flash `PointLight` (intensity-toggled, never added/removed at runtime → no shader recompiles), recoil kick on fire.\n7. **Bullet trails** — `TrailRenderer` ribbons for player bolts; three distinct invader bullet geometries (plunger cylinder, rolling cross, squiggly sine ribbon).\n8. **Power-ups** — Spread / Rapid / Shield, pooled pickups, HUD timers.\n9. **Combo multiplier** — chain window, HUD chip with draining bar, floating `×N` text colour ramps cyan → magenta → amber.\n10. **Invasion pressure** — `pressure = clamp((BUNKER_Y + 2 − lowestY)/8, 0, 1)`: red pulse `PointLight` (0 → 6 intensity at `1.5 + 2·pressure` Hz), vignette tint shifts red, music intensity rises, gamepad rumble ticks on drops when pressure > 0.6.\n11. **Hit-stop hierarchy** — see §4; heavy impacts freeze the sim briefly while the camera still shakes.\n12. **Trauma camera** — impulses scaled by impact velocity, simplex-driven offsets, chromatic aberration in the post shader is driven by current trauma.\n13. **Post stack** — HDR half-float MSAA render target → UnrealBloom (tuned so emitters glow, not blow out) → RetroPass (aberration, vignette, scanlines, grain, screen flash) → OutputPass (ACES + sRGB).\n14. **Synthwave environment** — scrolling emissive grid floor (UV offset), striped retro sun disc (canvas gradient + horizontal cut stripes), two-layer instanced starfield with depth parallax that drifts downward (flying through space), distant planet with fBm colour-ramped texture.\n15. **Procedural SFX** — laser (saw 880→220 Hz exp sweep, 90 ms), invader death (square 300→60 Hz + noise burst through band-pass), player explosion (noise → low-pass sweep + 55 Hz sine boom), bunker chip, power-up arpeggio, UI blips, extra-life fanfare, victory/game-over stingers.\n16. **Glass HUD** — score / hi-score / wave / lives (mini cannon icons) / combo / power-up chips, all glassmorphism panels with neon accents; title, pause, game-over and victory screens with keyboard + gamepad menu navigation.\n17. **Wave intro choreography** — \"WAVE N\" floating text burst, staggered fly-in, landing shockwave.\n18. **Faithful UFO scoring easter egg** + on-screen accuracy stat.\n19. **Attract mode** — the formation marches (no drops, no shots) behind the title; audio unlocks on the first input.\n\n---\n\n## 3. Graphics pipeline\n\n### 3.1 Renderer\n`WebGLRenderer({ antialias:false, powerPreference:'high-performance' })`, `setPixelRatio(min(devicePixelRatio, 2))`, `outputColorSpace = SRGBColorSpace`, `toneMapping = ACESFilmicToneMapping`, exposure 1.0. Clear colour `#05060f`.\nComposer target: `WebGLRenderTarget(w, h, { type: HalfFloatType, samples: 4 })` → MSAA survives post-processing and bloom operates on HDR values.\n\n### 3.2 Post-processing stack (`PostPipeline`)\n```\nRenderPass(scene, camera)\nUnrealBloomPass(resolution, strength 0.75, radius 0.40, threshold 0.85)\nShaderPass(RetroShader)   uniforms: uAberration 0.0012 (+0.006·trauma), uVignette 0.38, uVignetteColor,\n                          uScanlines 0.05, uGrain 0.035, uFlash (rgb, a) decays at 4/s, uTime, uResolution\nOutputPass()              (tone-mapping + sRGB happen here, materials render linear HDR)\n```\nBloom tuning rule: neon emitters use `emissiveIntensity ∈ [1.6, 3.0]` with saturated emissive colours (they exceed the 0.85 threshold and bloom); diffuse-lit hull surfaces stay < 0.85 and never bloom. White is avoided on emitters so bloom never clips to white.\n\nRetroShader math (fragment):\n```\nuv  = vUv;  d = uv − 0.5\nca  = uAberration · (1 + 2·dot(d,d))           // stronger at edges\ncol = vec3( tex(uv + d·ca).r, tex(uv).g, tex(uv − d·ca).b )\nscan = 1 − uScanlines · (0.5 + 0.5·sin(uv.y · uResolution.y · 1.5))\nvig  = 1 − uVignette · smoothstep(0.35, 1.2, length(d)·1.4)\ncol  = mix(col·scan, uVignetteColor, (1 − vig)) \ngrain = (hash(uv·uResolution + uTime) − 0.5) · uGrain\ncol  = mix(col + grain, uFlash.rgb, uFlash.a)\n```\n\n### 3.3 Lighting (fixed set, created once)\nHemisphere (sky `#1b2140`, ground `#0a0614`, 0.55) · key `DirectionalLight` `#cfe8ff` 0.9 from (6, 18, 12) · rim `DirectionalLight` `#ff2bd6` 0.45 from (−8, 6, −10) · player `PointLight` cyan 1.2 (follows cannon) · invasion `PointLight` red (0..6) · 3 pooled muzzle `PointLight`s (intensity toggled).\n\n### 3.4 Procedural generation math\n- **Bitmap → geometry:** for each set pixel (i, j) in a bitmap of rows, `BoxGeometry(VOXEL, VOXEL, VOXEL·1.4)` translated to `((i − w/2 + 0.5)·VOXEL, (h/2 − j − 0.5)·VOXEL, 0)`; all boxes merged into one `BufferGeometry` (`mergeGeometries`). Both frames per invader type; bounding box computed for collision half-extents.\n- **Player cannon:** merged hull (`BoxGeometry` chassis with `displaceGeometry` micro-noise, 0.02 amplitude) + `CylinderGeometry` turret + barrel; separate emissive engine block (neon material) so only the engines bloom; canvas **panel texture** (hull plating: rectangles + rivets, roughness map from the same canvas with inverted luminance).\n- **Saucer:** `LatheGeometry` profile `[(0,−0.25),(0.9,−0.2),(1.6,0),(1.2,0.25),(0.6,0.45),(0,0.5)]`, 32 segments; 8 emissive rim lights as merged small boxes; beam `ConeGeometry` opened downward.\n- **Grid floor:** 1024² canvas, `#0b0b1e` fill, 32 cells, lines drawn twice (8 px blurred cyan glow via `shadowBlur`, then 2 px core); `RepeatWrapping`, repeat (16, 16), scrolled by `offset.y −= 0.12·dt`. Used as both `map` and `emissiveMap` (emissive `#19f0ff`, intensity 1.4) on a 200 × 200 plane at `y = −1.5`, rotated −90°.\n- **Retro sun:** 512² canvas radial gradient (amber → magenta), 9 horizontal transparent stripes with widths growing toward the bottom (`h_k = 4 + 3k`, gap `2 + k`), on a `CircleGeometry` r = 14 at (0, 14, −60), emissive map, intensity 2.2.\n- **Planet:** 512² canvas coloured by `fbm2D(x·4, y·4, 5 octaves, lacunarity 2, gain 0.5)` through a ramp (deep indigo → teal → violet), plus city-light emissive mask where `fbm > 0.62`; `SphereGeometry(9, 48, 32)` at (−28, 20, −70).\n- **Starfield:** two `InstancedMesh`es of `IcosahedronGeometry(0.05/0.09, 0)`, 500 + 250 instances, seeded random positions in a slab `z ∈ [−80, −30]`; per-instance colour from a cool/warm palette; drift `y −= (0.8 / 1.6)·dt`, wrapped.\n- **Noise:** hand-written 2-D/3-D simplex (gradient tables seeded by `Random`), `fbm2D` helper.\n\n---\n\n## 4. VFX implementation & priority logic\n\n### 4.1 Camera shake (`CameraShake`)\n`trauma ∈ [0,1]`, additive, clamped. Per real-dt frame: `intensity = trauma²`,\n`offset.x = maxOffset (0.55) · intensity · noise2D(t·frequency (18), 0.0)`, `offset.y = … noise2D(0, t·f)`, `roll = maxRoll (2.2°) · intensity · noise2D(t·f, t·f)`; `trauma −= decay (1.4)·dt`.\n`addImpulse(velocity, scale)` ⇒ `trauma += clamp(|velocity| · scale, 0, 1)`.\n\n### 4.2 Hit-stop (`HitStop`)\n`request(duration, scale, priority)`: ignored if a higher- or equal-priority stop is active with more time remaining; higher priority overrides. Time-scale eases from `scale` back to 1 over the final 30 % of the duration (easeOutQuad) — no snap.\n\n### 4.3 Particles (`ParticleManager`)\nOne `InstancedMesh` (`IcosahedronGeometry(0.09, 0)`, `MeshStandardMaterial{ color white, emissive white, emissiveIntensity 2.2, roughness 0.5 }` with an `onBeforeCompile` hook that multiplies `totalEmissiveRadiance` by the per-instance colour, so each particle glows in its own colour). Hard cap 500 slots. Simulation: `v += g·dt; v *= (1 − drag·dt); p += v·dt; size = lerp(s0, s0·endScale, t); colour = c0·(1 − t)^1.5` (fade to black ⇒ no alpha sorting, bloom fades naturally). `count` = live particles; swap-remove compaction.\n**Eviction rule:** when full, an incoming particle evicts the oldest live particle whose priority ≤ incoming priority; otherwise it is dropped.\n\n### 4.4 Event → VFX table\n| Event | Particles (n, prio) | Ring | Trauma | Hit-stop (dur, scale, prio) | Text |\n|---|---|---|---|---|---|\n| player fires | 3 sparks, 0 (muzzle) | — | 0.03 | — | — |\n| invader killed | 26 sparks, 1 | r 0.3→1.6, 0.35 s | 0.12 | 40 ms, 0.15, 1 | `+pts ×N` |\n| bunker chip | 6 debris, 0 | — | 0.05 | — | — |\n| bullets cancel | 8 sparks, 0 | small | 0.04 | — | — |\n| formation drop | — | — | 0.08 | — | — |\n| UFO killed | 70 explosion, 2 | r 0.5→4, 0.6 s | 0.35 | 120 ms, 0.05, 2 | `+pts` (lg) |\n| shield absorbs | 30 sparks, 2 | r 1→2.5 | 0.25 | 60 ms, 0.2, 1 | `SHIELD` |\n| player death | 140 explosion, 3 | r 0.5→6, 0.8 s | 0.70 | 250 ms, 0.02, 3 | — (screen flash) |\n| wave clear | 60 confetti, 2 | r 2→14 | 0.20 | 200 ms, 0.1, 2 | `WAVE CLEARED` |\n| power-up collect | 24, 1 | r 0.4→2 | 0.10 | 50 ms, 0.3, 1 | type name |\n| extra life | 40, 1 | — | 0.10 | — | `1UP` |\n\nTrails: player bullets (cyan, width 0.16, 10 points), UFO (magenta, width 0.5, 14 points).\n\n---\n\n## 5. File architecture & import map\n\nAliases: `@shared` → `<root>/shared` (Vite `resolve.alias`). Inside `shared/` only relative imports; inside the game only relative imports. Three.js: `three` and `three/addons/...`.\n\n### 5.1 Root\n| File | Imports |\n|---|---|\n| `package.json` | deps `three ^0.170`, devDeps `vite ^6` |\n| `vite.config.js` | `vite`, `node:path`, `node:url` — multi-page `build.rollupOptions.input` (hub + `Space_Invaders/index.html`), `@shared` alias |\n| `index.html` | hub page (links, glass CSS via `<link>` to `/shared/ui/glass.css`) |\n\n### 5.2 `shared/` — every module and its imports\n| Module | Imports | Key exports |\n|---|---|---|\n| `core/Engine.js` | `three`; `../render/RendererFactory.js`; `../render/PostPipeline.js`; `../render/CameraRig.js`; `../input/InputManager.js`; `../audio/AudioEngine.js`; `../vfx/HitStop.js`; `../vfx/VFXDirector.js`; `./EventBus.js`; `./ResourceTracker.js` | `Engine` — `start(game)`, `stop()`, `dispose()`, `paused`, fields `renderer scene camera rig composer input audio vfx hitStop events resources width height aspect` |\n| `core/GameBase.js` | — | `GameBase` — `init(engine)`, `fixedUpdate(step)`, `update(dt, realDt)`, `onResize(w,h)`, `dispose()` |\n| `core/StateMachine.js` | — | `StateMachine` — `add(name, {enter, exit, update, fixedUpdate})`, `set(name, payload)`, `current`, `previous`, `time`, `is()`, `update()`, `fixedUpdate()` |\n| `core/EventBus.js` | — | `EventBus` — `on()→unsub`, `once()`, `off()`, `emit()`, `clear()` |\n| `core/ObjectPool.js` | — | `ObjectPool` — `acquire()`, `release(item)`, `releaseAll()`, `forEach()`, `live`, `liveCount`, `capacity`, `dispose(fn)` |\n| `core/ResourceTracker.js` | — | `ResourceTracker` — `track(res)`, `untrack()`, `dispose()`; `disposeObject3D(obj)` helper |\n| `input/InputManager.js` | `./KeyboardSource.js`; `./GamepadSource.js` | `InputManager`, `Actions` — `update()`, `held()`, `pressed()`, `released()`, `takePress()`, `axis()`, `activeDevice`, `rumble()`, `anyPressed()`, `dispose()` |\n| `input/KeyboardSource.js` | — | `KeyboardSource` — `isDown(code)`, `dispose()` |\n| `input/GamepadSource.js` | — | `GamepadSource` — `poll()`, `button(i)`, `axis(i)`, `connected`, `rumble()` |\n| `render/RendererFactory.js` | `three` | `createRenderer({container, pixelRatioCap, clearColor})` |\n| `render/PostPipeline.js` | `three`; `three/addons/postprocessing/{EffectComposer,RenderPass,UnrealBloomPass,ShaderPass,OutputPass}.js`; `./RetroShader.js` | `PostPipeline` — `render(dt)`, `setSize()`, `setBloom()`, `flash(color, a)`, `retro` (uniforms), `dispose()` |\n| `render/RetroShader.js` | `three` | `RetroShader` (uniforms/vertex/fragment) |\n| `render/CameraRig.js` | `three` | `CameraRig` — `basePosition`, `baseTarget`, `offset`, `shakeOffset`, `shakeRoll`, `apply()` |\n| `render/Lighting.js` | `three` | `createNeonLighting(scene, opts)` → `{ hemi, key, rim, dispose }` |\n| `vfx/VFXDirector.js` | `./CameraShake.js`; `./ParticleManager.js`; `./TrailRenderer.js`; `./ShockwaveRing.js`; `./FloatingText.js`; `../math/MathUtils.js` | `VFXDirector` — `shake particles trails rings text hitStop`, `impact(recipe)`, `update(dt, realDt)`, `resize()`, `dispose()` |\n| `vfx/CameraShake.js` | `three`; `../procgen/SimplexNoise.js`; `../math/MathUtils.js` | `CameraShake` — `addTrauma()`, `addImpulse()`, `update(realDt)`, `trauma` |\n| `vfx/HitStop.js` | `../math/Easing.js` | `HitStop` — `request()`, `update(realDt)`, `timeScale`, `active`, `clear()` |\n| `vfx/ParticleManager.js` | `three`; `../math/MathUtils.js`; `../procgen/Random.js` | `ParticleManager` — `emit(opts)`, `sparks()`, `explosion()`, `debris()`, `stream()`, `update(dt)`, `activeCount`, `dispose()` |\n| `vfx/TrailRenderer.js` | `three`; `../core/ObjectPool.js` | `TrailRenderer` — `acquire(opts)`, `push(trail, pos)`, `release(trail)`, `update(dt)`, `dispose()` |\n| `vfx/ShockwaveRing.js` | `three`; `../core/ObjectPool.js`; `../math/Easing.js` | `ShockwaveRing` — `spawn(opts)`, `update(dt)`, `dispose()` |\n| `vfx/FloatingText.js` | `three`; `../core/ObjectPool.js`; `../math/Easing.js` | `FloatingText` — `spawn(opts)`, `update(realDt)`, `resize()`, `dispose()` |\n| `audio/AudioEngine.js` | — | `AudioEngine` — `ctx`, `master`, `sfxBus`, `musicBus`, `unlock()`, `unlocked`, `now`, `setVolume()`, `dispose()` |\n| `audio/SFXSynth.js` | — | `SFXSynth` — `play(name, opts)` (all presets listed in §2.15 + `march(index)`, `ufoLoop()` → handle) |\n| `audio/MusicSequencer.js` | `../math/MathUtils.js` | `MusicSequencer` — `start()`, `stop()`, `setIntensity()`, `setBpm()`, `dispose()` |\n| `procgen/SimplexNoise.js` | `./Random.js` | `SimplexNoise` — `noise2D()`, `noise3D()`, `fbm2D()` |\n| `procgen/Random.js` | — | `Random` — `next()`, `range()`, `int()`, `pick()`, `chance()`, `sign()`, `gaussian()`, `weighted()` |\n| `procgen/TextureFactory.js` | `three`; `./SimplexNoise.js` | `makeGridTexture`, `makeSunTexture`, `makePlanetTextures`, `makePanelTextures`, `makeRadialGlowTexture` |\n| `procgen/MaterialLibrary.js` | `three` | `neonMaterial`, `hullMaterial`, `chromeMaterial`, `glassMaterial`, `matteMaterial`, `floorMaterial` (all `MeshStandardMaterial`) |\n| `procgen/GeometryUtils.js` | `three`; `three/addons/utils/BufferGeometryUtils.js` | `bitmapToGeometry`, `displaceGeometry`, `mergeGeometries`, `parseBitmap` |\n| `math/MathUtils.js` | — | `clamp lerp inverseLerp remap damp approach smoothstep wrap TAU degToRad` |\n| `math/Easing.js` | — | `Easing` object (linear, quad/cubic/expo/back/elastic/sine/bounce variants) |\n| `math/Collision.js` | — | `aabbOverlap`, `pointInAabb`, `segmentAabb`, `circleAabb`, `circleOverlap`, `makeAabb`, `setAabb` |\n| `ui/glass.css` | — | design tokens, `.glass-panel`, `.hud-*`, `.neon-*`, `.menu`, `.float-text`, keyframes |\n| `ui/UIOverlay.js` | — | `UIOverlay` — `root`, `addPanel()`, `setText()`, `setVisible()`, `toast()`, `dispose()`; `el()` |\n| `ui/MenuSystem.js` | `../input/InputManager.js`; `./UIOverlay.js` | `MenuSystem` — `show(spec)`, `hide()`, `update()`, `visible`, `dispose()` |\n\n### 5.3 `Space_Invaders/`\n| Module | Imports | Responsibility |\n|---|---|---|\n| `index.html` | `./main.js` (module) | `#app` container, viewport meta, `<title>` |\n| `main.js` | `@shared/ui/glass.css`; `@shared/core/Engine.js`; `./src/config.js`; `./src/SpaceInvadersGame.js` | boots Engine + game, DEV `window.__SI__` hook, HMR dispose |\n| `src/config.js` | — | every tuning constant (§1), colours, bloom/retro settings, `WAVES_TO_WIN`, scores |\n| `src/data/InvaderBitmaps.js` | — | `INVADER_BITMAPS {squid, crab, octopus}[frameA, frameB]`, `BUNKER_BITMAP`, `INVADER_TYPES` (points, colour) |\n| `src/SpaceInvadersGame.js` | `three`; `@shared/core/GameBase.js`; `@shared/core/StateMachine.js`; `@shared/input/InputManager.js`; `@shared/procgen/Random.js`; `@shared/math/MathUtils.js`; `./config.js`; `./entities/Player.js`; `./entities/InvaderFormation.js`; `./entities/Bunkers.js`; `./entities/UFO.js`; `./entities/PowerUps.js`; `./systems/ProjectileSystem.js`; `./systems/CollisionSystem.js`; `./systems/ScoreSystem.js`; `./systems/WaveDirector.js`; `./world/Environment.js`; `./ui/HUD.js`; `./audio/SoundBank.js` | state machine, camera fit, event wiring (collision events → score/VFX/audio), lives/wave flow, teardown |\n| `src/entities/Player.js` | `three`; `@shared/procgen/MaterialLibrary.js`; `@shared/procgen/GeometryUtils.js`; `@shared/procgen/TextureFactory.js`; `@shared/math/MathUtils.js`; `@shared/input/InputManager.js`; `../config.js` | cannon mesh, movement, fire requests, power-up state, shield, invulnerability, AABB |\n| `src/entities/InvaderFormation.js` | `three`; `@shared/procgen/GeometryUtils.js`; `@shared/procgen/MaterialLibrary.js`; `@shared/math/Easing.js`; `@shared/math/MathUtils.js`; `../data/InvaderBitmaps.js`; `../config.js` | grid logic (§1.2), instanced rendering, fly-in, hop, shooters, bounds, kill, dispose |\n| `src/entities/Bunkers.js` | `three`; `@shared/procgen/MaterialLibrary.js`; `../data/InvaderBitmaps.js`; `../config.js` | cell grid, instanced mesh, `hitSegment()`, `eraseAabb()`, `damage()`, `rebuild()`, `liveCells` |\n| `src/entities/UFO.js` | `three`; `@shared/procgen/MaterialLibrary.js`; `@shared/math/MathUtils.js`; `../config.js` | saucer mesh + beam, spawn timer, traversal, scoring, AABB |\n| `src/entities/PowerUps.js` | `three`; `@shared/core/ObjectPool.js`; `@shared/procgen/MaterialLibrary.js`; `@shared/math/Collision.js`; `../config.js` | pooled pickups, drop roll, descent, collect test |\n| `src/systems/ProjectileSystem.js` | `three`; `@shared/core/ObjectPool.js`; `@shared/procgen/MaterialLibrary.js`; `../config.js` | player/invader bullet pools, movement (zig-zag, spin), trails, culling, `prev` positions |\n| `src/systems/CollisionSystem.js` | `@shared/math/Collision.js`; `../config.js` | all pair tests per fixed step → emits events on the bus |\n| `src/systems/ScoreSystem.js` | `../config.js` | score, combo, multiplier, hi-score, extra lives, stats |\n| `src/systems/WaveDirector.js` | `@shared/math/MathUtils.js`; `../config.js` | per-wave parameters (tempo, shots, start row, fire intervals, UFO gate) |\n| `src/world/Environment.js` | `three`; `@shared/procgen/TextureFactory.js`; `@shared/procgen/MaterialLibrary.js`; `@shared/procgen/Random.js`; `@shared/render/Lighting.js`; `@shared/math/MathUtils.js`; `../config.js` | grid floor, sun, planet, starfield, lights, pressure pulse, dispose |\n| `src/ui/HUD.js` | `@shared/ui/UIOverlay.js`; `@shared/ui/MenuSystem.js`; `../config.js` | HUD panels, chips, screens (title/pause/game-over/victory), `update(snapshot)` |\n| `src/audio/SoundBank.js` | `@shared/audio/SFXSynth.js`; `@shared/audio/MusicSequencer.js`; `../config.js` | event → SFX mapping, march note cycling, UFO loop handle, music intensity, unsubscribe on dispose |\n\n### 5.4 Event catalogue (EventBus)\n`invader:step` `invader:drop` `invader:invaded` `invader:killed` `invader:fired` · `player:fired` `player:hit` `player:died` `player:respawn` · `ufo:spawn` `ufo:killed` `ufo:escaped` · `bunker:hit` · `bullet:cancelled` · `powerup:spawn` `powerup:collected` `powerup:expired` · `score:changed` `life:extra` · `wave:intro` `wave:start` `wave:clear` · `game:over` `game:victory` `state:changed`.\n\n### 5.5 Memory-ownership rules\n- `SpaceInvadersGame` owns a `ResourceTracker`; every entity/world object registers its geometries, materials, textures on creation and is disposed by `game.dispose()` → `engine.dispose()` disposes composer, render targets, renderer, DOM, listeners.\n- Pools (`ObjectPool`) own the meshes they create and dispose them in `dispose()`.\n- Lights are created once per scene (never added/removed at runtime).\n- Zero per-frame allocations in hot paths: scratch `Vector3/Matrix4/Quaternion/Color` module-level singletons.\nEOF\necho written; wc -c \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws/Space_Invaders/plan.md\"",
+   "name": "Bash"
+  },
+  {
+   "at": "1789533324055",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 637
+  },
+  {
+   "at": "1789533448552",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/plan.md",
+   "name": "Write"
+  },
+  {
+   "at": "1789533449056",
+   "kind": "bail",
+   "reason": "spend_limit",
+   "text": "You've hit your monthly spend limit · raise it at claude.ai/settings/usage?from=cc_cli_limit_message · your session limit resets 2:50am (America/New_York)"
+  },
+  {
+   "at": "1789565254674",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 163
+  },
+  {
+   "at": "1789565334915",
+   "kind": "assistant",
+   "text": "`Space_Invaders/plan.md` is written to disk. Here is its full content for review:\n\n---\n\n# Space_Invaders — Implementation Plan\n\nAAA retro-futurist reimagining of Taito's 1978 *Space Invaders*. Three.js + vanilla ES modules, served by Vite, 100 % procedural assets, hand-written physics, strict pooling, strict disposal.\n\n## 0. Scope, states, and Definition of Done\n\n```\nBOOT ─► TITLE ─► WAVE_INTRO ─► PLAY ─┬─► PAUSED ─► PLAY\n                     ▲               ├─► PLAYER_DEATH ─┬─► PLAY (lives > 0)\n                     │               │                 └─► GAME_OVER (lives = 0)\n                     │               ├─► GAME_OVER (invasion line breached)\n                     └── WAVE_CLEAR ◄┘ (all 55 dead) ── wave 5 cleared ─► VICTORY\nGAME_OVER / VICTORY ─► TITLE   (VICTORY also offers \"continue — endless\")\n```\n\n- **Win:** clear `WAVES_TO_WIN = 5` waves → VICTORY screen (score, accuracy, time, kills), option to continue endless.\n- **Loss:** lives reach 0, or the lowest living invader's bottom edge ≤ `INVASION_Y`.\n- **Done means:** `npm run dev` → `/Space_Invaders/` boots with zero console errors, keyboard + gamepad drive it, both terminal states are reachable. I verify by driving the page with Playwright (real key events at the browser input boundary), reading a DEV-only `window.__SI__` inspection hook for state/score, and checking `renderer.info.memory` returns to baseline after a full teardown/restart.\n\n## 1. Core Gameplay — mathematical model\n\n### 1.1 Coordinate system\nGameplay is strictly 2-D on the XY plane at z = 0; rendering is 3-D. +X right, +Y up, +Z toward camera.\n\n| Constant | Value | Meaning |\n|---|---|---|\n| `HALF_WIDTH` | 16 | playfield x ∈ [−16, 16] |\n| `PLAYER_Y` | 0 | cannon centre line |\n| `INVASION_Y` | 1.4 | invader bottom ≤ this ⇒ game over |\n| `BUNKER_Y` / `BUNKER_XS` | 4.0 / [−10.5, −3.5, 3.5, 10.5] | four bunkers |\n| `FORMATION_TOP_Y` | 20.5 | top-row centre on wave 1 |\n| `UFO_Y` | 23.5 | mystery-ship lane |\n| `CULL_TOP_Y` / `CULL_BOTTOM_Y` | 26 / −2 | projectile despawn |\n| `VOXEL` | 0.14 | invader bitmap pixel size |\n\nCamera-fit (on resize, any aspect):\n```\nhalfH = 13.5, halfW = 17, centreY = 12\ndist  = max( halfH / tan(fov/2),  halfW / (tan(fov/2) · aspect) ) · 1.08\nrig.basePosition = (0, centreY + 4.5, dist),  rig.baseTarget = (0, centreY, 0)\n```\nGentle top-down tilt keeps 2-D readability while showing depth; rig adds parallax lean `offset.x = player.x · 0.06`.\n\n### 1.2 Formation\n55 invaders: 5 × 11. Row 0 = **squid** (30), rows 1–2 = **crab** (20), rows 3–4 = **octopus** (10).\n`x = originX + c·COL_PITCH (2.2)`, `y = originY − r·ROW_PITCH (1.8)`. Wave `w` starts at `originY = FORMATION_TOP_Y − min(w−1, 4)·DROP_Y`.\n\n**Tempo** (1978 machine moved one alien per frame ⇒ a full step took `alive` frames):\n```\ninterval(alive, wave) = clamp(alive / 60, 0.045, 1.0) / (1 + 0.10·(wave − 1))\n```\n55 alive ⇒ 0.92 s/step; last alien ⇒ 0.045 s. The march bass note fires on each step, so the music accelerates organically.\n\n**Stepping (fixed 120 Hz):**\n```\ntimer += step\nif timer ≥ interval:\n    timer -= interval\n    if pendingDrop:  originY -= DROP_Y (0.9);  dir = −dir;  pendingDrop = false;  emit 'invader:drop'\n    else:            originX += dir·STEP_X (0.275)\n                     b = aliveBounds()\n                     if (dir>0 && b.maxX + HALF_W ≥ HALF_WIDTH − EDGE_MARGIN) ||\n                        (dir<0 && b.minX − HALF_W ≤ −HALF_WIDTH + EDGE_MARGIN):  pendingDrop = true\n    frame ^= 1;  hop ripple;  emit 'invader:step'\n    if lowestAliveBottom() ≤ INVASION_Y:  emit 'invader:invaded'\n```\nEdge detection uses living invaders only ⇒ a thinned formation sweeps wider (classic). Attract mode: reverse without dropping.\n\n**Shooting:**\n```\nmaxShots(wave) = min(3 + floor((wave−1)/2), 5)\nfireInterval   = rand(0.35, 1.10) · (0.55 + 0.45·alive/55) · max(1 − 0.06·(wave−1), 0.5)\ncol     = chance(0.35) ? aliveColumnNearest(player.x) : randomAliveColumn()\nshooter = bottom-most living invader in col; kind ∈ {plunger, rolling, squiggly} (40/35/25)\n```\nSquiggly: `x = x0 + 0.25·sin(2π·9·age)`. Speed `9 + 0.6·(wave−1)`.\n\n**Fly-in:** visual starts at `logical + (0, +14)`, easeOutCubic 0.7 s after delay `0.06·r + 0.03·c`; logic frozen ≈ 1.7 s, then landing shockwave.\n**Hop (visual):** column delay `8 ms·c`; `offsetY = 0.12·sin(πt)`, `scaleY = 1 + 0.18·sin(πt)`, `scaleX = 1 − 0.10·sin(πt)`. Collision always uses logical positions.\n\n### 1.3 Player cannon\n```\ntarget = axis('moveX') · 13;  vx = approach(vx, target, 140·step)\nx = clamp(x + vx·step, −HALF_WIDTH + 1.1, HALF_WIDTH − 1.1);  bank = damp(bank, −vx/13 · 0.35, 12, dt)\n```\nOne bullet in flight (classic) unless a power-up raises the cap; cooldown 0.16 s. Fire read via `input.takePress(FIRE)` (latched edge) so no press is lost on frames with zero fixed steps (144 Hz display vs 120 Hz sim). Hit: shield absorbs, else PLAYER_DEATH; respawn after 1.6 s with 2.5 s invulnerability blink.\n\n### 1.4 Projectiles\nPooled: 6 player / 8 invader bullets. Every bullet stores `prevX/prevY` ⇒ **swept segment vs AABB** (slab test), no tunnelling at 30 wu/s. Player bullet vs invader bullet ⇒ both cancel (classic).\n\n### 1.5 Bunkers\n4 × (12 × 8 cells, `CELL = 0.32`), one `InstancedMesh` (384). Cell HP 2: scorch (instance colour) → removed (zero-scale matrix). Bullet: coarse AABB, then walk the segment through cells; `damage(cell, r=1)`: centre −2, 4-neighbours −1 with p 0.6. Invaders erase overlapping cells each step. Rebuilt every wave.\n\n### 1.6 UFO\nEvery `rand(18, 28)` s while `alive ≥ 8`; 6.5 wu/s along `UFO_Y`; warble loop + scanning beam. Score easter egg preserved: `shots == 23 || (shots − 23) % 15 == 0` ⇒ 300, else weighted 50/100/150/300 (40/30/20/10 %).\n\n### 1.7 Scoring, combo, lives, waves\nCombo window 1.0 s; multiplier 1 (<3), 2 (3–5), 3 (6–8), 4 (≥9). Extra life at 1500 then every 10 000 (max 6). Wave bonus `100·wave + 5·survivingBunkerCells`; WAVE_CLEAR 2.4 s → WAVE_INTRO. Hi-score in `localStorage['si.hiscore']`.\n\n### 1.8 Power-ups\n7 % per kill (one on screen max), 3 wu/s descent. **SPREAD** (3 bolts ±12°, 10 s), **RAPID** (cap 2, cooldown 0.09, 10 s), **SHIELD** (absorb one hit).\n\n### 1.9 Loop\nReal dt clamped 0.1 s → `HitStop.timeScale` → accumulator → ≤ 8 × `fixedUpdate(1/120)` → `update(dt, realDt)` → VFX → render. Sim/particles/trails/rings use scaled dt (freeze during hit-stop); shake & floating text use real dt.\n\n## 2. Modern Enhancements (19)\n1. **Instanced voxel invaders** — bitmaps → merged `BoxGeometry` per type × frame → 6 `InstancedMesh`es; 55 aliens = 3 draw calls.\n2. **Hop ripple** — per-column delayed squash-stretch on every step.\n3. **2-HP destructible voxel bunkers** — single `InstancedMesh`, scorch colour, debris, eaten by invaders.\n4. **Tempo-locked audio** — four-note descending march (E2 D#2 D2 C#2) fires per step; `MusicSequencer` pads rise with pressure.\n5. **Mystery ship with scan beam** — `LatheGeometry` saucer, rotating emissive rim, cone beam, detuned-triangle warble.\n6. **Player ship feel** — banking, thruster particle stream, pooled intensity-toggled muzzle `PointLight` (no runtime light add/remove ⇒ no recompiles), recoil.\n7. **Bullet trails** — ribbons for player bolts; three distinct invader bullet geometries.\n8. **Power-ups** — Spread / Rapid / Shield, pooled, HUD timers.\n9. **Combo multiplier** — HUD chip with draining bar, colour-ramped `×N` text.\n10. **Invasion pressure** — `pressure = clamp((BUNKER_Y + 2 − lowestY)/8, 0, 1)` drives red pulse light, vignette tint, music, rumble.\n11. **Hit-stop hierarchy** (§4).\n12. **Trauma camera** + trauma-driven chromatic aberration.\n13. **Post stack** — HDR half-float MSAA target → UnrealBloom → RetroPass → OutputPass.\n14. **Synthwave environment** — scrolling emissive grid, striped sun disc, two-layer instanced starfield, fBm planet.\n15. **Procedural SFX** — laser, invader death, player explosion, bunker chip, power-up arp, UI, 1UP, stingers.\n16. **Glass HUD** — score/hi/wave/lives/combo/power-up chips; title, pause, game-over, victory with keyboard + gamepad nav.\n17. **Wave intro choreography** — text burst, staggered fly-in, landing shockwave.\n18. **Faithful UFO scoring easter egg** + accuracy stat.\n19. **Attract mode** — formation marches behind the title; audio unlocks on first input.\n\n## 3. Graphics pipeline\n\n**Renderer:** `antialias:false`, DPR ≤ 2, `SRGBColorSpace`, ACES exposure 1.0, clear `#05060f`. Composer target `WebGLRenderTarget{ HalfFloatType, samples: 4 }`.\n\n**Post stack:**\n```\nRenderPass → UnrealBloomPass(strength 0.75, radius 0.40, threshold 0.85)\n→ ShaderPass(RetroShader: uAberration 0.0012 + 0.006·trauma, uVignette 0.38, uVignetteColor,\n             uScanlines 0.05, uGrain 0.035, uFlash decays 4/s, uTime, uResolution)\n→ OutputPass (tone-map + sRGB)\n```\nBloom rule: emitters `emissiveIntensity ∈ [1.6, 3.0]` with saturated colours (never white); lit hull surfaces stay < 0.85.\n\nRetroShader:\n```\nd = uv − 0.5;  ca = uAberration·(1 + 2·dot(d,d))\ncol = vec3(tex(uv + d·ca).r, tex(uv).g, tex(uv − d·ca).b)\nscan = 1 − uScanlines·(0.5 + 0.5·sin(uv.y·uResolution.y·1.5))\nvig  = 1 − uVignette·smoothstep(0.35, 1.2, length(d)·1.4)\ncol  = mix(col·scan, uVignetteColor, 1 − vig) + grain;  col = mix(col, uFlash.rgb, uFlash.a)\n```\n\n**Lighting (fixed set):** hemisphere `#1b2140/#0a0614` 0.55 · key `#cfe8ff` 0.9 @ (6,18,12) · rim `#ff2bd6` 0.45 @ (−8,6,−10) · player cyan point 1.2 · invasion red point 0..6 · 3 pooled muzzle points.\n\n**Procedural math:** bitmap→geometry (`BoxGeometry(VOXEL, VOXEL, 1.4·VOXEL)` at `((i−w/2+0.5)·VOXEL, (h/2−j−0.5)·VOXEL, 0)`, merged); cannon = displaced box chassis + cylinder turret + barrel + separate neon engine block, canvas plating map + inverted-luminance roughness map; saucer lathe profile `[(0,−.25),(.9,−.2),(1.6,0),(1.2,.25),(.6,.45),(0,.5)]`; grid floor 1024² canvas, 32 cells, blurred glow + core lines, repeat (16,16), scroll 0.12/s, used as `map` + `emissiveMap`; sun 512² radial amber→magenta with 9 growing stripes on `CircleGeometry(14)` @ (0,14,−60); planet 512² fBm (5 oct) colour ramp + city-light emissive mask > 0.62, `SphereGeometry(9)` @ (−28,20,−70); starfield 500 + 250 instanced icosahedra in `z ∈ [−80,−30]`, drifting/wrapping.\n\n## 4. VFX priority logic\n\n**Shake:** `intensity = trauma²`; offsets = `0.55·intensity·noise2D(t·18, ·)`, roll `2.2°·intensity·noise`; decay 1.4/s; `addImpulse(v, k)` ⇒ `trauma += clamp(|v|·k, 0, 1)`.\n**Hit-stop:** `request(duration, scale, priority)` — ignored if an equal/higher-priority stop has more time left; higher priority overrides; eases back to 1 over the final 30 %.\n**Particles:** one `InstancedMesh` (icosahedron, `MeshStandardMaterial` + `onBeforeCompile` multiplying `totalEmissiveRadiance` by instance colour). 500 hard cap. `v += g·dt; v *= 1 − drag·dt; size → s0·endScale; colour = c0·(1−t)^1.5`. **Eviction:** when full, evict the oldest live particle with priority ≤ incoming, else drop.\n\n| Event | Particles (n, prio) | Ring | Trauma | Hit-stop | Text |\n|---|---|---|---|---|---|\n| player fires | 3, 0 | — | 0.03 | — | — |\n| invader killed | 26, 1 | 0.3→1.6 | 0.12 | 40 ms @0.15 p1 | `+pts ×N` |\n| bunker chip | 6, 0 | — | 0.05 | — | — |\n| bullets cancel | 8, 0 | small | 0.04 | — | — |\n| formation drop | — | — | 0.08 | — | — |\n| UFO killed | 70, 2 | 0.5→4 | 0.35 | 120 ms @0.05 p2 | `+pts` lg |\n| shield absorbs | 30, 2 | 1→2.5 | 0.25 | 60 ms @0.2 p1 | `SHIELD` |\n| player death | 140, 3 | 0.5→6 | 0.70 | 250 ms @0.02 p3 | flash |\n| wave clear | 60, 2 | 2→14 | 0.20 | 200 ms @0.1 p2 | `WAVE CLEARED` |\n| power-up | 24, 1 | 0.4→2 | 0.10 | 50 ms @0.3 p1 | name |\n| extra life | 40, 1 | — | 0.10 | — | `1UP` |\n\n## 5. File architecture & import map\n\n`@shared` → `<root>/shared` (Vite alias). Inside `shared/` relative only; inside the game relative only.\n\n**Root:** `package.json` (three, vite) · `vite.config.js` (multi-page input, alias) · `index.html` (hub).\n\n**`shared/`** (module ← imports → key exports):\n- `core/Engine.js` ← three, `../render/{RendererFactory,PostPipeline,CameraRig}.js`, `../input/InputManager.js`, `../audio/AudioEngine.js`, `../vfx/{HitStop,VFXDirector}.js`, `./EventBus.js`, `./ResourceTracker.js` → `Engine{start,stop,dispose,paused; renderer scene camera rig composer input audio vfx hitStop events resources}`\n- `core/GameBase.js` → `GameBase{init,fixedUpdate,update,onResize,dispose}` · `core/StateMachine.js` → `StateMachine{add,set,current,previous,time,is,update,fixedUpdate}` · `core/EventBus.js` → `EventBus{on,once,off,emit,clear}` · `core/ObjectPool.js` → `ObjectPool{acquire,release,releaseAll,forEach,live,liveCount,capacity,dispose}` · `core/ResourceTracker.js` → `ResourceTracker{track,untrack,dispose}`, `disposeObject3D`\n- `input/InputManager.js` ← `./KeyboardSource.js`, `./GamepadSource.js` → `InputManager{update,held,pressed,released,takePress,axis,activeDevice,rumble,anyPressed,dispose}`, `Actions`\n- `render/RendererFactory.js` ← three → `createRenderer` · `render/PostPipeline.js` ← three, `three/addons/postprocessing/{EffectComposer,RenderPass,UnrealBloomPass,ShaderPass,OutputPass}.js`, `./RetroShader.js` → `PostPipeline{render,setSize,setBloom,flash,retro,dispose}` · `render/RetroShader.js` · `render/CameraRig.js` → `CameraRig{basePosition,baseTarget,offset,shakeOffset,shakeRoll,apply}` · `render/Lighting.js` → `createNeonLighting`\n- `vfx/VFXDirector.js` ← `./{CameraShake,ParticleManager,TrailRenderer,ShockwaveRing,FloatingText}.js`, `../math/MathUtils.js` → `VFXDirector{shake,particles,trails,rings,text,hitStop,impact,update,resize,dispose}` · `vfx/CameraShake.js` ← three, `../procgen/SimplexNoise.js` · `vfx/HitStop.js` ← `../math/Easing.js` · `vfx/ParticleManager.js` ← three, `../procgen/Random.js` → `{emit,sparks,explosion,debris,stream,update,activeCount,dispose}` · `vfx/TrailRenderer.js` ← three, `../core/ObjectPool.js` → `{acquire,push,release,update,dispose}` · `vfx/ShockwaveRing.js` → `{spawn,update,dispose}` · `vfx/FloatingText.js` → `{spawn,update,resize,dispose}`\n- `audio/AudioEngine.js` → `{ctx,master,sfxBus,musicBus,unlock,unlocked,now,setVolume,dispose}` · `audio/SFXSynth.js` → `{play,march,ufoLoop}` · `audio/MusicSequencer.js` ← `../math/MathUtils.js` → `{start,stop,setIntensity,setBpm,dispose}`\n- `procgen/SimplexNoise.js` ← `./Random.js` → `{noise2D,noise3D,fbm2D}` · `procgen/Random.js` → `{next,range,int,pick,chance,sign,gaussian,weighted}` · `procgen/TextureFactory.js` ← three, `./SimplexNoise.js` → `makeGridTexture, makeSunTexture, makePlanetTextures, makePanelTextures, makeRadialGlowTexture` · `procgen/MaterialLibrary.js` → `neonMaterial, hullMaterial, chromeMaterial, glassMaterial, matteMaterial, floorMaterial` · `procgen/GeometryUtils.js` ← three, `three/addons/utils/BufferGeometryUtils.js` → `bitmapToGeometry, displaceGeometry, mergeGeometries, parseBitmap`\n- `math/MathUtils.js` → `clamp lerp inverseLerp remap damp approach smoothstep wrap TAU degToRad` · `math/Easing.js` → `Easing` · `math/Collision.js` → `aabbOverlap, pointInAabb, segmentAabb, circleAabb, circleOverlap, makeAabb, setAabb`\n- `ui/glass.css` · `ui/UIOverlay.js` → `UIOverlay{root,addPanel,setText,setVisible,toast,dispose}`, `el` · `ui/MenuSystem.js` ← `../input/InputManager.js`, `./UIOverlay.js` → `MenuSystem{show,hide,update,visible,dispose}`\n\n**`Space_Invaders/`:**\n- `index.html` → `./main.js` · `main.js` ← `@shared/ui/glass.css`, `@shared/core/Engine.js`, `./src/config.js`, `./src/SpaceInvadersGame.js`\n- `src/config.js` (all constants) · `src/data/InvaderBitmaps.js` → `INVADER_BITMAPS, BUNKER_BITMAP, INVADER_TYPES`\n- `src/SpaceInvadersGame.js` ← three, `@shared/core/{GameBase,StateMachine}.js`, `@shared/input/InputManager.js`, `@shared/procgen/Random.js`, `@shared/math/MathUtils.js`, `./config.js`, `./entities/{Player,InvaderFormation,Bunkers,UFO,PowerUps}.js`, `./systems/{ProjectileSystem,CollisionSystem,ScoreSystem,WaveDirector}.js`, `./world/Environment.js`, `./ui/HUD.js`, `./audio/SoundBank.js`\n- `src/entities/Player.js` ← three, `@shared/procgen/{MaterialLibrary,GeometryUtils,TextureFactory}.js`, `@shared/math/MathUtils.js`, `@shared/input/InputManager.js`, `../config.js`\n- `src/entities/InvaderFormation.js` ← three, `@shared/procgen/{GeometryUtils,MaterialLibrary}.js`, `@shared/math/{Easing,MathUtils}.js`, `../data/InvaderBitmaps.js`, `../config.js`\n- `src/entities/Bunkers.js` ← three, `@shared/procgen/MaterialLibrary.js`, `../data/InvaderBitmaps.js`, `../config.js`\n- `src/entities/UFO.js` ← three, `@shared/procgen/MaterialLibrary.js`, `@shared/math/MathUtils.js`, `../config.js`\n- `src/entities/PowerUps.js` ← three, `@shared/core/ObjectPool.js`, `@shared/procgen/MaterialLibrary.js`, `@shared/math/Collision.js`, `../config.js`\n- `src/systems/ProjectileSystem.js` ← three, `@shared/core/ObjectPool.js`, `@shared/procgen/MaterialLibrary.js`, `../config.js`\n- `src/systems/CollisionSystem.js` ← `@shared/math/Collision.js`, `../config.js` · `src/systems/ScoreSystem.js` ← `../config.js` · `src/systems/WaveDirector.js` ← `@shared/math/MathUtils.js`, `../config.js`\n- `src/world/Environment.js` ← three, `@shared/procgen/{TextureFactory,MaterialLibrary,Random}.js`, `@shared/render/Lighting.js`, `@shared/math/MathUtils.js`, `../config.js`\n- `src/ui/HUD.js` ← `@shared/ui/{UIOverlay,MenuSystem}.js`, `../config.js` · `src/audio/SoundBank.js` ← `@shared/audio/{SFXSynth,MusicSequencer}.js`, `../config.js`\n\n**Event catalogue:** `invader:step|drop|invaded|killed|fired` · `player:fired|hit|died|respawn` · `ufo:spawn|killed|escaped` · `bunker:hit` · `bullet:cancelled` · `powerup:spawn|collected|expired` · `score:changed` · `life:extra` · `wave:intro|start|clear` · `game:over|victory` · `state:changed`.\n\n**Memory ownership:** game-level `ResourceTracker` disposes every geometry/material/texture; pools dispose their meshes; lights are created once and intensity-toggled; module-level scratch `Vector3/Matrix4/Quaternion/Color` — zero per-frame allocations in hot paths.\n\n---\n\nAwaiting **\"Plan approved\"** to begin STEP 3."
+  },
+  {
+   "at": "1789565468222",
+   "kind": "user",
+   "text": "Plan approved"
+  },
+  {
+   "at": "1789565962016",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 39983
+  },
+  {
+   "at": "1789565963035",
+   "kind": "assistant",
+   "text": "Plan approved — beginning STEP 3. Writing every module in dependency order: root config → `shared/` → `Space_Invaders/`, then installing, building, and playing it via Playwright."
+  },
+  {
+   "at": "1789565965946",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "package.json",
+   "name": "Write"
+  },
+  {
+   "at": "1789565971530",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "vite.config.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789565983766",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "index.html",
+   "name": "Write"
+  },
+  {
+   "at": "1789565985246",
+   "kind": "assistant",
+   "text": "Now the `shared/math` layer."
+  },
+  {
+   "at": "1789565994173",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/math/MathUtils.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566003922",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/math/Easing.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566019036",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/math/Collision.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566021263",
+   "kind": "assistant",
+   "text": "Now `shared/procgen`."
+  },
+  {
+   "at": "1789566029943",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/procgen/Random.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566058299",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/procgen/SimplexNoise.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566060133",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 27
+  },
+  {
+   "at": "1789566108015",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/procgen/TextureFactory.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566124785",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/procgen/MaterialLibrary.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566139866",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/procgen/GeometryUtils.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566141086",
+   "kind": "assistant",
+   "text": "Now `shared/core`."
+  },
+  {
+   "at": "1789566146439",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/core/EventBus.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566157662",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/core/ObjectPool.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566168645",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/core/ResourceTracker.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566177177",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/core/StateMachine.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566182887",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/core/GameBase.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566184611",
+   "kind": "assistant",
+   "text": "Now `shared/input`."
+  },
+  {
+   "at": "1789566190335",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/input/KeyboardSource.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566207665",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/input/GamepadSource.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566231939",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/input/InputManager.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566233903",
+   "kind": "assistant",
+   "text": "Now `shared/render`."
+  },
+  {
+   "at": "1789566239416",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/RendererFactory.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566252678",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/RetroShader.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566273954",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/PostPipeline.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566280353",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/CameraRig.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566288061",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/Lighting.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566289378",
+   "kind": "assistant",
+   "text": "Now the six VFX systems."
+  },
+  {
+   "at": "1789566298084",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/HitStop.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566308245",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/CameraShake.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566310311",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 34
+  },
+  {
+   "at": "1789566352385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/ParticleManager.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566354441",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 23
+  },
+  {
+   "at": "1789566383200",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/TrailRenderer.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566385437",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 68
+  },
+  {
+   "at": "1789566386908",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "shared/vfx/TrailRenderer.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789566389704",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "shared/vfx/TrailRenderer.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789566403581",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/ShockwaveRing.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566418283",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/FloatingText.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566436616",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/vfx/VFXDirector.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566438167",
+   "kind": "assistant",
+   "text": "Now `shared/audio`."
+  },
+  {
+   "at": "1789566450413",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/audio/AudioEngine.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566453654",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 130
+  },
+  {
+   "at": "1789566515073",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/audio/SFXSynth.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566550458",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/audio/MusicSequencer.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566552255",
+   "kind": "assistant",
+   "text": "Now `shared/ui` — the glassmorphism design system, overlay and menu."
+  },
+  {
+   "at": "1789566604372",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/ui/glass.css",
+   "name": "Write"
+  },
+  {
+   "at": "1789566616970",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/ui/UIOverlay.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566635129",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/ui/MenuSystem.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566636897",
+   "kind": "assistant",
+   "text": "Now the Engine, which wires the whole `shared/` layer together."
+  },
+  {
+   "at": "1789566659453",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/core/Engine.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566661760",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 40
+  },
+  {
+   "at": "1789566661761",
+   "kind": "assistant",
+   "text": "The `shared/` layer is complete. Now the game itself — starting with config and sprite data."
+  },
+  {
+   "at": "1789566691037",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/config.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566702524",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/data/InvaderBitmaps.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566730611",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 2202
+  },
+  {
+   "at": "1789566786541",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/entities/InvaderFormation.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566790265",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 171
+  },
+  {
+   "at": "1789566791927",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/entities/InvaderFormation.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789566795223",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/entities/InvaderFormation.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789566797279",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 10
+  },
+  {
+   "at": "1789566830851",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/entities/Bunkers.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566833606",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 81
+  },
+  {
+   "at": "1789566834978",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/entities/Bunkers.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789566853467",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1210
+  },
+  {
+   "at": "1789566895465",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/entities/Player.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566898748",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 138
+  },
+  {
+   "at": "1789566924659",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/entities/UFO.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566929234",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 278
+  },
+  {
+   "at": "1789566931222",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/entities/UFO.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789566948376",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/entities/PowerUps.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566950034",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 13
+  },
+  {
+   "at": "1789566977332",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/systems/ProjectileSystem.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789566980327",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 143
+  },
+  {
+   "at": "1789567009587",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/systems/CollisionSystem.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567012164",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 148
+  },
+  {
+   "at": "1789567015363",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/systems/CollisionSystem.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789567018197",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/systems/CollisionSystem.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789567032258",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/systems/ScoreSystem.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567040218",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/systems/WaveDirector.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567042463",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 10
+  },
+  {
+   "at": "1789567074186",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/world/Environment.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567075921",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 9
+  },
+  {
+   "at": "1789567108823",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/ui/HUD.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567124852",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/audio/SoundBank.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567244006",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 11282
+  },
+  {
+   "at": "1789567247090",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/systems/CollisionSystem.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789567251878",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/src/systems/CollisionSystem.js",
+   "name": "Edit"
+  },
+  {
+   "at": "1789567253772",
+   "kind": "assistant",
+   "text": "Now the orchestrator — `SpaceInvadersGame.js`."
+  },
+  {
+   "at": "1789567349338",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/src/SpaceInvadersGame.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567357388",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/main.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567361125",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "Space_Invaders/index.html",
+   "name": "Write"
+  },
+  {
+   "at": "1789567363574",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 43
+  },
+  {
+   "at": "1789567363576",
+   "kind": "assistant",
+   "text": "All files are written. Now installing dependencies and running a production build to verify every import resolves."
+  },
+  {
+   "at": "1789567365562",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && npm install --no-audit --no-fund 2>&1 | tail -5 && node -e \"console.log('three', require('three/package.json').version, 'vite', require('vite/package.json').version)\"",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567375034",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && grep -m1 '\"version\"' node_modules/three/package.json && grep -m1 '\"version\"' node_modules/vite/package.json && ls node_modules/three/examples/jsm/postprocessing/ | grep -E \"OutputPass|UnrealBloom|ShaderPass|RenderPass|EffectComposer\" && ls node_modules/three/examples/jsm/utils/ | grep BufferGeometryUtils",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567377783",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && npx vite build 2>&1 | tail -20",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567383023",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 80
+  },
+  {
+   "at": "1789567383024",
+   "kind": "assistant",
+   "text": "Build passes — all 68 modules resolve. Now the real test: launch the dev server and play it through a browser."
+  },
+  {
+   "at": "1789567387373",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && (npx vite --port 5179 --strictPort > \"C:/Users/ktmar/AppData/Local/Temp/claude/C--Data-AI-Projects-LMStudioComparison-Results--frontier-2026-09-15-claude-opus-5-run1-ws/5e555602-f0d4-459c-b4a9-ef6c9e9517f1/scratchpad/vite.log\" 2>&1 &) ; sleep 4; cat \"C:/Users/ktmar/AppData/Local/Temp/claude/C--Data-AI-Projects-LMStudioComparison-Results--frontier-2026-09-15-claude-opus-5-run1-ws/5e555602-f0d4-459c-b4a9-ef6c9e9517f1/scratchpad/vite.log\"",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567394670",
+   "kind": "tool",
+   "tool": "tool_search",
+   "args": "select:mcp__playwright__browser_navigate,mcp__playwright__browser_console_messages,mcp__playwright__browser_evaluate,mcp__playwright__browser_press_key,mcp__playwright__browser_take_screenshot,mcp__playwright__browser_resize,mcp__playwright__browser_close,mcp__playwright__browser_wait_for",
+   "name": "ToolSearch"
+  },
+  {
+   "at": "1789567396499",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.goto(\"http://127.0.0.1:5179/Space_Invaders/?seed=7\")",
+   "name": "mcp__playwright__browser_navigate"
+  },
+  {
+   "at": "1789567399597",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.consoleMessages()",
+   "name": "mcp__playwright__browser_console_messages"
+  },
+  {
+   "at": "1789567403238",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 103
+  },
+  {
+   "at": "1789567403241",
+   "kind": "assistant",
+   "text": "The page boots with no runtime errors — only a favicon 404 and a Canvas2D hint, both of which I'll clean up. Let me look at it."
+  },
+  {
+   "at": "1789567404435",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.screenshot(\"C:/Users/ktmar/AppData/Local/Temp/claude/C--Data-AI-Projects-LMStudioComparison-Results--frontier-2026-09-15-claude-opus-5-run1-ws/5e555602-f0d4-459c-b4a9-ef6c9e9517f1/scratchpad/title.png\")",
+   "name": "mcp__playwright__browser_take_screenshot"
+  },
+  {
+   "at": "1789567407425",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.screenshot(\".playwright-mcp/title.png\")",
+   "name": "mcp__playwright__browser_take_screenshot"
+  },
+  {
+   "at": "1789567409966",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/title.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567433282",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1423
+  },
+  {
+   "at": "1789567433285",
+   "kind": "reasoning",
+   "text": "The bloom effect is blowing out the emitters and sun to white, breaking the tuning rule, so I'll dial down the emissive intensities and bloom settings.\n\n",
+   "tokens": 1423
+  },
+  {
+   "at": "1789567448848",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\nimport re,io\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a}\")\n        s=s.replace(a,b)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\n\nsub('Space_Invaders/src/config.js', [\n (\"bloom: Object.freeze({ strength: 0.75, radius: 0.4, threshold: 0.85 })\",\"bloom: Object.freeze({ strength: 0.6, radius: 0.45, threshold: 0.75 })\"),\n])\nsub('Space_Invaders/src/data/InvaderBitmaps.js', [\n (\"intensity: 2.6, pitch: 1.25\",\"intensity: 1.5, pitch: 1.25\"),\n (\"intensity: 1.7, pitch: 1.0\",\"intensity: 1.1, pitch: 1.0\"),\n (\"intensity: 1.6, pitch: 0.85\",\"intensity: 1.05, pitch: 0.85\"),\n])\nsub('Space_Invaders/src/entities/Bunkers.js', [\n (\"emissive: COLORS.BUNKER, intensity: 1.5,\",\"emissive: COLORS.BUNKER, intensity: 0.95,\"),\n])\nsub('Space_Invaders/src/entities/Player.js', [\n (\"emissive: COLORS.PLAYER, intensity: 2.4, roughness: 0.3\",\"emissive: COLORS.PLAYER, intensity: 1.6, roughness: 0.3\"),\n (\"this.neonMaterial.emissiveIntensity = 2.4 + 2.0 * kick;\",\"this.neonMaterial.emissiveIntensity = 1.6 + 1.6 * kick;\"),\n])\nsub('Space_Invaders/src/systems/ProjectileSystem.js', [\n (\"emissive: COLORS.BULLET_PLAYER, intensity: 3.0\",\"emissive: COLORS.BULLET_PLAYER, intensity: 2.0\"),\n (\"emissive: COLORS.BULLET_INVADER, intensity: 2.2\",\"emissive: COLORS.BULLET_INVADER, intensity: 1.6\"),\n])\nsub('Space_Invaders/src/entities/UFO.js', [\n (\"emissive: COLORS.UFO, intensity: 2.8\",\"emissive: COLORS.UFO, intensity: 2.0\"),\n (\"this.rimMaterial.emissiveIntensity = 2.4 + 0.8 * Math.sin(this.clock * 14);\",\"this.rimMaterial.emissiveIntensity = 1.8 + 0.6 * Math.sin(this.clock * 14);\"),\n])\nsub('Space_Invaders/src/entities/PowerUps.js', [\n (\"emissive: COLORS.SPREAD, intensity: 2.2\",\"emissive: COLORS.SPREAD, intensity: 1.6\"),\n (\"emissive: COLORS.RAPID, intensity: 2.4\",\"emissive: COLORS.RAPID, intensity: 1.7\"),\n (\"emissive: COLORS.SHIELD, intensity: 2.0\",\"emissive: COLORS.SHIELD, intensity: 1.5\"),\n])\nsub('Space_Invaders/src/world/Environment.js', [\n (\"floorMaterial({ map: this.gridTexture, emissive: COLORS.CYAN, intensity: 1.4,\",\"floorMaterial({ map: this.gridTexture, emissive: COLORS.CYAN, intensity: 0.8,\"),\n (\"        emissiveIntensity: 2.2,\\n        color: new Color(0xffffff),\",\"        emissiveIntensity: 0.85,\\n        color: new Color(0x000000),\"),\n (\"emissive: new Color(COLORS.AMBER),\\n        emissiveIntensity: 1.3,\",\"emissive: new Color(COLORS.AMBER),\\n        emissiveIntensity: 0.9,\"),\n (\"neonMaterial({ color: 0x000000, emissive: 0xffffff, intensity: 2.6, roughness: 1 })\",\"neonMaterial({ color: 0x000000, emissive: 0xffffff, intensity: 2.0, roughness: 1 })\"),\n])\nsub('shared/vfx/ParticleManager.js', [(\"emissiveIntensity: 2.2,\",\"emissiveIntensity: 1.8,\")])\nsub('shared/vfx/ShockwaveRing.js', [(\"intensity = 2.5 }) {\",\"intensity = 2.0 }) {\")])\nsub('shared/vfx/VFXDirector.js', [(\"intensity: lerp(2, 3.2, s),\",\"intensity: lerp(1.6, 2.6, s),\")])\nsub('shared/procgen/TextureFactory.js', [\n (\"  const canvas = makeCanvas(size);\\n  const ctx = canvas.getContext('2d');\\n\\n  ctx.fillStyle = base;\",\"  const canvas = makeCanvas(size);\\n  const ctx = canvas.getContext('2d', { willReadFrequently: true });\\n\\n  ctx.fillStyle = base;\"),\n])\nprint(\"ok\")\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567452243",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 58
+  },
+  {
+   "at": "1789567456282",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "Space_Invaders/index.html",
+   "name": "Edit"
+  },
+  {
+   "at": "1789567461107",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "index.html",
+   "name": "Edit"
+  },
+  {
+   "at": "1789567463071",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.goto(\"http://127.0.0.1:5179/Space_Invaders/?seed=7\")",
+   "name": "mcp__playwright__browser_navigate"
+  },
+  {
+   "at": "1789567465405",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.screenshot(\".playwright-mcp/title2.png\")",
+   "name": "mcp__playwright__browser_take_screenshot"
+  },
+  {
+   "at": "1789567467720",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/title2.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567474825",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 231
+  },
+  {
+   "at": "1789567474827",
+   "kind": "assistant",
+   "text": "Bloom is now tuned: saturated magenta / cyan / lime emitters with a glow halo, no white clipping. Now let's play: start the mission with the keyboard."
+  },
+  {
+   "at": "1789567475088",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.keyboard.press(\"Enter\")",
+   "name": "mcp__playwright__browser_press_key"
+  },
+  {
+   "at": "1789567478454",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async () => { await new Promise(r => setTimeout(r, 2600)); const s = window.__SI__.snapshot(); return { ...s, fps: windo\")",
+   "name": "mcp__playwright__browser_evaluate"
+  },
+  {
+   "at": "1789567515288",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 2482
+  },
+  {
+   "at": "1789567517273",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"() => { const e = window.__SI__.engine; const gl = e.renderer.getContext(); const dbg = gl.getExtension('WEBGL_debug_ren\")",
+   "name": "mcp__playwright__browser_evaluate"
+  },
+  {
+   "at": "1789567539234",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1166
+  },
+  {
+   "at": "1789567539239",
+   "kind": "reasoning",
+   "text": "The self-play test confirms the game runs correctly end-to-end—a passive cannon at x=0 was killed three times by aimed shots within 10.5 seconds, hitting GAME_OVER legitimately. Next, I'll drive it with real held-key input using Playwright's keyboard API.\n\n",
+   "tokens": 1166
+  },
+  {
+   "at": "1789567539245",
+   "kind": "tool",
+   "tool": "tool_search",
+   "args": "select:mcp__playwright__browser_run_code_unsafe",
+   "name": "ToolSearch"
+  },
+  {
+   "at": "1789567545131",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  // Retry from the game-over menu, then play the opening with real held keys.\\n  const snap = () => pa\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789567562315",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 692
+  },
+  {
+   "at": "1789567563293",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/play1.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567610645",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 2901
+  },
+  {
+   "at": "1789567610647",
+   "kind": "reasoning",
+   "text": "Kills, combos, the trail, floating text, and glass HUD all work correctly with real input. I noticed two issues to fix: sun stripes drawing over the middle invaders, and the metallic cannon hull rendering nearly black due to PBR metals lacking an environment map to reflect—starting with the sun issue.\n\n",
+   "tokens": 2901
+  },
+  {
+   "at": "1789567612758",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  await page.keyboard.press('Escape'); // pause so the frame is stable\\n  await page.waitForTimeout(300\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789567622116",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 368
+  },
+  {
+   "at": "1789567623180",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/sun_a.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567631177",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 402
+  },
+  {
+   "at": "1789567631905",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/sun_b.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567683152",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 3274
+  },
+  {
+   "at": "1789567683154",
+   "kind": "reasoning",
+   "text": "Confirmed the invader glitch was just the sun's stripes bleeding through the rows, not a depth bug. Now I'll lower the sun toward the horizon, add a PBR environment map for metal reflections, fix keyboard taps that drop sub-frame presses, and add a fire-grace window on player spawn.\n\n",
+   "tokens": 3274
+  },
+  {
+   "at": "1789567694881",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/EnvironmentMap.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789567721094",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\n\n# 1. Engine: procedural environment map\nsub('shared/core/Engine.js', [\n (\"import { CameraRig } from '../render/CameraRig.js';\",\n  \"import { CameraRig } from '../render/CameraRig.js';\\nimport { createNeonEnvironment } from '../render/EnvironmentMap.js';\"),\n (\"    samples = 4,\\n    particleCapacity = 500,\\n  }) {\",\n  \"    samples = 4,\\n    particleCapacity = 500,\\n    environment = {},\\n    environmentIntensity = 0.55,\\n  }) {\"),\n (\"    this.rig = new CameraRig(this.camera);\\n    this.composer\",\n  \"    this.rig = new CameraRig(this.camera);\\n    this.environment = environment === false ? null : createNeonEnvironment(this.renderer, environment);\\n    if (this.environment) {\\n      this.scene.environment = this.environment.texture;\\n      if ('environmentIntensity' in this.scene) this.scene.environmentIntensity = environmentIntensity;\\n    }\\n    this.composer\"),\n (\"    this.events.clear();\\n    this.scene.clear();\",\n  \"    this.events.clear();\\n    this.scene.environment = null;\\n    if (this.environment) this.environment.dispose();\\n    this.scene.clear();\"),\n])\n\n# 2. Keyboard: taps shorter than a frame must still register\nsub('shared/input/KeyboardSource.js', [\n (\"    this.down = new Set();\\n    this.lastActivity = 0;\",\n  \"    this.down = new Set();\\n    this.tapped = new Set(); // keys pressed since the last poll, even if already released\\n    this.lastActivity = 0;\"),\n (\"      if (e.repeat) return;\\n      this.down.add(e.code);\",\n  \"      if (e.repeat) return;\\n      this.down.add(e.code);\\n      this.tapped.add(e.code);\"),\n (\"  isDown(code) {\\n    return this.down.has(code);\\n  }\\n\\n  anyDown(codes) {\\n    for (let i = 0; i < codes.length; i++) if (this.down.has(codes[i])) return true;\\n    return false;\\n  }\",\n  \"  isDown(code) {\\n    return this.down.has(code) || this.tapped.has(code);\\n  }\\n\\n  anyDown(codes) {\\n    for (let i = 0; i < codes.length; i++) {\\n      const c = codes[i];\\n      if (this.down.has(c) || this.tapped.has(c)) return true;\\n    }\\n    return false;\\n  }\\n\\n  /** Call once per frame after edges have been computed. */\\n  endFrame() {\\n    this.tapped.clear();\\n  }\"),\n (\"    this.down.clear();\\n  }\\n}\", \"    this.down.clear();\\n    this.tapped.clear();\\n  }\\n}\"),\n])\nsub('shared/input/InputManager.js', [\n (\"      if (s.pressed) {\\n        s.latched = true;\\n        this._anyPressed = true;\\n      }\\n    }\\n  }\",\n  \"      if (s.pressed) {\\n        s.latched = true;\\n        this._anyPressed = true;\\n      }\\n    }\\n    kb.endFrame();\\n  }\"),\n])\n\n# 3. Aimed-shot chance scales by wave; grace period after spawn\nsub('Space_Invaders/src/systems/WaveDirector.js', [\n (\"      fireScale: clamp(1 - 0.06 * (w - 1), 0.5, 1),\",\n  \"      fireScale: clamp(1 - 0.06 * (w - 1), 0.5, 1),\\n      aimedChance: clamp(INVADER_FIRE.AIMED_CHANCE + INVADER_FIRE.AIMED_PER_WAVE * (w - 1), 0, INVADER_FIRE.AIMED_CAP),\\n      graceTime: INVADER_FIRE.GRACE_TIME,\"),\n])\nsub('Space_Invaders/src/config.js', [\n (\"  AIMED_CHANCE: 0.35,\", \"  AIMED_CHANCE: 0.18,\\n  AIMED_PER_WAVE: 0.04,\\n  AIMED_CAP: 0.4,\\n  GRACE_TIME: 1.6,\"),\n])\nsub('Space_Invaders/src/entities/InvaderFormation.js', [\n (\"    if (this.random.chance(INVADER_FIRE.AIMED_CHANCE)) {\",\n  \"    if (this.random.chance(this.params.aimedChance ?? INVADER_FIRE.AIMED_CHANCE)) {\"),\n (\"    this.fireTimer = this.random.range(1.0, 1.8);\\n    this.flying = flyIn;\",\n  \"    this.fireTimer = this.random.range(1.6, 2.4);\\n    this.flying = flyIn;\"),\n (\"      fireScale: 1,\\n      bulletSpeed: INVADER_FIRE.SPEED,\\n      startDrop: 0,\\n    };\",\n  \"      fireScale: 1,\\n      bulletSpeed: INVADER_FIRE.SPEED,\\n      startDrop: 0,\\n      aimedChance: INVADER_FIRE.AIMED_CHANCE,\\n      graceTime: INVADER_FIRE.GRACE_TIME,\\n    };\"),\n (\"  /** Per-wave tuning from WaveDirector. */\\n  setParams(params) {\\n    this.params = params;\\n  }\",\n  \"  /** Per-wave tuning from WaveDirector. */\\n  setParams(params) {\\n    this.params = params;\\n  }\\n\\n  /** Hold fire for a moment (used right after the cannon respawns). */\\n  grace(seconds = this.params.graceTime) {\\n    this.fireTimer = Math.max(this.fireTimer, seconds);\\n  }\"),\n])\nsub('Space_Invaders/src/SpaceInvadersGame.js', [\n (\"        if (sm.previous === S.WAVE_INTRO) this.events.emit('wave:start', { wave: this.waves.wave });\",\n  \"        if (sm.previous === S.WAVE_INTRO) this.events.emit('wave:start', { wave: this.waves.wave });\\n        if (sm.previous === S.PLAYER_DEATH) this.formation.grace();\"),\n])\n\n# 4. Backdrop composition: sun low on the horizon, setting into the grid\nsub('Space_Invaders/src/world/Environment.js', [\n (\"    const sunGeometry = tracker.track(new CircleGeometry(14, 64));\", \"    const sunGeometry = tracker.track(new CircleGeometry(15, 64));\"),\n (\"        emissiveIntensity: 0.85,\\n        color: new Color(0x000000),\", \"        emissiveIntensity: 0.6,\\n        color: new Color(0x000000),\"),\n (\"    this.sun.position.set(0, 14, -60);\", \"    this.sun.position.set(0, 5, -70);\"),\n])\n\n# 5. Hull: reflective now that there is an environment\nsub('Space_Invaders/src/entities/Player.js', [\n (\"roughnessMap: panels.roughnessMap, roughness: 0.55, metalness: 0.8 }),\",\n  \"roughnessMap: panels.roughnessMap, roughness: 0.45, metalness: 0.7 }),\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567732109",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 312
+  },
+  {
+   "at": "1789567732111",
+   "kind": "reasoning",
+   "text": "I'll run a full scripted play-through testing the input boundary: starting from the title screen, playing through with held keys, clearing all five waves to trigger VICTORY, starting a new game, losing all cannons to trigger GAME_OVER, and also checking pause/resume, console output, and GPU memory usage.\n\n",
+   "tokens": 312
+  },
+  {
+   "at": "1789567743158",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789567799148",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 47
+  },
+  {
+   "at": "1789567800106",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"() => ({ snap: window.__SI__.snapshot(), time: window.__SI__.engine.realTime.toFixed(1), menu: window.__SI__.game.hud.me\")",
+   "name": "mcp__playwright__browser_evaluate"
+  },
+  {
+   "at": "1789567812086",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 747
+  },
+  {
+   "at": "1789567814688",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const before = await page.evaluate(() => window.__SI__.snapshot().state);\\n  await page.keyboard.pres\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789567833784",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 963
+  },
+  {
+   "at": "1789567833787",
+   "kind": "reasoning",
+   "text": "The scripted run reached VICTORY (score 28,580) but timed out because a second tap landed within one frame of the first, merging into a single hold under my edge detector. I'll fix this by counting keydowns directly instead of sampling state.\n\n",
+   "tokens": 963
+  },
+  {
+   "at": "1789567841046",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\n\nsub('shared/input/KeyboardSource.js', [\n (\"    this.tapped = new Set(); // keys pressed since the last poll, even if already released\\n    this.lastActivity = 0;\",\n  \"    this.tapped = new Set(); // keys pressed since the last poll, even if already released\\n    this.pressCounts = new Map(); // monotonic keydown counter per code, for exact edge detection\\n    this.lastActivity = 0;\"),\n (\"      this.down.add(e.code);\\n      this.tapped.add(e.code);\",\n  \"      this.down.add(e.code);\\n      this.tapped.add(e.code);\\n      this.pressCounts.set(e.code, (this.pressCounts.get(e.code) || 0) + 1);\"),\n (\"  /** Call once per frame after edges have been computed. */\",\n  \"  /** Total keydown events ever seen for any of `codes` (monotonic). */\\n  pressCount(codes) {\\n    let n = 0;\\n    for (let i = 0; i < codes.length; i++) n += this.pressCounts.get(codes[i]) || 0;\\n    return n;\\n  }\\n\\n  /** Call once per frame after edges have been computed. */\"),\n])\nsub('shared/input/InputManager.js', [\n (\"      this._state[a] = { held: false, pressed: false, released: false, latched: false };\",\n  \"      this._state[a] = { held: false, pressed: false, released: false, latched: false, presses: 0 };\"),\n (\"      s.pressed = now && !s.held;\\n      s.released = !now && s.held;\\n      s.held = now;\",\n  \"      // A new keydown counts as a press even if the previous press was never seen released\\n      // (two taps inside one frame), so no tap can ever merge into a hold.\\n      const presses = kb.pressCount(this.keys[action]);\\n      s.pressed = (now && !s.held) || presses > s.presses;\\n      s.presses = presses;\\n      s.released = !now && s.held;\\n      s.held = now;\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789567857976",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789567921004",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 977
+  },
+  {
+   "at": "1789567921007",
+   "kind": "reasoning",
+   "text": "The full gameplay loop checks out with no console errors—title, waves, victory, and game over/retry all transition correctly. Now I'll review the screenshots and investigate the frame rate, which is running lower than expected on this integrated GPU.\n\n",
+   "tokens": 977
+  },
+  {
+   "at": "1789567921009",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/victory.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567947131",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1676
+  },
+  {
+   "at": "1789567947938",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/play2.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789567977108",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1524
+  },
+  {
+   "at": "1789567977111",
+   "kind": "reasoning",
+   "text": "The horizon composition now works correctly with the sun setting into the grid. Before polishing the cannon and fixing the victory screen's banner/menu overlap, I'll profile where frame time is being spent on this integrated GPU.\n\n",
+   "tokens": 1524
+  },
+  {
+   "at": "1789567980696",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const measure = async (label, setup, teardown) => {\\n    await page.evaluate(setup);\\n    await page.w\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568027599",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 2445
+  },
+  {
+   "at": "1789568027602",
+   "kind": "reasoning",
+   "text": "The MSAA resolve on the composer's half-float buffers is happening three times per frame at 3MP, costing bloom and the retro pass ~5ms each even though only the scene render actually needs MSAA. I'll render the scene into a dedicated MSAA target and blit once, so post passes all run single-sampled.\n\n",
+   "tokens": 2445
+  },
+  {
+   "at": "1789568036071",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "shared/render/SceneMSAAPass.js",
+   "name": "Write"
+  },
+  {
+   "at": "1789568046454",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && ls node_modules/three/examples/jsm/shaders/CopyShader.js node_modules/three/examples/jsm/postprocessing/Pass.js && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\n\nsub('shared/render/PostPipeline.js', [\n (\"// EffectComposer stack: RenderPass → UnrealBloomPass → RetroPass → OutputPass.\\n// The composer renders into a half-float MSAA target so anti-aliasing survives post-processing and\\n// bloom thresholds operate on true HDR values. Tone-mapping and sRGB conversion happen once, in OutputPass.\",\n  \"// EffectComposer stack: SceneMSAAPass → UnrealBloomPass → RetroPass → OutputPass.\\n// The scene is rendered into a half-float MSAA target and resolved once; the composer's own buffers\\n// are single-sample HDR so bloom thresholds operate on true HDR values without repeated resolves.\\n// Tone-mapping and sRGB conversion happen once, in OutputPass.\"),\n (\"import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';\\n\", \"import { SceneMSAAPass } from './SceneMSAAPass.js';\\n\"),\n (\"    this.target = new WebGLRenderTarget(Math.max(1, _size.x * pr), Math.max(1, _size.y * pr), {\\n      type: HalfFloatType,\\n      samples,\\n      depthBuffer: true,\\n      stencilBuffer: false,\\n    });\",\n  \"    const width = Math.max(1, Math.floor(_size.x * pr));\\n    const height = Math.max(1, Math.floor(_size.y * pr));\\n    this.target = new WebGLRenderTarget(width, height, {\\n      type: HalfFloatType,\\n      samples: 0,\\n      depthBuffer: false,\\n      stencilBuffer: false,\\n    });\"),\n (\"    this.renderPass = new RenderPass(scene, camera);\", \"    this.renderPass = new SceneMSAAPass(scene, camera, { width, height, samples });\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789568057739",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 623
+  },
+  {
+   "at": "1789568069495",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\n\nsub('Space_Invaders/src/config.js', [\n (\"  VICTORY_DELAY: 1.2,\", \"  VICTORY_DELAY: 2.6,\"),\n (\"  samples: 4,\\n  particleCapacity: 500,\", \"  samples: 4,\\n  pixelRatioCap: 1.5,\\n  particleCapacity: 500,\\n  fog: Object.freeze({ color: 0x05060f, near: 70, far: 170 }),\"),\n])\nsub('Space_Invaders/main.js', [\n (\"  samples: RENDER.samples,\\n\", \"  samples: RENDER.samples,\\n  pixelRatioCap: RENDER.pixelRatioCap,\\n\"),\n])\nsub('Space_Invaders/src/systems/ScoreSystem.js', [\n (\"    return this.stats.shots > 0 ? this.stats.hits / this.stats.shots : 0;\",\n  \"    return this.stats.shots > 0 ? Math.min(1, this.stats.hits / this.stats.shots) : 0;\"),\n])\nsub('Space_Invaders/src/entities/Bunkers.js', [\n (\"emissive: COLORS.BUNKER, intensity: 0.95,\", \"emissive: COLORS.BUNKER, intensity: 1.15,\"),\n])\nsub('Space_Invaders/src/world/Environment.js', [\n (\"  Color,\\n  DynamicDrawUsage,\\n} from 'three';\", \"  Color,\\n  Fog,\\n  DynamicDrawUsage,\\n} from 'three';\"),\n (\"import { WORLD, COLORS } from '../config.js';\", \"import { WORLD, COLORS, RENDER } from '../config.js';\"),\n (\"    this.pressure = 0;\\n    this.pulseClock = 0;\\n\\n    this.lighting\",\n  \"    this.pressure = 0;\\n    this.pulseClock = 0;\\n\\n    // Distance fog dissolves the grid's far edge into the void.\\n    scene.fog = new Fog(RENDER.fog.color, RENDER.fog.near, RENDER.fog.far);\\n\\n    this.lighting\"),\n (\"        emissiveIntensity: 0.6,\\n        color: new Color(0x000000),\", \"        emissiveIntensity: 0.85,\\n        color: new Color(0x000000),\"),\n (\"    this.sun.position.set(0, 5, -70);\", \"    this.sun.position.set(0, 3, -70);\"),\n (\"  dispose() {\\n    this.lighting.dispose();\", \"  dispose() {\\n    this.scene.fog = null;\\n    this.lighting.dispose();\"),\n])\nsub('Space_Invaders/src/entities/Player.js', [\n (\"      hullMaterial({ color: 0x8e9ac4, map: panels.map, roughnessMap: panels.roughnessMap, roughness: 0.45, metalness: 0.7 }),\",\n  \"      hullMaterial({\\n        color: 0xb4bfe6,\\n        map: panels.map,\\n        roughnessMap: panels.roughnessMap,\\n        roughness: 0.4,\\n        metalness: 0.55,\\n        emissive: 0x0a2a33,\\n        intensity: 0.6,\\n      }),\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789568078545",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568088749",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 80
+  },
+  {
+   "at": "1789568088751",
+   "kind": "assistant",
+   "text": "Frame rate in active play went from 44–50 to 68 fps (which looks like this display's cap) with the single-resolve pass. Let me check the frame."
+  },
+  {
+   "at": "1789568089416",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/play3.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568145720",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 3879
+  },
+  {
+   "at": "1789568145722",
+   "kind": "assistant",
+   "text": "The image is glowing harder than before the pipeline change, which I didn't intend. Let me isolate whether the scene itself got brighter or bloom did."
+  },
+  {
+   "at": "1789568151919",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  await page.keyboard.press('Escape'); // pause for a stable frame\\n  await page.waitForTimeout(400);\\n \")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568156784",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/bright_b_nobloom.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568160794",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 108
+  },
+  {
+   "at": "1789568161325",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/bright_a_current.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568175202",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 954
+  },
+  {
+   "at": "1789568175994",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/bright_c_halfcopy.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568231515",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 3836
+  },
+  {
+   "at": "1789568231518",
+   "kind": "reasoning",
+   "text": "The old bloom under-fired because the pass sampled the MSAA buffer before proper resolve, so my earlier tuning was just compensating for that bug. Now that resolve is fixed, I'll retune with a higher threshold, lower strength, and dimmer floor/sun so only true emitters bloom.\n\n",
+   "tokens": 3836
+  },
+  {
+   "at": "1789568234561",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\nsub('Space_Invaders/src/config.js', [\n (\"bloom: Object.freeze({ strength: 0.6, radius: 0.45, threshold: 0.75 })\", \"bloom: Object.freeze({ strength: 0.45, radius: 0.4, threshold: 0.62 })\"),\n])\nsub('Space_Invaders/src/world/Environment.js', [\n (\"floorMaterial({ map: this.gridTexture, emissive: COLORS.CYAN, intensity: 0.8,\", \"floorMaterial({ map: this.gridTexture, emissive: COLORS.CYAN, intensity: 0.45,\"),\n (\"        emissiveIntensity: 0.85,\\n        color: new Color(0x000000),\", \"        emissiveIntensity: 0.7,\\n        color: new Color(0x000000),\"),\n])\nsub('Space_Invaders/src/entities/Bunkers.js', [\n (\"emissive: COLORS.BUNKER, intensity: 1.15,\", \"emissive: COLORS.BUNKER, intensity: 0.9,\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789568242405",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  await page.goto('http://127.0.0.1:5179/Space_Invaders/?seed=11');\\n  await page.waitForFunction(() =>\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568250618",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/play4.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568258600",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 209
+  },
+  {
+   "at": "1789568258604",
+   "kind": "assistant",
+   "text": "Balanced now — emitters glow with saturated halos, the floor is calm, invader shots and kill rings read clearly. Let me zoom in on the cannon, which still looks dark from here."
+  },
+  {
+   "at": "1789568261593",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const x = await page.evaluate(() => window.__SI__.snapshot().playerX);\\n  // project player position \")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568264659",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/cannon.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568284066",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1051
+  },
+  {
+   "at": "1789568284069",
+   "kind": "assistant",
+   "text": "The hull reads as a silhouette. I'll brighten the plating and give the cannon a stronger profile (taller turret, longer barrel with a neon collar, side fins)."
+  },
+  {
+   "at": "1789568302391",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\nsub('Space_Invaders/src/entities/Player.js', [\n (\"import { Group, Mesh, BoxGeometry, CylinderGeometry, SphereGeometry, PointLight, Vector3 } from 'three';\",\n  \"import { Group, Mesh, BoxGeometry, CylinderGeometry, SphereGeometry, TorusGeometry, PointLight, Vector3 } from 'three';\"),\n (\"\"\"    const chassis = displaceGeometry(new BoxGeometry(2.0, 0.5, 0.9, 6, 3, 4), noise, { amplitude: 0.018, frequency: 3 });\n    const skirtL = new BoxGeometry(0.55, 0.26, 0.7);\n    skirtL.translate(-1.1, -0.1, 0);\n    const skirtR = new BoxGeometry(0.55, 0.26, 0.7);\n    skirtR.translate(1.1, -0.1, 0);\n    const turret = new CylinderGeometry(0.42, 0.56, 0.36, 14);\n    turret.translate(0, 0.42, 0);\n    const barrel = new CylinderGeometry(0.09, 0.12, 0.9, 10);\n    barrel.translate(0, 0.95, 0);\n    const hullGeometry = tracker.track(mergeGeometries([chassis, skirtL, skirtR, turret, barrel]));\n\n    const panels = makePanelTextures({ size: 512, seed: 11, base: '#2b3150', seam: '#0c1024', highlight: '#4c5a8c', rivet: '#9aa6d6' });\"\"\",\n  \"\"\"    const chassis = displaceGeometry(new BoxGeometry(2.2, 0.55, 1.0, 6, 3, 4), noise, { amplitude: 0.018, frequency: 3 });\n    const skirtL = new BoxGeometry(0.6, 0.3, 0.8);\n    skirtL.translate(-1.2, -0.1, 0);\n    const skirtR = new BoxGeometry(0.6, 0.3, 0.8);\n    skirtR.translate(1.2, -0.1, 0);\n    const finL = new BoxGeometry(0.12, 0.55, 0.7);\n    finL.rotateZ(0.35);\n    finL.translate(-1.4, 0.38, -0.05);\n    const finR = new BoxGeometry(0.12, 0.55, 0.7);\n    finR.rotateZ(-0.35);\n    finR.translate(1.4, 0.38, -0.05);\n    const turret = new CylinderGeometry(0.5, 0.66, 0.42, 16);\n    turret.translate(0, 0.48, 0);\n    const barrel = new CylinderGeometry(0.1, 0.13, 1.05, 12);\n    barrel.translate(0, 1.15, 0);\n    const hullGeometry = tracker.track(mergeGeometries([chassis, skirtL, skirtR, finL, finR, turret, barrel]));\n\n    const panels = makePanelTextures({ size: 512, seed: 11, base: '#4a5480', seam: '#151a33', highlight: '#7d8bc0', rivet: '#b9c3ee' });\"\"\"),\n (\"\"\"        emissive: 0x0a2a33,\n        intensity: 0.6,\n      }),\"\"\",\n  \"\"\"        emissive: 0x0d3a48,\n        intensity: 0.9,\n      }),\"\"\"),\n (\"\"\"    const engineL = new BoxGeometry(0.36, 0.2, 0.22);\n    engineL.translate(-0.55, -0.02, -0.5);\n    const engineR = new BoxGeometry(0.36, 0.2, 0.22);\n    engineR.translate(0.55, -0.02, -0.5);\n    const strip = new BoxGeometry(1.9, 0.06, 0.08);\n    strip.translate(0, -0.2, 0.47);\n    const tip = new CylinderGeometry(0.11, 0.11, 0.14, 10);\n    tip.translate(0, 1.42, 0);\n    const neonGeometry = tracker.track(mergeGeometries([engineL, engineR, strip, tip]));\"\"\",\n  \"\"\"    const engineL = new BoxGeometry(0.36, 0.22, 0.22);\n    engineL.translate(-0.6, -0.02, -0.55);\n    const engineR = new BoxGeometry(0.36, 0.22, 0.22);\n    engineR.translate(0.6, -0.02, -0.55);\n    const strip = new BoxGeometry(2.1, 0.06, 0.08);\n    strip.translate(0, -0.22, 0.52);\n    const collar = new TorusGeometry(0.17, 0.04, 8, 20);\n    collar.rotateX(Math.PI * 0.5);\n    collar.translate(0, 0.82, 0);\n    const tip = new CylinderGeometry(0.12, 0.12, 0.16, 12);\n    tip.translate(0, 1.7, 0);\n    const neonGeometry = tracker.track(mergeGeometries([engineL, engineR, strip, collar, tip]));\"\"\"),\n])\nsub('Space_Invaders/src/config.js', [\n (\"  HALF_W: 1.0,\\n  HALF_H: 0.45,\\n  MARGIN: 1.1,\", \"  HALF_W: 1.1,\\n  HALF_H: 0.45,\\n  MARGIN: 1.2,\"),\n (\"  MUZZLE_Y: 1.1,\", \"  MUZZLE_Y: 1.75,\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789568310311",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568316578",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/cannon2.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568329470",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 582
+  },
+  {
+   "at": "1789568329473",
+   "kind": "reasoning",
+   "text": "I've finished reading the fins, turret, barrel collar, and muzzle glow. After one more lighting pass, I'll verify the gamepad path with a simulated pad, plus check aspect-ratio fitting and teardown/memory.\n\n",
+   "tokens": 582
+  },
+  {
+   "at": "1789568331290",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\nsub('Space_Invaders/src/world/Environment.js', [\n (\"    this.lighting = createNeonLighting(scene, {\\n      keyPosition: [6, 18, 12],\",\n  \"    this.lighting = createNeonLighting(scene, {\\n      hemiIntensity: 0.8,\\n      keyIntensity: 1.4,\\n      rimIntensity: 0.6,\\n      keyPosition: [6, 18, 12],\"),\n])\nsub('Space_Invaders/src/entities/Player.js', [\n (\"        color: 0xb4bfe6,\", \"        color: 0xd0d8f5,\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789568346136",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568357989",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 241
+  },
+  {
+   "at": "1789568357991",
+   "kind": "assistant",
+   "text": "Gamepad path verified end-to-end with an injected pad: A confirms, stick moves with dead-zone, d-pad moves, RT fires, Start pauses, B resumes. Now viewport fitting and teardown/memory."
+  },
+  {
+   "at": "1789568369488",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568392599",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"() => ({ snap: window.__SI__.snapshot(), prev: window.__SI__.game.state.previous, t: window.__SI__.game.state.time.toFix\")",
+   "name": "mcp__playwright__browser_evaluate"
+  },
+  {
+   "at": "1789568415282",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1570
+  },
+  {
+   "at": "1789568420503",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  await page.goto('http://127.0.0.1:5179/Space_Invaders/?seed=3');\\n  await page.waitForFunction(() => \")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568471875",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 3011
+  },
+  {
+   "at": "1789568471878",
+   "kind": "reasoning",
+   "text": "The timing logic checks out—my earlier test failure was just a wrong assumption, since clearing wave 1 grants an extra life that requires a fourth death for game over. I'll rerun the fit/memory/teardown check with a loop that kills until game over is reached.\n\n",
+   "tokens": 3011
+  },
+  {
+   "at": "1789568480669",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568557690",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 1350
+  },
+  {
+   "at": "1789568557692",
+   "kind": "reasoning",
+   "text": "Viewport fit, memory usage, teardown, and console cleanliness all check out with no leaks or errors. Next I'll test the remaining mechanics: UFO kills/scoring, power-up pickups, bunker erosion, and the invasion game-over.\n\n",
+   "tokens": 1350
+  },
+  {
+   "at": "1789568569249",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568609224",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 930
+  },
+  {
+   "at": "1789568609227",
+   "kind": "reasoning",
+   "text": "Spread shot, shield absorb, UFO kill bonus, and bunker erosion all check out, but the last game-over was triggered by point-blank shots instead of the invasion line. I'll now trigger the invasion line specifically to verify that path.\n\n",
+   "tokens": 930
+  },
+  {
+   "at": "1789568610416",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const errors = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning')\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789568619766",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/invaded.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789568634118",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 661
+  },
+  {
+   "at": "1789568636733",
+   "kind": "reasoning",
+   "text": "I'll hide the bottom-right status panel when it's empty to fix that cosmetic issue, then commit the smoke test, update plan.md with the two shared modules, and rebuild.",
+   "tokens": 661
+  },
+  {
+   "at": "1789568639428",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\nsub('Space_Invaders/src/ui/HUD.js', [\n (\"    const status = o.addPanel('statusPanel', { position: 'bottom-right', className: 'hud-status' });\",\n  \"    const status = o.addPanel('statusPanel', { position: 'bottom-right', className: 'hud-status empty' });\\n    this.statusPanel = status;\"),\n (\"    const powerType = s.power.type || (s.shield ? 'SHIELD' : null);\\n    this.powerChip.classList.toggle('off', !powerType);\",\n  \"    const powerType = s.power.type || (s.shield ? 'SHIELD' : null);\\n    this.powerChip.classList.toggle('off', !powerType);\\n    this.statusPanel.classList.toggle('empty', !showCombo && !powerType);\"),\n])\nsub('shared/ui/glass.css', [\n (\".pos-top-left { top: 16px; left: 16px; }\",\n  \".hud-panel.empty {\\n  opacity: 0;\\n}\\n\\n.pos-top-left { top: 16px; left: 16px; }\"),\n])\nprint('ok')\nEOF",
+   "name": "Bash"
+  },
+  {
+   "at": "1789568642426",
+   "kind": "assistant",
+   "text": "Now the reproducible smoke test, README, and the `plan.md` sync."
+  },
+  {
+   "at": "1789568668243",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/smoke.playwright.mjs",
+   "name": "Write"
+  },
+  {
+   "at": "1789568669249",
+   "kind": "bail",
+   "reason": "spend_limit",
+   "text": "You've hit your monthly spend limit · raise it at claude.ai/settings/usage?from=cc_cli_limit_message · your session limit resets 2:20pm (America/New_York)"
+  },
+  {
+   "at": "1789582899565",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 95
+  },
+  {
+   "at": "1789582921883",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\ndef sub(path, pairs):\n    s=open(path,encoding='utf-8').read()\n    for a,b in pairs:\n        if a not in s: raise SystemExit(f\"MISSING in {path}: {a!r}\")\n        s=s.replace(a,b,1)\n    open(path,'w',encoding='utf-8',newline='\\n').write(s)\n\nsub('package.json', [\n ('    \"preview\": \"vite preview\"\\n', '    \"preview\": \"vite preview\",\\n    \"test:smoke\": \"node tests/smoke.playwright.mjs\"\\n'),\n])\n\n# plan.md: record the two shared modules added during verification and the input hardening.\nsub('Space_Invaders/plan.md', [\n (\"| `render/CameraRig.js` | `three` | `CameraRig` — `basePosition`, `baseTarget`, `offset`, `shakeOffset`, `shakeRoll`, `apply()` |\",\n  \"| `render/CameraRig.js` | `three` | `CameraRig` — `basePosition`, `baseTarget`, `offset`, `shakeOffset`, `shakeRoll`, `apply()` |\\n| `render/EnvironmentMap.js` | `three` (PMREMGenerator) | `createNeonEnvironment(renderer, opts)` → `{ texture, dispose }` — procedural IBL so PBR metals reflect a neon studio |\\n| `render/SceneMSAAPass.js` | `three`; `three/addons/postprocessing/Pass.js`; `three/addons/shaders/CopyShader.js` | `SceneMSAAPass` — renders the scene to a private MSAA HDR target and resolves once; post passes run single-sample |\"),\n (\"| `render/PostPipeline.js` | `three`; `three/addons/postprocessing/{EffectComposer,RenderPass,UnrealBloomPass,ShaderPass,OutputPass}.js`; `./RetroShader.js` |\",\n  \"| `render/PostPipeline.js` | `three`; `three/addons/postprocessing/{EffectComposer,UnrealBloomPass,ShaderPass,OutputPass}.js`; `./SceneMSAAPass.js`; `./RetroShader.js` |\"),\n (\"| `core/Engine.js` | `three`; `../render/RendererFactory.js`; `../render/PostPipeline.js`; `../render/CameraRig.js`; `../input/InputManager.js`;\",\n  \"| `core/Engine.js` | `three`; `../render/RendererFactory.js`; `../render/PostPipeline.js`; `../render/CameraRig.js`; `../render/EnvironmentMap.js`; `../input/InputManager.js`;\"),\n (\"```\\nRenderPass(scene, camera)\\nUnrealBloomPass(resolution, strength 0.75, radius 0.40, threshold 0.85)\",\n  \"```\\nSceneMSAAPass(scene, camera)   4× MSAA half-float target, resolved once into the single-sample chain\\nUnrealBloomPass(resolution, strength 0.45, radius 0.40, threshold 0.62)\"),\n (\"### 5.1 Root\\n| File | Imports |\\n|---|---|\\n| `package.json` | deps `three`, devDeps `vite` |\",\n  \"### 5.1 Root\\n| File | Imports |\\n|---|---|\\n| `package.json` | deps `three`, devDeps `vite`; `npm run test:smoke` |\\n| `tests/smoke.playwright.mjs` | `playwright` (optional dev tool) — drives the game at the input boundary through both endings |\"),\n (\"Firing: one bullet in flight (classic) unless a power-up raises the cap; `FIRE_COOLDOWN = 0.16 s`. Fire is read with `input.takePress(FIRE)` (latched edge) so a press is never lost on frames where zero fixed steps run (144 Hz displays vs 120 Hz sim). Holding fire auto-repeats at the cooldown.\",\n  \"Firing: one bullet in flight (classic) unless a power-up raises the cap; `FIRE_COOLDOWN = 0.16 s`. Fire is read with `input.takePress(FIRE)` (latched edge) so a press is never lost on frames where zero fixed steps run (144 Hz displays vs 120 Hz sim). Keyboard edges are derived from a per-key keydown counter, so a tap shorter than one frame — or two taps inside one frame — still registers. Holding fire auto-repeats at the cooldown. Invaders hold fire for `GRACE_TIME = 1.6 s` after a respawn.\"),\n])\nprint('ok')\nEOF\ncat > README.md <<'EOF'\n# Neon Arcade — AAA Retro-Futurism Collection\n\nModern reimaginings of arcade classics in vanilla Three.js. 100 % procedural assets (Canvas API\ntextures, code-built geometry, Web Audio synthesis), hand-written physics, strict object pooling\nand explicit GPU-resource disposal. Served by Vite.\n\n## Run\n\n```sh\nnpm install\nnpm run dev          # http://127.0.0.1:5173  → hub;  /Space_Invaders/  → the game\nnpm run build        # static multi-page site in dist/\n```\n\nControls: `← →` / `A D` move · `Space` fire · `Esc` pause · gamepad: stick / d-pad, `A` / `RT` fire, `Start` pause.\nAppend `?seed=<number>` to the game URL for a reproducible run.\n\n## Games\n\n| Folder | Status |\n|---|---|\n| `Space_Invaders/` | playable — 5 waves to victory, endless mode after |\n\n## Layout\n\n```\nshared/     engine-agnostic layer: core loop, input, render + post stack, six VFX systems, audio, procgen, math, UI\n<Game>/     one self-contained folder per game (index.html, main.js, plan.md, src/)\ntests/      browser-level smoke test (npm run test:smoke; needs playwright installed separately)\n```\n\nGames reach `shared/` only through the `@shared` Vite alias.\nEOF\nnpx vite build 2>&1 | tail -6",
+   "name": "Bash"
+  },
+  {
+   "at": "1789582929374",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 86
+  },
+  {
+   "at": "1789582934032",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && python - <<'EOF'\np='Space_Invaders/plan.md'\ns=open(p,encoding='utf-8').read()\na=\"    col     = chance(0.35) ? aliveColumnNearest(player.x) : randomAliveColumn()\"\nb=\"    col     = chance(aimed(wave)) ? aliveColumnNearest(player.x) : randomAliveColumn()   // aimed = min(0.18 + 0.04·(wave−1), 0.4)\"\nassert a in s\ns=s.replace(a,b,1)\nopen(p,'w',encoding='utf-8',newline='\\n').write(s)\nprint('ok')\nEOF\ngit status --short . | head -20; echo \"---\"; find . -path ./node_modules -prune -o -path ./dist -prune -o -path ./.playwright-mcp -prune -o -type f -print | sort",
+   "name": "Bash"
+  },
+  {
+   "at": "1789582939045",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 153
+  },
+  {
+   "at": "1789582940084",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && head -c 400 build.log; echo; echo \"---\"; ls -la build.log",
+   "name": "Bash"
+  },
+  {
+   "at": "1789582943200",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && rm -f build.log && printf 'node_modules/\\ndist/\\n.playwright-mcp/\\n' > .gitignore && cat .gitignore",
+   "name": "Bash"
+  },
+  {
+   "at": "1789582946506",
+   "kind": "assistant",
+   "text": "Final end-to-end confirmation on the current code (fresh load, real input, both endings, teardown), then I'll stop the dev server."
+  },
+  {
+   "at": "1789582956700",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const problems = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789582959293",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 30
+  },
+  {
+   "at": "1789582963304",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "cd \"C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws\" && (npx vite --port 5179 --strictPort > \"C:/Users/ktmar/AppData/Local/Temp/claude/C--Data-AI-Projects-LMStudioComparison-Results--frontier-2026-09-15-claude-opus-5-run1-ws/5e555602-f0d4-459c-b4a9-ef6c9e9517f1/scratchpad/vite.log\" 2>&1 &) ; sleep 4; tail -3 \"C:/Users/ktmar/AppData/Local/Temp/claude/C--Data-AI-Projects-LMStudioComparison-Results--frontier-2026-09-15-claude-opus-5-run1-ws/5e555602-f0d4-459c-b4a9-ef6c9e9517f1/scratchpad/vite.log\"",
+   "name": "Bash"
+  },
+  {
+   "at": "1789582979082",
+   "kind": "tool",
+   "tool": "browser",
+   "args": "page.evaluate(\"async (page) => {\\n  const problems = [];\\n  page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning\")",
+   "name": "mcp__playwright__browser_run_code_unsafe"
+  },
+  {
+   "at": "1789583020621",
+   "kind": "tool",
+   "tool": "read_file",
+   "args": ".playwright-mcp/final_victory.png",
+   "name": "Read"
+  },
+  {
+   "at": "1789583024749",
+   "kind": "reasoning",
+   "text": "",
+   "tokens": 138
+  },
+  {
+   "at": "1789583026647",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "$c = Get-NetTCPConnection -LocalPort 5179 -State Listen -ErrorAction SilentlyContinue; if ($c) { $c | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -Confirm:$false }; \"stopped dev server (pid $($c.OwningProcess -join ','))\" } else { \"no listener on 5179\" }",
+   "name": "PowerShell"
+  },
+  {
+   "at": "1789583049189",
+   "kind": "assistant",
+   "text": "# STEP 3 complete — Space Invaders is built, played, and verified\n\n**61 files** written: root config (3), `shared/` (30 modules + `glass.css`), `Space_Invaders/` (19 modules + `index.html` + `plan.md`), a browser-level smoke test, and a README. `vite build` transforms all 69 modules with no unresolved imports.\n\n## What was verified, at the input boundary (Playwright driving a real Chromium)\n\n| Check | Result |\n|---|---|\n| Boot → TITLE, zero console errors/warnings across every run | ✅ |\n| Keyboard play: `Enter` starts, held `←/→` + `Space` scores kills, `Esc` pause/resume | ✅ (e.g. 100 pts / 5 kills in 3.6 s of play) |\n| Gamepad (injected standard pad): A confirms, stick + dead-zone, d-pad, RT fires, Start pauses, B resumes | ✅ |\n| **Win path**: waves 1→5 → VICTORY, extra lives at 1 500 / 10 000 steps, endless option | ✅ (29 015 pts) |\n| **Loss paths**: all cannons lost → GAME_OVER; invasion line breached → GAME_OVER(\"invaded\") | ✅ both |\n| Spread shot (3 bolts/press), shield absorb (no life lost), UFO kill (+150), formation eats bunkers (319→200 cells) | ✅ |\n| Camera fit at 1920×1080 / 1280×720 / 1000×1000 / 800×1200 — all playfield extremes inside NDC ±0.9 | ✅ |\n| Memory: 3 full game cycles leave `renderer.info.memory` identical (19 geo / 21 tex / 25 programs); `engine.dispose()` → 0 / 0, canvas + HUD removed | ✅ |\n\n## Things I found by playing and fixed\n- **Bloom washout** — the initial tuning clipped emitters to white; retuned twice, the second time because I discovered the original MSAA-composer path was silently *under*-blooming (post passes sampling multisampled buffers). Replaced with `SceneMSAAPass`: one resolve per frame instead of three → **50 → 68 fps** on this Intel iGPU, and bloom now follows the actual threshold math.\n- **Sub-frame taps were lost** (Playwright's `press` exposed it): keyboard edges now come from a per-key keydown counter, so a tap shorter than a frame — or two taps in one frame — always registers.\n- **PBR metals rendered black** (nothing to reflect): added a procedural PMREM neon environment (`shared/render/EnvironmentMap.js`).\n- Spawn fairness: aimed-shot chance now scales by wave (18 % → 40 %) with a 1.6 s fire-grace after each respawn; the stationary-cannon deaths I saw early were legitimate but harsh.\n- Cosmetic: sun moved to \"set into the grid\", fog dissolves the grid's far edge, victory banner no longer overlaps the results card, empty status panel hidden, cannon silhouette rebuilt (fins, taller turret, neon collar).\n\n## Two additions beyond the plan's file list\n`shared/render/EnvironmentMap.js` and `shared/render/SceneMSAAPass.js` — both recorded in `plan.md` §5.2 along with the input-hardening note. Everything else matches the approved plan.\n\n**Run it:** `npm install && npm run dev` → `http://127.0.0.1:5173/Space_Invaders/` (append `?seed=N` for a reproducible run). `npm run test:smoke` replays the acceptance drive if `playwright` is installed.\n\nOne honest caveat: the audio path is exercised (context unlocks on the first key, no errors, synth graphs build and tear down) but I can't hear it from here — the mix levels are set by ear-in-code, not by ear."
+  }
+ ],
+ "stats": {
+  "turns": 249,
+  "in": 78076048,
+  "out": 732295
+ }
+}

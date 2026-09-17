@@ -1,0 +1,29 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #020208;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+#game-canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
+}
+
+.hud-top-left .hud-value,
+.hud-top-right .hud-value {
+  min-width: 3ch;
+}
+
+#unlock-audio-hint {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  font-size: 0.7rem;
+  color: rgba(234, 252, 255, 0.5);
+  z-index: 15;
+  pointer-events: none;
+}

@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run2/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run2/ws",
  "files": 24,
  "lines": 3185,
  "placeholders": [],
@@ -115,8 +115,12 @@
   ],
   "shockwave rings": [
    [
+    "shared/vfx/ShockwaveRings.ts",
+    3
+   ],
+   [
     "space_invaders/Game.ts",
-    555
+    14
    ],
    [
     "space_invaders/Enemies/Boss.ts",
@@ -216,7 +220,7 @@
  },
  "particle_caps": [],
  "dispose_calls": 38,
- "three_allocations": 15,
+ "three_allocations": 24,
  "violations": [],
  "non_standard_materials": [
   [

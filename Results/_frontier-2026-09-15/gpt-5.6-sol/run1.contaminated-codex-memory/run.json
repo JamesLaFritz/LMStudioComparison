@@ -1,0 +1,27 @@
+{
+ "model": "gpt-5.6-sol",
+ "seed": 1,
+ "harness": "Codex Desktop",
+ "session": "01a0a391-4cfa-7eb0-a1ad-f7224dd23c1f",
+ "p1_seconds": 35,
+ "p2_seconds": 1781,
+ "p3_seconds": 5768,
+ "continues": 0,
+ "total_seconds": 7584,
+ "turns": 1168,
+ "tokens_in": 123235426,
+ "tokens_out": 576659,
+ "tokens_cached": 120461568,
+ "reasoning_tokens": 229343,
+ "bails": [],
+ "compactions": 12,
+ "max_reasoning": null,
+ "seed_recorded": null,
+ "files": 161,
+ "threads": 11,
+ "subagents": 10,
+ "user_turns_recorded": 3,
+ "shells": [
+  "powershell"
+ ]
+}

@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-think/run1/ws",
  "files": 25,
  "lines": 2344,
  "placeholders": [],
@@ -161,7 +161,7 @@
   ]
  ],
  "dispose_calls": 13,
- "three_allocations": 0,
+ "three_allocations": 6,
  "violations": [],
  "non_standard_materials": [],
  "session": {

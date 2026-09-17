@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen_qwen3.6-27b/run2/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.6-27b/run2/ws",
  "files": 30,
  "lines": 3074,
  "placeholders": [],
@@ -68,8 +68,16 @@
   ],
   "shockwave rings": [
    [
+    "main.js",
+    34
+   ],
+   [
+    "shared/vfx/ShockwaveRings.js",
+    7
+   ],
+   [
     "Space_Invaders/Game.js",
-    368
+    152
    ]
   ],
   "floating score text": [
@@ -176,7 +184,7 @@
   ]
  ],
  "dispose_calls": 24,
- "three_allocations": 30,
+ "three_allocations": 34,
  "violations": [],
  "non_standard_materials": [],
  "session": {

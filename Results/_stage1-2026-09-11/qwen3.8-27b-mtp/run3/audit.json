@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run3/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run3/ws",
  "files": 21,
  "lines": 4508,
  "placeholders": [],
@@ -88,8 +88,16 @@
   ],
   "shockwave rings": [
    [
+    "shared/vfx/ShockwaveRings.js",
+    1
+   ],
+   [
     "Space_Invaders/Game.js",
-    107
+    50
+   ],
+   [
+    "Space_Invaders/index.js",
+    12
    ]
   ],
   "floating score text": [
@@ -221,7 +229,7 @@
   "verification": {
    "ran a build": 2,
    "installed deps": 1,
-   "served the game": 0,
+   "served the game": 1,
    "looked for browser tools": 27,
    "LAUNCHED a browser": 5,
    "INTERACTED with it": 19,

@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/prism-ml_bonsai-27b/run3/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/prism-ml_bonsai-27b/run3/ws",
  "files": 21,
  "lines": 2635,
  "placeholders": [],
@@ -200,7 +200,12 @@
     260
    ]
   ],
-  "floating score text": [],
+  "floating score text": [
+   [
+    "Space_Invaders/src/ui/ScoreDisplay.js",
+    15
+   ]
+  ],
   "object pooling": [
    [
     "shared/utils/Pool.js",
@@ -262,7 +267,7 @@
   ]
  ],
  "dispose_calls": 28,
- "three_allocations": 6,
+ "three_allocations": 12,
  "violations": [],
  "non_standard_materials": [],
  "session": {

@@ -1,0 +1,19 @@
+{
+  "name": "retro-futurism-arcade",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AAA retro-futurist reimaginings of arcade classics. Three.js, vanilla ES modules, 100% procedural assets.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:smoke": "node tests/smoke.playwright.mjs"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

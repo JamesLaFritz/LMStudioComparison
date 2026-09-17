@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run3/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.6-35b-a3b-mtp_q3_k_m/run3/ws",
  "files": 24,
  "lines": 3766,
  "placeholders": [],
@@ -93,14 +93,19 @@
   "shockwave rings": [
    [
     "games/space_invaders/main.js",
-    82
+    53
    ],
    [
     "games/space_invaders/entities/Alien.js",
     236
    ]
   ],
-  "floating score text": [],
+  "floating score text": [
+   [
+    "shared/ui/UIManager.js",
+    9
+   ]
+  ],
   "object pooling": [
    [
     "games/space_invaders/main.js",

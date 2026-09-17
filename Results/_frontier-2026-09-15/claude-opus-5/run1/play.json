@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-opus-5/run1/ws",
+ "port": 5914,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "Space_Invaders/index.html",
+ "url": "http://127.0.0.1:5914/Space_Invaders/index.html",
+ "start_clicked": "Start Mission",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 80,
+   "delta": 80
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 000000 WAVE 1 HI-SCORE 000000 CANNONS COMBO ×1",
+ "hud_after": "+20 ×2 +20 ×2 SCORE 000080 WAVE 1 HI-SCORE 000080 CANNONS COMBO ×2",
+ "score_before": 0,
+ "score_after": 80,
+ "score_delta": 80
+}

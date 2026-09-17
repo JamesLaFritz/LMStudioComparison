@@ -1,0 +1,1817 @@
+{
+ "id": "01a0a876-86dc-7e12-bea7-6e39f1aabad4",
+ "model": "gpt-5.6-terra",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-terra/run1\\ws",
+ "preset": "codex-desktop",
+ "mode": "auto",
+ "seed": 1,
+ "history": [
+  {
+   "at": "1789532737860",
+   "kind": "user",
+   "text": "\n# Files pasted by the user:\n\n## \"# MISSION DIRECTIVE: AAA Retro-Futurism Architectural Planning & Implementation…\": C:\\Users\\ktmar\\.codex/attachments/ab902027-9965-412c-9cad-9fd6d633c2dd/pasted-text.txt\n\nPasted text contains the user's request.\n\n## My request:\n\n"
+  },
+  {
+   "at": "1789532740265",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532740802",
+   "kind": "assistant",
+   "text": "I’ll read the mission directive and map it to the existing workspace before making any changes."
+  },
+  {
+   "at": "1789532742970",
+   "kind": "tool",
+   "tool": "read_prompt_attachment",
+   "args": "Get-Content -Raw 'C:\\Users\\ktmar\\.codex\\attachments\\ab902027-9965-412c-9cad-9fd6d633c2dd\\pasted-text.txt'"
+  },
+  {
+   "at": "1789532754121",
+   "kind": "reasoning",
+   "text": "**Preparing master directory structure output****Outlining master directory structure with placeholders**"
+  },
+  {
+   "at": "1789532762812",
+   "kind": "reasoning",
+   "text": "**Preparing master directory structure output****Outlining master directory structure with placeholders****Reconciling skill use with step one restrictions**"
+  },
+  {
+   "at": "1789532769007",
+   "kind": "reasoning",
+   "text": "**Preparing master directory structure output****Outlining master directory structure with placeholders****Reconciling skill use with step one restrictions**"
+  },
+  {
+   "at": "1789532779984",
+   "kind": "assistant",
+   "text": "```text\nproject-root/\n├── package.json\n├── vite.config.js\n├── index.html\n├── src/\n│   ├── main.js\n│   ├── styles.css\n│   ├── shared/\n│   │   ├── core/\n│   │   │   ├── GameLoop.js\n│   │   │   ├── TimeController.js\n│   │   │   ├── EventBus.js\n│   │   │   ├── ObjectPool.js\n│   │   │   └── DisposableRegistry.js\n│   │   ├── input/\n│   │   │   └── UnifiedInput.js\n│   │   ├── rendering/\n│   │   │   ├── RendererFactory.js\n│   │   │   ├── CameraRig.js\n│   │   │   ├── LightingRig.js\n│   │   │   └── PostProcessing.js\n│   │   ├── procedural/\n│   │   │   ├── ProceduralTextures.js\n│   │   │   ├── ProceduralMaterials.js\n│   │   │   └── GeometryFactory.js\n│   │   ├── vfx/\n│   │   │   ├── CameraShake.js\n│   │   │   ├── HitStop.js\n│   │   │   ├── ParticleManager.js\n│   │   │   ├── MotionTrailManager.js\n│   │   │   ├── ShockwaveManager.js\n│   │   │   └── ScoreTextManager.js\n│   │   ├── audio/\n│   │   │   └── SynthAudio.js\n│   │   ├── math/\n│   │   │   ├── Collision.js\n│   │   │   ├── Interpolation.js\n│   │   │   └── Random.js\n│   │   └── ui/\n│   │       ├── HUD.js\n│   │       └── OverlayController.js\n│   └── [GameName]/\n│       ├── Game.js\n│       ├── GameConfig.js\n│       ├── World.js\n│       ├── entities/\n│       ├── systems/\n│       ├── ui/\n│       └── shaders/\n├── public/\n└── tests/\n```\n\n`shared/` is one-way reusable infrastructure: it never imports a game folder. The selected, exactly named game folder imports shared systems through a Vite `@shared` alias, keeping paths shallow and interfaces explicit.\n\nI’ll comply with the Anti-Lazy Directive, explicit disposal and pooling requirements, and the sequential output protocol. No files were created in this step.\n\nWhich game should we begin with? For example: `Begin Asteroids`."
+  },
+  {
+   "at": "1789532795706",
+   "kind": "user",
+   "text": "Begin Space Invaders\n"
+  },
+  {
+   "at": "1789532799959",
+   "kind": "reasoning",
+   "text": "**Preparing exhaustive Space Invaders plan**"
+  },
+  {
+   "at": "1789532801042",
+   "kind": "assistant",
+   "text": "I’m using the browser-game architecture guidance to shape the Space Invaders plan around a playable Three.js loop, performance budgets, and verification gates. I’ll return only the tailored `plan.md` content for approval—no implementation files yet."
+  },
+  {
+   "at": "1789532803949",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio"
+  },
+  {
+   "at": "1789532809968",
+   "kind": "reasoning",
+   "text": "**Assessing Three.js skill routing**"
+  },
+  {
+   "at": "1789532810294",
+   "kind": "assistant",
+   "text": "The brief explicitly locks a vanilla Three.js/Vite path, so I’m routing the plan through the dedicated WebGL implementation guidance rather than the 2D default."
+  },
+  {
+   "at": "1789532811615",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "three-webgl-game"
+  },
+  {
+   "at": "1789532815518",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532817804",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio, three-webgl-game"
+  },
+  {
+   "at": "1789532821055",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532821823",
+   "kind": "tool",
+   "tool": "exec",
+   "args": "const matches = ALL_TOOLS.filter((x) => /context7|resolve-library|query-docs/i.test(x.name + \" \" + x.description));\ntext(JSON.stringify(matches));\n"
+  },
+  {
+   "at": "1789532826248",
+   "kind": "reasoning",
+   "text": "**Planning Three.js post-processing query**"
+  },
+  {
+   "at": "1789532827476",
+   "kind": "tool",
+   "tool": "mcp",
+   "args": "mcp__context7__resolve_library_id"
+  },
+  {
+   "at": "1789532830241",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532832045",
+   "kind": "tool",
+   "tool": "mcp",
+   "args": "mcp__context7__query_docs"
+  },
+  {
+   "at": "1789532837462",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532838323",
+   "kind": "assistant",
+   "text": "I’ve also checked the current Three.js post-processing guidance; the plan will use the documented composer → render → bloom → output pipeline, explicit resize handling, and disposal boundaries."
+  },
+  {
+   "at": "1789532840622",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio, game-ui-frontend"
+  },
+  {
+   "at": "1789532843170",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532845419",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio, game-playtest"
+  },
+  {
+   "at": "1789532848118",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789532850434",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio, web-game-foundations"
+  },
+  {
+   "at": "1789532861666",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture**"
+  },
+  {
+   "at": "1789532870985",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics**"
+  },
+  {
+   "at": "1789532880319",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics**"
+  },
+  {
+   "at": "1789532889650",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals**"
+  },
+  {
+   "at": "1789532899116",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets**"
+  },
+  {
+   "at": "1789532908284",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets**"
+  },
+  {
+   "at": "1789532917607",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets****Enumerating full module tree and import graph**"
+  },
+  {
+   "at": "1789532926949",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets****Enumerating full module tree and import graph**"
+  },
+  {
+   "at": "1789532936272",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets****Enumerating full module tree and import graph****Mapping module imports and architecture dependencies**"
+  },
+  {
+   "at": "1789532945589",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets****Enumerating full module tree and import graph****Mapping module imports and architecture dependencies****Detailing precise module import dependencies**"
+  },
+  {
+   "at": "1789532950565",
+   "kind": "reasoning",
+   "text": "**Planning comprehensive benchmark outline****Defining Space_Invaders file architecture****Designing entity pooling and game loop mechanics****Detailing wave logic and procedural visuals****Outlining graphics pipeline and procedural assets****Enumerating full module tree and import graph****Mapping module imports and architecture dependencies****Detailing precise module import dependencies**"
+  },
+  {
+   "at": "1789532952053",
+   "kind": "tool",
+   "tool": "mcp",
+   "args": "mcp__context7__query_docs"
+  },
+  {
+   "at": "1789532959970",
+   "kind": "reasoning",
+   "text": "**Clarifying Gamepad API context**"
+  },
+  {
+   "at": "1789532961307",
+   "kind": "tool",
+   "tool": "mcp",
+   "args": "mcp__context7__resolve_library_id"
+  },
+  {
+   "at": "1789532973710",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan**"
+  },
+  {
+   "at": "1789532982930",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan**"
+  },
+  {
+   "at": "1789532992259",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture**"
+  },
+  {
+   "at": "1789533001582",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details**"
+  },
+  {
+   "at": "1789533010894",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal**"
+  },
+  {
+   "at": "1789533020213",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy**"
+  },
+  {
+   "at": "1789533029547",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas**"
+  },
+  {
+   "at": "1789533038948",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas**"
+  },
+  {
+   "at": "1789533048202",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake**"
+  },
+  {
+   "at": "1789533057555",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies**"
+  },
+  {
+   "at": "1789533066839",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies**"
+  },
+  {
+   "at": "1789533076208",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table**"
+  },
+  {
+   "at": "1789533085532",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy**"
+  },
+  {
+   "at": "1789533094811",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy**"
+  },
+  {
+   "at": "1789533104436",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop**"
+  },
+  {
+   "at": "1789533113455",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop**"
+  },
+  {
+   "at": "1789533122796",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture**"
+  },
+  {
+   "at": "1789533133227",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture****Listing module exports and game composition details**"
+  },
+  {
+   "at": "1789533141428",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture****Listing module exports and game composition details****Planning context restore handling and test integration**"
+  },
+  {
+   "at": "1789533151483",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture****Listing module exports and game composition details****Planning context restore handling and test integration****Finalizing camera approach and modern enhancements list**"
+  },
+  {
+   "at": "1789533160600",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture****Listing module exports and game composition details****Planning context restore handling and test integration****Finalizing camera approach and modern enhancements list****Documenting module count and import/export conventions**"
+  },
+  {
+   "at": "1789533169406",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture****Listing module exports and game composition details****Planning context restore handling and test integration****Finalizing camera approach and modern enhancements list****Documenting module count and import/export conventions**"
+  },
+  {
+   "at": "1789533171673",
+   "kind": "reasoning",
+   "text": "**Confirming generic project plan approach****Planning exhaustive detailed project plan****Defining detailed game scope and architecture****Specifying PBR graphics and rendering details****Detailing performance budgets and resource disposal****Defining input, UI, and testing strategy****Detailing game constants and behavior formulas****Specifying scoring, event timing, and camera shake****Outlining file architecture and module dependencies****Completing module import dependency table****Specifying import alias and testing strategy****Outlining detailed final plan structure and runtime loop****Finalizing detailed module import tables and architecture****Listing module exports and game composition details****Planning context restore handling and test integration****Finalizing camera approach and modern enhancements list****Documenting module count and import/export conventions**"
+  },
+  {
+   "at": "1789533319138",
+   "kind": "assistant",
+   "text": "# plan.md — Space_Invaders\n\nPlanning phase only: no implementation files are created yet.\n\n## 1. Scope and non-negotiables\n\nThe selected game directory will be exactly:\n\n```text\nsrc/Space_Invaders/\n```\n\nThe build is a 2.5D, neon-retro Space Invaders campaign: classic lane-based arcade rules rendered as a physically lit Three.js command-deck battle. The game will use Vanilla JavaScript ES modules, Vite, and `three` only at runtime.\n\nHard rules carried into implementation:\n\n- No external models, images, audio, fonts, physics engines, or texture files.\n- No `.gltf`, `.png`, `.jpg`, `.mp3`, sprite sheets, or network-loaded art assets.\n- All scene meshes use `MeshStandardMaterial`; transparent VFX meshes also use transparent `MeshStandardMaterial`.\n- No `PointsMaterial`, `SpriteMaterial`, `LineBasicMaterial`, `ShaderMaterial`, Cannon, Ammo, Rapier, or equivalent shortcuts.\n- Simulation state stays outside Three.js objects.\n- Every dynamic entity, projectile, particle, ring, trail slot, and floating-score node is pooled.\n- `ParticleManager` owns exactly 500 fixed slots and can never exceed 500 active particles.\n- Alien, shield, projectile, particle, trail, and decorative-field rendering uses `InstancedMesh` where it reduces draw calls.\n- Every geometry, material, generated texture, pass, composer, renderer, audio node, DOM listener, and canvas has an explicit disposal path.\n\n## 2. Playable-game contract\n\nA completed build must let a player:\n\n1. Launch to a title screen.\n2. Start with keyboard or gamepad.\n3. Move, fire, destroy invaders and shields, survive enemy fire, and score points.\n4. Progress through three escalating waves.\n5. Reach a deterministic victory state after Wave 3 or a loss state after losing all lives or allowing invaders to breach the invasion line.\n6. Restart without a page refresh.\n7. Pause, resume, mute, and return to title.\n8. Play under responsive viewport sizes without HUD obstruction.\n\nThe expected first-session duration is roughly 5–8 minutes, with a shorter loss path possible.\n\n## 3. Runtime architecture and ownership\n\n```text\nKeyboard / Gamepad / UI\n          │\n          ▼\n  UnifiedInput action state\n          │\n          ▼\nFixed-step simulation ──► pooled event queue ──► VFX / audio / DOM score text\n          │                                           │\n          ▼                                           ▼\nSerializable game state                         presentation-only state\n          │                                           │\n          └──────────────► RenderBridge ──────────────┘\n                                      │\n                                      ▼\n                    Three.js scene + EffectComposer\n```\n\nSimulation is authoritative. Three.js meshes are never used to determine hitboxes, score, wave state, life state, or progression. Rendering consumes state and event data; it does not mutate gameplay.\n\n### Timing model\n\n- Render loop uses real elapsed time, clamped to `0.05` seconds to avoid giant jumps after tab stalls.\n- Gameplay runs at a fixed `1 / 120` second simulation step.\n- At most six simulation steps execute per rendered frame; excess time is discarded to avoid a spiral of death.\n- Render interpolation uses the remaining accumulator fraction.\n- Hit-stop changes only simulation time. UI, camera shake, bloom, particles, score text, and audio envelopes use real time so an impact remains visible during a freeze.\n\n```text\nrealDt      = min(frameDt, 0.05)\ninput.update(realDt)\nhitStop.update(realDt)\nsimulationDt = realDt * hitStop.timeScale\nfixedClock.consume(simulationDt, simulate)\npresentation.update(realDt)\ncomposer.render()\n```\n\n## 4. Coordinate system and gameplay constants\n\nThe game is rendered in three dimensions but simulated as a 2D arena.\n\n| Property | Value |\n|---|---:|\n| Gameplay horizontal range | `x = -10.8 … 10.8` |\n| Gameplay vertical range | `y = -7.2 … 7.6` |\n| Gameplay plane | `z = 0` |\n| Player baseline | `y = -6.05` |\n| Invader spawn anchor | `y = 5.55` |\n| Invasion loss line | `y = -4.85` |\n| Formation columns × rows | `11 × 5` |\n| Column pitch | `1.55` units |\n| Row pitch | `1.10` units |\n| Formation side limit | `|x| = 9.45` |\n| Formation descent per turn | `0.48` units |\n| Player max speed | `11.5` units/sec |\n| Player acceleration / braking | `52 / 68` units/sec² |\n| Player beam speed | `21` units/sec |\n| Alien beam base speed | `8.2 + 1.15 × wave` units/sec |\n| Campaign length | 3 waves |\n| Lives | 3 |\n\nThe camera is an `OrthographicCamera` placed slightly above the gameplay plane, preserving classic spacing and readability while allowing depth, PBR lighting, shadows, emissive geometry, and parallax decorative layers.\n\n## 5. Core gameplay model\n\n### 5.1 State machine\n\n| State | Entry condition | Exit condition |\n|---|---|---|\n| `TITLE` | Initial boot or return-to-title | Confirm/fire |\n| `WAVE_INTRO` | New campaign or cleared wave | Timed intro completes |\n| `PLAYING` | Wave begins | Wave clear, player hit, breach, pause |\n| `PLAYER_DYING` | Player health reaches zero | Death sequence completes |\n| `RESPAWNING` | Lives remain after death | Brief invulnerability ends |\n| `PAUSED` | Pause action | Pause action or UI resume |\n| `WAVE_CLEAR` | All invaders are defeated | Next wave or victory |\n| `VICTORY` | Wave 3 cleared | Restart or title |\n| `GAME_OVER` | No lives or invasion breach | Restart or title |\n\n### 5.2 Player movement\n\nThe player owns a horizontal velocity, not direct positional teleportation.\n\n```text\ndesiredVelocity = input.moveX × playerMaxSpeed\nvelocity = moveToward(velocity, desiredVelocity, acceleration × dt)\nx = clamp(x + velocity × dt, leftBound, rightBound)\n```\n\nKeyboard mapping:\n\n| Action | Keyboard |\n|---|---|\n| Move left | `A`, `Left Arrow` |\n| Move right | `D`, `Right Arrow` |\n| Fire / confirm | `Space`, `Enter` |\n| Pause | `Escape`, `P` |\n| Mute | `M` |\n\nGamepad mapping:\n\n| Action | Standard gamepad control |\n|---|---|\n| Move | Left stick X axis or D-pad |\n| Fire / confirm | South face button |\n| Pause | Start/Menu |\n| Mute | North face button |\n| Restart from end screen | South face button |\n\nGamepads are polled every frame using the browser Gamepad API. Stick input uses a radial dead zone of `0.22`; values beyond it are rescaled smoothly. Keyboard and gamepad input merge by strongest signed movement value, while one-shot actions use edge detection.\n\n### 5.3 Invader formation mathematics\n\nEach invader’s simulation position derives from a shared formation anchor plus its immutable row and column:\n\n```text\ninvaderX = formationX + (column - 5) × columnPitch\ninvaderY = formationY - row × rowPitch\n```\n\nOnly living invaders contribute to left and right extents. The formation moves with a frame-rate-independent velocity:\n\n```text\naliveRatio = aliveCount / initialAliveCount\nformationSpeed = baseWaveSpeed × (1 + 1.85 × (1 - aliveRatio))\nformationX += direction × formationSpeed × dt\n```\n\nWhen a living edge invader reaches a side limit:\n\n1. Clamp the formation to the limit.\n2. Reverse horizontal direction once.\n3. Descend exactly `0.48` units.\n4. Trigger the marching tone, a small camera impulse, and a synchronized emissive pulse.\n5. Evaluate the invasion line immediately.\n\nThe marching cadence accelerates as the formation thins:\n\n```text\nmarchInterval = max(0.085, 0.66 × aliveRatio^1.55)\n```\n\n### 5.4 Alien firing\n\nAn alien can only fire from the bottommost living member of its column. Selection is deterministic from the seeded RNG.\n\nSpawn probability is converted from a rate so it remains frame-rate independent:\n\n```text\nlambda = 0.34 + 0.10 × wave + 0.82 × (1 - aliveRatio)\nfireProbability = 1 - exp(-lambda × dt)\n```\n\nIf a shot is approved and an enemy projectile pool slot exists, a bottommost alien is selected, its projectile is initialized, and a low-priority muzzle event is emitted. If no slot exists, firing is skipped rather than allocating memory.\n\n### 5.5 Projectile movement and collision\n\nProjectile state contains current and previous position, radius, direction, velocity, owner, damage, age, and active flag. Projectile pools are fixed at:\n\n| Pool | Capacity | Initial gameplay limit |\n|---|---:|---:|\n| Player beams | 4 | One concurrent beam |\n| Alien beams | 32 | Dynamic |\n| UFO debris beams | 8 | Event-only |\n\nEach vertical projectile uses swept collision rather than a single end-point test. A collision occurs when its swept segment intersects the target’s horizontally expanded AABB and reaches the nearest valid vertical face between previous and current position. This prevents missed collisions at low frame rate.\n\nCollision priority is deterministic:\n\n1. World bounds.\n2. Shield cells.\n3. Opposing projectile clash.\n4. Enemy or player hitbox.\n5. Invader breach or cleanup.\n\nA projectile can score exactly one terminal hit per step before being released back to its pool.\n\n### 5.6 Invader ranks and scoring\n\nThe five-row formation follows classic rank values:\n\n| Rows | Archetype | Base score |\n|---|---|---:|\n| 1 | Command squid | 30 |\n| 2 | Reactor crab | 20 |\n| 2 | Scout beetle | 10 |\n\nUFO scores are selected from the seeded table: `50`, `100`, `150`, or `300`.\n\nA cleared wave grants a time-and-shield bonus. The final score always remains deterministic for a given seed and input trace.\n\n### 5.7 Shields\n\nFour shields are created from a procedural 12 × 8 cell mask, for a maximum of 384 shield cells. Each living cell is an instance in a single `InstancedMesh`.\n\nProjectile impacts damage a circular local group of cells:\n\n```text\ncellDamaged when distance(cellCenter, impactPoint) <= blastRadius\n```\n\nDamage radius depends on projectile type. Alien formation contact also erodes shields from the bottom upward, preserving the classic tension of a shrinking defensive line.\n\n### 5.8 Wave progression and terminal states\n\nWave progression:\n\n| Wave | Base formation speed | Alien shot pressure | Visual identity |\n|---|---:|---:|---|\n| 1 | `0.55` | Low | Cyan and jade |\n| 2 | `0.78` | Medium | Violet and magenta |\n| 3 | `1.04` | High | Amber, red, and white-hot accents |\n\nVictory occurs after the final invader of Wave 3 resolves its death event. The game freezes briefly, plays the victory sequence, awards the campaign bonus, and presents restart/title actions.\n\nLoss occurs immediately when either condition becomes true:\n\n- Player lives reach zero.\n- Any living invader crosses the invasion loss line.\n\n## 6. Modern AAA retro-futurism upgrades\n\n1. **2.5D orbital command deck** — A PBR deck, defensive pylons, and illuminated horizon are assembled from procedural box, cylinder, and extruded voxel geometries using `MeshStandardMaterial`.\n\n2. **Procedural voxel invader cast** — Three mirrored pixel-grid alien archetypes are generated into reusable `BufferGeometry` assets, then rendered through three `InstancedMesh` groups.\n\n3. **Rank-specific cybernetic silhouettes** — Command, reactor, and scout invaders use distinct geometry, emissive color, metallic trim, hover bob, and antenna/recoil animation.\n\n4. **Living formation choreography** — Formation turns synchronize a brief depth tilt, emissive pulse, marching tone, and restrained camera tremor without changing simulation hitboxes.\n\n5. **Reactive weapon architecture** — Player and enemy beams use instanced emissive standard-material segments, procedural muzzle geometry, and per-event color variation.\n\n6. **Destructible holographic shields** — Barrier cells visibly erode in local blast patterns, exposing hot internal edges and changing the tactical battlefield in real time.\n\n7. **Cinematic UFO interception** — The UFO uses a procedural saucer silhouette, layered emissive reactor rings, seeded arrival timing, and a high-value destruction sequence.\n\n8. **Procedural deep-space layers** — Star volumes, colored nebula cards, distant planets, and sparse orbital debris are generated from deterministic mathematical seeds, not downloaded assets.\n\n9. **Retro-future tactical floor** — A code-generated canvas texture drives a PBR deck material with grid lines, warning strips, scanlines, and soft emissive circuitry.\n\n10. **Dynamic hit lighting** — Short-lived pooled point lights are avoided for performance; instead, adjacent emissive mesh color and scene-light intensity react briefly to major impact events.\n\n11. **Trauma-based camera shake** — Impact velocity and event severity create decaying, noise-driven camera offsets without modifying gameplay coordinates.\n\n12. **Hit-stop for decisive events** — UFO kills, player deaths, last-invader kills, and wave completion use tightly bounded simulation freezes while VFX continue in real time.\n\n13. **Centralized particle choreography** — Sparks, fragments, vapor, and plasma bursts share one fixed 500-slot instanced particle manager with priority-based eviction.\n\n14. **Geometry-based motion trails** — High-speed beams leave pooled instanced standard-material trail segments instead of screen-space afterimages or shader shortcuts.\n\n15. **Expanding shockwave rings** — Major impacts create pooled `TorusGeometry` rings with emissive standard material, real-time expansion, dimming, and depth-safe transparency.\n\n16. **Projected floating score text** — Pooled HTML score nodes project 3D impact positions into the DOM, drift upward, scale, glow, and recycle without creating new nodes mid-game.\n\n17. **Synthesized arcade soundscape** — Web Audio oscillators, filters, envelopes, noise bursts, and tempo layers generate marching, firing, explosion, shield, and victory sounds after user interaction.\n\n18. **Glassmorphism combat HUD** — Low-chrome DOM HUD panels use neon edge light, translucent blur, high contrast, and responsive layout while keeping the center and lower-middle playfield clear.\n\n19. **Adaptive presentation quality** — Pixel ratio is capped at two, decorative density is scaled by viewport/GPU pressure, and post-processing resolution remains bounded without removing required bloom.\n\n20. **Accessible arcade polish** — Reduced-motion mode attenuates nonessential shake and UI motion; mute, pause, gamepad connection feedback, keyboard hints, and high-contrast status text remain available.\n\n## 7. Graphics pipeline\n\n### 7.1 Renderer and color management\n\n```text\nWebGLRenderer\n  antialias: true\n  powerPreference: \"high-performance\"\n  pixelRatio: min(devicePixelRatio, 2)\n  outputColorSpace: SRGBColorSpace\n  toneMapping: ACESFilmicToneMapping\n  toneMappingExposure: 1.05\n```\n\nThe scene uses a dark navy base, restrained ambient illumination, cool directional light, and a small number of static point lights. Emissive values stay within a controlled range so bloom produces glow rather than large white blobs.\n\n| Material family | Color role | Metalness | Roughness | Emissive intensity |\n|---|---|---:|---:|---:|\n| Deck and machinery | Blue-black steel | `0.72` | `0.31` | `0.00–0.25` |\n| Player craft | Warm silver / cyan | `0.62` | `0.26` | `0.65–1.4` |\n| Invaders | Rank-specific neon alloy | `0.45` | `0.34` | `0.8–1.8` |\n| Beams and VFX | Cyan, magenta, amber | `0.10` | `0.18` | `1.5–2.6` |\n| Shockwaves | Event color | `0.20` | `0.25` | `1.0–2.0` |\n\n### 7.2 Post-processing stack\n\nThe documented Three.js post-processing sequence is retained:\n\n```text\nRenderPass(scene, camera)\n  → UnrealBloomPass(resolution, strength, radius, threshold)\n  → OutputPass()\n```\n\nInitial tuning:\n\n| UnrealBloomPass setting | Value | Rationale |\n|---|---:|---|\n| Threshold | `0.70` | Bloom only high-energy emitters |\n| Strength | `0.82` | Strong neon without washout |\n| Radius | `0.28` | Tight, premium halo rather than fog |\n| Renderer exposure | `1.05` | Preserve dark detail and readable HUD |\n\nOn resize, the camera frustum, renderer, and composer are all updated. The bloom pass receives the new render resolution through the composer resize path.\n\n### 7.3 Procedural generation mathematics\n\nAll random content is generated from a seeded xorshift PRNG so visual details are reproducible.\n\n#### Invader geometry\n\nEach invader begins as a binary grid. The left half is authored as a compact numeric mask; the right half is mirrored. Each active cell becomes an extruded voxel. The resulting triangles are merged into a single `BufferGeometry` per archetype.\n\n```text\nmirroredColumn = width - 1 - sourceColumn\nvoxelPosition = (column × cellSize, row × cellSize, depthOffset)\n```\n\n#### Nebula texture\n\nA generated canvas texture combines low-frequency value noise and sinusoidal interference:\n\n```text\nN(x, y) = Σ(i = 0..4) [ amplitude_i × noise(2^i × x, 2^i × y) ]\nS(x, y) = 0.5 + 0.5 × sin(0.035x + 0.021y + phase)\ncolor = paletteA × N + paletteB × S\n```\n\nThe canvas becomes a generated `CanvasTexture` mapped onto distant standard-material planes.\n\n#### Tactical floor texture\n\nA second generated canvas texture draws:\n\n- 64-pixel grid divisions.\n- Fine scanlines with alpha modulation.\n- Seeded warning-strip imperfections.\n- Cyan, magenta, and amber circuit pulses.\n- Subtle edge wear from deterministic noise.\n\nThe texture is assigned as both map and low-intensity emissive map on a `MeshStandardMaterial` deck plane.\n\n#### Star field\n\nStars use a stratified distribution across fixed depth bands. Each band owns an `InstancedMesh` of small low-poly spheres. Star brightness is encoded with per-instance color and a shared vertex-color-enabled standard material.\n\n## 8. Shared VFX design and priority logic\n\n### 8.1 Camera shake\n\nCamera shake uses a trauma value in `[0, 1]`.\n\n```text\ntrauma = clamp(trauma + impactImpulse, 0, 1)\namplitude = trauma²\ntrauma = max(0, trauma - 1.85 × realDt)\n```\n\nImpact impulse derives from event class and relative impact speed:\n\n```text\nimpactImpulse = clamp(severity × relativeSpeed / 20, 0, maxForEvent)\n```\n\nNoise samples drive only a presentation offset from the base camera transform. The camera always returns to its exact baseline, preventing drift.\n\n### 8.2 Hit-stop\n\n| Event | Freeze duration | Simulation scale |\n|---|---:|---:|\n| Normal alien kill | none | `1.0` |\n| Shield impact | none | `1.0` |\n| UFO kill | `0.055s` | `0.0` |\n| Last invader kill | `0.040s` | `0.0` |\n| Player death | `0.090s` | `0.0` |\n| Wave clear | `0.065s` | `0.0` |\n\nOverlapping requests never add duration indefinitely. The controller retains the strongest currently requested freeze and resumes cleanly.\n\n### 8.3 Particle manager\n\nThe particle manager owns exactly 500 fixed particle records and one instanced low-poly geometry/material pair.\n\n| Priority | Events | Behavior when full |\n|---|---|---|\n| Critical | Player death, UFO kill, victory | Evict oldest lower-priority particle |\n| High | Last invader, shield collapse | Evict lowest remaining priority if needed |\n| Medium | Alien death | Reuse a near-expired low-priority slot |\n| Low | Muzzle flash, minor spark | Skip spawn if no free slot |\n\nParticle integration:\n\n```text\nvelocity += acceleration × realDt\nvelocity *= exp(-drag × realDt)\nposition += velocity × realDt\nscale = baseScale × (1 - normalizedAge)^0.65\n```\n\nNo particle allocation occurs during gameplay.\n\n### 8.4 Motion trails\n\nEach active projectile reserves a bounded group of trail slots. Segments are sampled at fixed distance intervals and rendered through one instanced, emissive `MeshStandardMaterial` mesh. Slots return to the pool as the projectile expires.\n\n### 8.5 Shockwaves\n\nShockwave rings use a fixed pool of 16 torus instances:\n\n```text\nradius = initialRadius + expansionSpeed × age\nscale = radius / baseRadius\nemissiveStrength = max(0, 1 - age / lifetime)\n```\n\nThey use transparent `MeshStandardMaterial`, `depthWrite: false`, and color dimming rather than a separate non-PBR material.\n\n### 8.6 Floating score text\n\nA pool of 24 HTML elements is maintained under the UI score layer. Each score event provides world position, numeric value, color, and lifetime. The manager projects the world position through the active camera, converts it to CSS pixel coordinates, and recycles the node after its animation finishes.\n\n## 9. Performance and memory budget\n\n| System | Hard budget |\n|---|---:|\n| Invader entity slots | 55 |\n| Player projectile slots | 4 |\n| Enemy projectile slots | 32 |\n| Shield cells | 384 |\n| Active particles | 500 |\n| Shockwave slots | 16 |\n| Floating score nodes | 24 |\n| Motion-trail segment slots | 192 |\n| Decorative stars | 320 |\n| Dynamic gameplay mesh materials | Shared, not per entity |\n| Target gameplay draw calls | Under 35 |\n\nAdditional rules:\n\n- No `new` inside the simulation’s hot update path.\n- No new geometry, material, texture, DOM node, audio graph, or array growth during active gameplay.\n- Unused instanced slots are hidden via zero scale and marked inactive.\n- `instanceMatrix.needsUpdate` and `instanceColor.needsUpdate` are set only after a dirty batch.\n- Reusable vector and matrix temporaries are owned by systems, not allocated per entity.\n- The debug overlay reports active pools, particle count, draw calls, triangles, and renderer memory.\n\n### Disposal sequence\n\n1. Stop the animation loop.\n2. Detach window, keyboard, resize, pointer, and gamepad listeners.\n3. Stop and close Web Audio resources.\n4. Release pooled DOM nodes and remove overlay roots.\n5. Dispose game renderers, generated textures, geometries, and materials through the deduplicating registry.\n6. Call `UnrealBloomPass.dispose()`.\n7. Call `EffectComposer.dispose()`.\n8. Call `WebGLRenderer.dispose()`.\n9. Remove the canvas from its mount.\n10. Clear state references so HMR or restart cannot retain old GPU objects.\n\nWebGL context loss pauses the game and shows an overlay. On restoration, presentation resources are rebuilt from retained simulation state; simulation itself remains independent of the old scene.\n\n## 10. UI and UX\n\nThe initial play view is intentionally low-chrome:\n\n- Top-left compact score/lives glass panel.\n- Top-right wave and pause/mute controls.\n- A transient lower-edge controls hint that fades after input.\n- Center-screen overlays only for title, pause, victory, game over, and wave intro.\n- Floating score text occupies the playfield briefly but never becomes persistent chrome.\n\nGlassmorphism design tokens:\n\n```text\n--bg-panel: rgba(8, 15, 34, 0.54)\n--edge-cyan: #49fff1\n--edge-magenta: #ff4cb8\n--accent-amber: #ffd35a\n--text-primary: #efffff\n--text-muted: #a7bed9\n--blur: 14px\n```\n\nThe UI respects `prefers-reduced-motion`, retains keyboard focus visibility, and does not require pointer lock.\n\n## 11. Exact file architecture\n\n```text\nproject-root/\n├── package.json\n├── vite.config.js\n├── index.html\n├── src/\n│   ├── main.js\n│   ├── styles.css\n│   ├── shared/\n│   │   ├── audio/\n│   │   │   └── SynthAudio.js\n│   │   ├── core/\n│   │   │   ├── DisposableRegistry.js\n│   │   │   ├── FixedStepClock.js\n│   │   │   ├── ObjectPool.js\n│   │   │   ├── RingEventQueue.js\n│   │   │   └── SeededRng.js\n│   │   ├── input/\n│   │   │   └── UnifiedInput.js\n│   │   ├── math/\n│   │   │   ├── Collision2D.js\n│   │   │   └── Math2D.js\n│   │   ├── procedural/\n│   │   │   ├── CanvasTextureFactory.js\n│   │   │   └── VoxelGeometryFactory.js\n│   │   ├── render/\n│   │   │   ├── CameraRig.js\n│   │   │   ├── PostProcessing.js\n│   │   │   └── RendererHost.js\n│   │   ├── ui/\n│   │   │   └── DomPool.js\n│   │   └── vfx/\n│   │       ├── CameraShake.js\n│   │       ├── HitStop.js\n│   │       ├── MotionTrailManager.js\n│   │       ├── ParticleManager.js\n│   │       ├── ScoreTextManager.js\n│   │       └── ShockwaveManager.js\n│   └── Space_Invaders/\n│       ├── Game.js\n│       ├── GameConfig.js\n│       ├── diagnostics/\n│       │   └── TelemetryOverlay.js\n│       ├── render/\n│       │   ├── BarrierRenderer.js\n│       │   ├── EnvironmentRenderer.js\n│       │   ├── InvaderRenderer.js\n│       │   ├── PlayerRenderer.js\n│       │   ├── ProjectileRenderer.js\n│       │   ├── RenderBridge.js\n│       │   └── SceneFactory.js\n│       ├── simulation/\n│       │   ├── BarrierSystem.js\n│       │   ├── CollisionSystem.js\n│       │   ├── FormationSystem.js\n│       │   ├── GameState.js\n│       │   ├── PlayerSystem.js\n│       │   ├── ProjectileSystem.js\n│       │   ├── ScoreSystem.js\n│       │   ├── Simulation.js\n│       │   ├── UfoSystem.js\n│       │   └── WaveDirector.js\n│       └── ui/\n│           ├── SpaceInvadersUI.js\n│           └── space-invaders.css\n└── tests/\n    ├── shared/\n    │   └── object-pool.test.js\n    └── space-invaders/\n        ├── collision.test.js\n        ├── formation.test.js\n        ├── progression.test.js\n        └── projectile.test.js\n```\n\n`vite.config.js` provides two aliases:\n\n```text\n@shared → src/shared\n@space  → src/Space_Invaders\n```\n\n### Runtime export and import contract\n\n| Module | Exports | Direct imports |\n|---|---|---|\n| `src/main.js` | Boot side effect | `./styles.css`, `@space/Game.js` |\n| `GameConfig.js` | `GAME_CONFIG`, `PHASE`, `EVENT`, `ACTION` | — |\n| `Game.js` | `SpaceInvadersGame` | `@space/GameConfig.js`, `@space/simulation/Simulation.js`, `@space/render/SceneFactory.js`, `@space/render/RenderBridge.js`, `@space/ui/SpaceInvadersUI.js`, `@space/diagnostics/TelemetryOverlay.js`, `@shared/core/DisposableRegistry.js`, `@shared/core/FixedStepClock.js`, `@shared/input/UnifiedInput.js`, `@shared/render/RendererHost.js`, `@shared/render/PostProcessing.js`, `@shared/render/CameraRig.js`, `@shared/vfx/CameraShake.js`, `@shared/vfx/HitStop.js`, `@shared/vfx/ParticleManager.js`, `@shared/vfx/MotionTrailManager.js`, `@shared/vfx/ShockwaveManager.js`, `@shared/vfx/ScoreTextManager.js`, `@shared/audio/SynthAudio.js` |\n| `DisposableRegistry.js` | `DisposableRegistry` | — |\n| `FixedStepClock.js` | `FixedStepClock` | — |\n| `ObjectPool.js` | `ObjectPool` | — |\n| `RingEventQueue.js` | `RingEventQueue` | — |\n| `SeededRng.js` | `SeededRng` | — |\n| `Math2D.js` | `clamp`, `moveToward`, `lerp`, `smoothstep`, `hashNoise` | — |\n| `Collision2D.js` | `sweptVerticalHit`, `aabbOverlaps`, `circleHitsCell` | `@shared/math/Math2D.js` |\n| `UnifiedInput.js` | `UnifiedInput` | `@shared/math/Math2D.js` |\n| `CanvasTextureFactory.js` | `createNebulaTexture`, `createDeckTexture` | `three`, `@shared/core/SeededRng.js` |\n| `VoxelGeometryFactory.js` | `createVoxelMaskGeometry` | `three` |\n| `RendererHost.js` | `RendererHost` | `three`, `@shared/core/DisposableRegistry.js` |\n| `PostProcessing.js` | `PostProcessing` | `three`, `three/addons/postprocessing/EffectComposer.js`, `three/addons/postprocessing/RenderPass.js`, `three/addons/postprocessing/UnrealBloomPass.js`, `three/addons/postprocessing/OutputPass.js`, `@shared/core/DisposableRegistry.js` |\n| `CameraRig.js` | `CameraRig` | `three`, `@shared/math/Math2D.js` |\n| `DomPool.js` | `DomPool` | — |\n| `CameraShake.js` | `CameraShake` | `@shared/math/Math2D.js` |\n| `HitStop.js` | `HitStop` | `@shared/math/Math2D.js` |\n| `ParticleManager.js` | `ParticleManager`, `MAX_PARTICLES` | `three`, `@shared/core/ObjectPool.js`, `@shared/core/DisposableRegistry.js`, `@shared/math/Math2D.js` |\n| `MotionTrailManager.js` | `MotionTrailManager` | `three`, `@shared/core/ObjectPool.js`, `@shared/core/DisposableRegistry.js`, `@shared/math/Math2D.js` |\n| `ShockwaveManager.js` | `ShockwaveManager` | `three`, `@shared/core/ObjectPool.js`, `@shared/core/DisposableRegistry.js`, `@shared/math/Math2D.js` |\n| `ScoreTextManager.js` | `ScoreTextManager` | `three`, `@shared/ui/DomPool.js`, `@shared/math/Math2D.js` |\n| `SynthAudio.js` | `SynthAudio` | `@shared/math/Math2D.js` |\n| `GameState.js` | `createGameState`, `resetCampaignState` | `@space/GameConfig.js`, `@shared/core/ObjectPool.js`, `@shared/core/RingEventQueue.js`, `@shared/core/SeededRng.js` |\n| `PlayerSystem.js` | `updatePlayer` | `@space/GameConfig.js`, `@shared/math/Math2D.js` |\n| `FormationSystem.js` | `updateFormation` | `@space/GameConfig.js`, `@shared/math/Math2D.js` |\n| `ProjectileSystem.js` | `spawnPlayerBeam`, `spawnAlienBeam`, `updateProjectiles` | `@space/GameConfig.js`, `@shared/math/Math2D.js` |\n| `BarrierSystem.js` | `damageBarrier`, `erodeBarriers`, `resetBarriers` | `@space/GameConfig.js`, `@shared/math/Collision2D.js`, `@shared/math/Math2D.js` |\n| `ScoreSystem.js` | `awardScore`, `awardWaveBonus` | `@space/GameConfig.js` |\n| `CollisionSystem.js` | `resolveCollisions` | `@space/GameConfig.js`, `@shared/math/Collision2D.js`, `@space/simulation/ScoreSystem.js` |\n| `UfoSystem.js` | `updateUfo`, `trySpawnUfo` | `@space/GameConfig.js`, `@shared/math/Math2D.js` |\n| `WaveDirector.js` | `beginWave`, `advanceCampaign` | `@space/GameConfig.js`, `@space/simulation/ScoreSystem.js` |\n| `Simulation.js` | `SpaceInvadersSimulation` | `@space/GameConfig.js`, `@space/simulation/GameState.js`, `@space/simulation/PlayerSystem.js`, `@space/simulation/FormationSystem.js`, `@space/simulation/ProjectileSystem.js`, `@space/simulation/BarrierSystem.js`, `@space/simulation/CollisionSystem.js`, `@space/simulation/UfoSystem.js`, `@space/simulation/WaveDirector.js` |\n| `SceneFactory.js` | `createSceneContext` | `three`, `@space/GameConfig.js`, `@shared/procedural/CanvasTextureFactory.js`, `@shared/core/DisposableRegistry.js` |\n| `EnvironmentRenderer.js` | `EnvironmentRenderer` | `three`, `@space/GameConfig.js`, `@shared/procedural/CanvasTextureFactory.js`, `@shared/core/DisposableRegistry.js` |\n| `InvaderRenderer.js` | `InvaderRenderer` | `three`, `@space/GameConfig.js`, `@shared/procedural/VoxelGeometryFactory.js`, `@shared/core/DisposableRegistry.js` |\n| `PlayerRenderer.js` | `PlayerRenderer` | `three`, `@space/GameConfig.js`, `@shared/procedural/VoxelGeometryFactory.js`, `@shared/core/DisposableRegistry.js` |\n| `BarrierRenderer.js` | `BarrierRenderer` | `three`, `@space/GameConfig.js`, `@shared/core/DisposableRegistry.js` |\n| `ProjectileRenderer.js` | `ProjectileRenderer` | `three`, `@space/GameConfig.js`, `@shared/core/DisposableRegistry.js` |\n| `RenderBridge.js` | `RenderBridge` | `three`, `@space/GameConfig.js`, `@space/render/EnvironmentRenderer.js`, `@space/render/InvaderRenderer.js`, `@space/render/PlayerRenderer.js`, `@space/render/BarrierRenderer.js`, `@space/render/ProjectileRenderer.js`, `@shared/math/Math2D.js` |\n| `SpaceInvadersUI.js` | `SpaceInvadersUI` | `./space-invaders.css`, `@space/GameConfig.js` |\n| `TelemetryOverlay.js` | `TelemetryOverlay` | — |\n\nThe test modules use relative imports only and do not ship in the Vite bundle.\n\n## 12. Implementation order\n\n1. Create Vite setup, aliases, entry point, and package scripts.\n2. Implement lifecycle, pooling, fixed-step timing, input, math, and deterministic RNG.\n3. Implement simulation plus unit tests for formation bounds, projectile sweep collision, barriers, pools, victory, and loss.\n4. Add procedural scene, material factories, renderer host, camera, and post-processing.\n5. Add each instanced renderer and the simulation-to-render bridge.\n6. Add all six required VFX systems and synthesized audio.\n7. Add glassmorphism UI, title/pause/end states, score projection, telemetry, and accessibility controls.\n8. Perform build verification, game-loop playthroughs, resize checks, keyboard/gamepad checks, pool-cap checks, screenshot review, and disposal/restart checks.\n\n## 13. Verification gate before declaring complete\n\n- `npm run build` resolves every import and produces a Vite build.\n- No network requests load art or audio assets.\n- A keyboard playthrough reaches both victory and game-over states.\n- A gamepad can move, fire, pause, and restart.\n- The active-particle metric never exceeds 500.\n- Projectile, invader, shield, and score-text pools remain within capacity.\n- Bloom remains visible without washing emitters to white.\n- HUD remains below the viewport-coverage budget and does not block the main combat area.\n- Restarting repeatedly does not add canvases, DOM overlay roots, listeners, or growing renderer memory.\n- Captured desktop and mobile screenshots remain visually readable.\n\nThe architecture guidance shaped this plan by enforcing strict simulation/render separation, a low-chrome DOM HUD, and browser-level playtest verification; the Three.js post-processing plan follows the documented composer, bloom, output, resize, and disposal lifecycle.\n\nAwaiting `Plan approved`."
+  },
+  {
+   "at": "1789565123484",
+   "kind": "user",
+   "text": "Plan approved\n"
+  },
+  {
+   "at": "1789565130448",
+   "kind": "reasoning",
+   "text": "**Starting full Step3 implementation**"
+  },
+  {
+   "at": "1789565131341",
+   "kind": "assistant",
+   "text": "I’m starting the approved implementation now. I’ll keep the simulation independent from rendering, build the shared VFX/pooling layer first, then verify the complete playable loop in the browser."
+  },
+  {
+   "at": "1789565133652",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio, three-webgl-game"
+  },
+  {
+   "at": "1789565137154",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789565139191",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "rg --files -g '!node_modules' -g '!dist'; git status --short; Get-ChildItem -Force | Select-Object Name,Mode,Length"
+  },
+  {
+   "at": "1789565147276",
+   "kind": "reasoning",
+   "text": "**Planning bulk file creation via apply_patch**"
+  },
+  {
+   "at": "1789565148957",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "node --version; npm --version; npm view three version; npm view vite version"
+  },
+  {
+   "at": "1789565161497",
+   "kind": "reasoning",
+   "text": "**Planning module structure and dependencies****Designing patch application strategy**"
+  },
+  {
+   "at": "1789565174966",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "package.jso"
+  },
+  {
+   "at": "1789565174966",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "vite.config.js"
+  },
+  {
+   "at": "1789565174966",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "index.html"
+  },
+  {
+   "at": "1789565174966",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/main.js"
+  },
+  {
+   "at": "1789565174966",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/styles.css"
+  },
+  {
+   "at": "1789565186330",
+   "kind": "reasoning",
+   "text": "**Designing DisposableRegistry and ObjectPool structures**"
+  },
+  {
+   "at": "1789565195662",
+   "kind": "reasoning",
+   "text": "**Designing DisposableRegistry and ObjectPool structures****Designing performant ObjectPool and RingEventQueue**"
+  },
+  {
+   "at": "1789565204989",
+   "kind": "reasoning",
+   "text": "**Designing DisposableRegistry and ObjectPool structures****Designing performant ObjectPool and RingEventQueue****Refactoring collision API and designing input state handling**"
+  },
+  {
+   "at": "1789565207638",
+   "kind": "reasoning",
+   "text": "**Designing DisposableRegistry and ObjectPool structures****Designing performant ObjectPool and RingEventQueue****Refactoring collision API and designing input state handling**"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/core/DisposableRegistry.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/core/FixedStepClock.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/core/ObjectPool.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/core/RingEventQueue.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/core/SeededRng.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/math/Math2D.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/math/Collision2D.js"
+  },
+  {
+   "at": "1789565274308",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/input/UnifiedInput.js"
+  },
+  {
+   "at": "1789565286808",
+   "kind": "reasoning",
+   "text": "**Planning gamepad input and rendering setup**"
+  },
+  {
+   "at": "1789565293986",
+   "kind": "reasoning",
+   "text": "**Planning gamepad input and rendering setup****Implementing voxel box face geometry**"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/procedural/CanvasTextureFactory.js"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/procedural/VoxelGeometryFactory.js"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/render/RendererHost.js"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/render/PostProcessing.js"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/render/CameraRig.js"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/ui/DomPool.js"
+  },
+  {
+   "at": "1789565372042",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/audio/SynthAudio.js"
+  },
+  {
+   "at": "1789565382992",
+   "kind": "reasoning",
+   "text": "**Designing game config and barrier patterns**"
+  },
+  {
+   "at": "1789565394261",
+   "kind": "reasoning",
+   "text": "**Designing game config and barrier patterns****Planning game state pooling and reset logic**"
+  },
+  {
+   "at": "1789565401622",
+   "kind": "reasoning",
+   "text": "**Designing game config and barrier patterns****Planning game state pooling and reset logic****Designing game state creation and system updates**"
+  },
+  {
+   "at": "1789565410956",
+   "kind": "reasoning",
+   "text": "**Designing game config and barrier patterns****Planning game state pooling and reset logic****Designing game state creation and system updates****Implementing formation movement and barrier erosion logic**"
+  },
+  {
+   "at": "1789565420347",
+   "kind": "reasoning",
+   "text": "**Designing game config and barrier patterns****Planning game state pooling and reset logic****Designing game state creation and system updates****Implementing formation movement and barrier erosion logic**"
+  },
+  {
+   "at": "1789565429201",
+   "kind": "reasoning",
+   "text": "**Designing game config and barrier patterns****Planning game state pooling and reset logic****Designing game state creation and system updates****Implementing formation movement and barrier erosion logic****Planning projectile collision handling and scoring**"
+  },
+  {
+   "at": "1789565479924",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/shared/core/ObjectPool.js"
+  },
+  {
+   "at": "1789565479924",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/GameConfig.js"
+  },
+  {
+   "at": "1789565479924",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/GameState.js"
+  },
+  {
+   "at": "1789565479924",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/ScoreSystem.js"
+  },
+  {
+   "at": "1789565490744",
+   "kind": "reasoning",
+   "text": "**Planning state RNG reset for determinism**"
+  },
+  {
+   "at": "1789565501660",
+   "kind": "reasoning",
+   "text": "**Planning state RNG reset for determinism****Refining formation update and barrier damage logic**"
+  },
+  {
+   "at": "1789565508466",
+   "kind": "reasoning",
+   "text": "**Planning state RNG reset for determinism****Refining formation update and barrier damage logic****Designing precise collision and event sequencing**"
+  },
+  {
+   "at": "1789565510015",
+   "kind": "assistant",
+   "text": "The foundation is in place: deterministic pooling, fixed-step timing, collision helpers, unified input, procedural texture/geometry factories, and the renderer/post-processing shell. I’m wiring the complete simulation next so the scene has a real win/loss loop rather than a visual mock-up."
+  },
+  {
+   "at": "1789565566231",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/PlayerSystem.js"
+  },
+  {
+   "at": "1789565566231",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/FormationSystem.js"
+  },
+  {
+   "at": "1789565566231",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/ProjectileSystem.js"
+  },
+  {
+   "at": "1789565566231",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/BarrierSystem.js"
+  },
+  {
+   "at": "1789565566231",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/UfoSystem.js"
+  },
+  {
+   "at": "1789565566231",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/ScoreSystem.js"
+  },
+  {
+   "at": "1789565569271",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789565571170",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw 'src/Space_Invaders/simulation/ScoreSystem.js'; rg --files src/Space_Invaders/simulation"
+  },
+  {
+   "at": "1789565583053",
+   "kind": "reasoning",
+   "text": "**Planning collision and firing state**"
+  },
+  {
+   "at": "1789565591078",
+   "kind": "reasoning",
+   "text": "**Planning collision and firing state****Designing projectile collision resolution**"
+  },
+  {
+   "at": "1789565665969",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/GameState.js"
+  },
+  {
+   "at": "1789565665969",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/CollisionSystem.js"
+  },
+  {
+   "at": "1789565665969",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/WaveDirector.js"
+  },
+  {
+   "at": "1789565665969",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/simulation/Simulation.js"
+  },
+  {
+   "at": "1789565676557",
+   "kind": "reasoning",
+   "text": "**Verifying wave clear state logic****Planning module alias resolution for tests**"
+  },
+  {
+   "at": "1789565685866",
+   "kind": "reasoning",
+   "text": "**Verifying wave clear state logic****Planning module alias resolution for tests****Evaluating alias replacement for Node compatibility**"
+  },
+  {
+   "at": "1789565695208",
+   "kind": "reasoning",
+   "text": "**Verifying wave clear state logic****Planning module alias resolution for tests****Evaluating alias replacement for Node compatibility**"
+  },
+  {
+   "at": "1789565704510",
+   "kind": "reasoning",
+   "text": "**Verifying wave clear state logic****Planning module alias resolution for tests****Evaluating alias replacement for Node compatibility****Designing CameraShake and ParticleManager systems**"
+  },
+  {
+   "at": "1789565713194",
+   "kind": "reasoning",
+   "text": "**Verifying wave clear state logic****Planning module alias resolution for tests****Evaluating alias replacement for Node compatibility****Designing CameraShake and ParticleManager systems****Designing MotionTrail, Shockwave, and ScoreText managers**"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/GameState.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/ProjectileSystem.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/vfx/CameraShake.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/vfx/HitStop.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/vfx/ParticleManager.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/vfx/MotionTrailManager.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/vfx/ShockwaveManager.js"
+  },
+  {
+   "at": "1789565804385",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/shared/vfx/ScoreTextManager.js"
+  },
+  {
+   "at": "1789565815239",
+   "kind": "reasoning",
+   "text": "**Identifying Euler allocation bug in ParticleManager**"
+  },
+  {
+   "at": "1789565824549",
+   "kind": "reasoning",
+   "text": "**Identifying Euler allocation bug in ParticleManager****Planning SceneFactory with roots and lighting**"
+  },
+  {
+   "at": "1789565828548",
+   "kind": "reasoning",
+   "text": "**Identifying Euler allocation bug in ParticleManager****Planning SceneFactory with roots and lighting****Designing specialized InstancedMesh renderers and tracking**"
+  },
+  {
+   "at": "1789565900035",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/shared/vfx/ParticleManager.js"
+  },
+  {
+   "at": "1789565900035",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/SceneFactory.js"
+  },
+  {
+   "at": "1789565900035",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/EnvironmentRenderer.js"
+  },
+  {
+   "at": "1789565900035",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/InvaderRenderer.js"
+  },
+  {
+   "at": "1789565900035",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/PlayerRenderer.js"
+  },
+  {
+   "at": "1789565909966",
+   "kind": "reasoning",
+   "text": "**Optimizing Vector3 allocation in InvaderRenderer**"
+  },
+  {
+   "at": "1789565946633",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/render/InvaderRenderer.js"
+  },
+  {
+   "at": "1789565946633",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/BarrierRenderer.js"
+  },
+  {
+   "at": "1789565946633",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/ProjectileRenderer.js"
+  },
+  {
+   "at": "1789565946633",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/RenderBridge.js"
+  },
+  {
+   "at": "1789565957217",
+   "kind": "reasoning",
+   "text": "**Planning UFO renderer integration**"
+  },
+  {
+   "at": "1789565966420",
+   "kind": "reasoning",
+   "text": "**Planning UFO renderer integration****Designing UfoRenderer geometry and UI elements**"
+  },
+  {
+   "at": "1789565975821",
+   "kind": "reasoning",
+   "text": "**Planning UFO renderer integration****Designing UfoRenderer geometry and UI elements****Planning dynamic UI panels and game presentation management**"
+  },
+  {
+   "at": "1789565985065",
+   "kind": "reasoning",
+   "text": "**Planning UFO renderer integration****Designing UfoRenderer geometry and UI elements****Planning dynamic UI panels and game presentation management****Implementing context restoration and animation loop**"
+  },
+  {
+   "at": "1789565990519",
+   "kind": "reasoning",
+   "text": "**Planning UFO renderer integration****Designing UfoRenderer geometry and UI elements****Planning dynamic UI panels and game presentation management****Implementing context restoration and animation loop**"
+  },
+  {
+   "at": "1789565991872",
+   "kind": "assistant",
+   "text": "The simulation now has pooled invaders, beams, shields, UFOs, deterministic formation movement, swept collisions, lives, waves, victory, and loss. I’m attaching the visual bridge and HUD now; that is where the game becomes directly playable rather than merely testable."
+  },
+  {
+   "at": "1789566079474",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/render/UfoRenderer.js"
+  },
+  {
+   "at": "1789566079474",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/render/RenderBridge.js"
+  },
+  {
+   "at": "1789566079474",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/diagnostics/TelemetryOverlay.js"
+  },
+  {
+   "at": "1789566079474",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/ui/SpaceInvadersUI.js"
+  },
+  {
+   "at": "1789566079474",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/ui/space-invaders.css"
+  },
+  {
+   "at": "1789566090834",
+   "kind": "reasoning",
+   "text": "**Assessing Game UI context handling****Planning input latch to avoid missed presses**"
+  },
+  {
+   "at": "1789566100161",
+   "kind": "reasoning",
+   "text": "**Assessing Game UI context handling****Planning input latch to avoid missed presses**"
+  },
+  {
+   "at": "1789566110656",
+   "kind": "reasoning",
+   "text": "**Assessing Game UI context handling****Planning input latch to avoid missed presses****Designing input consumption and event handling**"
+  },
+  {
+   "at": "1789566111789",
+   "kind": "reasoning",
+   "text": "**Assessing Game UI context handling****Planning input latch to avoid missed presses****Designing input consumption and event handling**"
+  },
+  {
+   "at": "1789566169275",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/styles.css"
+  },
+  {
+   "at": "1789566169275",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/shared/input/UnifiedInput.js"
+  },
+  {
+   "at": "1789566169275",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/Simulation.js"
+  },
+  {
+   "at": "1789566169275",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "src/Space_Invaders/Game.js"
+  },
+  {
+   "at": "1789566181588",
+   "kind": "reasoning",
+   "text": "**Reviewing input handling and event clearing**"
+  },
+  {
+   "at": "1789566184280",
+   "kind": "reasoning",
+   "text": "**Reviewing input handling and event clearing****Identifying update phase handling bug**"
+  },
+  {
+   "at": "1789566185714",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm install"
+  },
+  {
+   "at": "1789566194221",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566195649",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm run build"
+  },
+  {
+   "at": "1789566206196",
+   "kind": "reasoning",
+   "text": "**Planning detailed test files****Evaluating Vitest for alias testing**"
+  },
+  {
+   "at": "1789566208235",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm view vitest version"
+  },
+  {
+   "at": "1789566220564",
+   "kind": "reasoning",
+   "text": "**Adding vitest testing setup**"
+  },
+  {
+   "at": "1789566221751",
+   "kind": "reasoning",
+   "text": "**Adding vitest testing setup****Designing comprehensive game state tests**"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "package.jso"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/Simulation.js"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/shared/object-pool.test.js"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/formation.test.js"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/collision.test.js"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/progression.test.js"
+  },
+  {
+   "at": "1789566250936",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/projectile.test.js"
+  },
+  {
+   "at": "1789566253159",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566259339",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "package.jso"
+  },
+  {
+   "at": "1789566259339",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/Simulation.js"
+  },
+  {
+   "at": "1789566261387",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566263817",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content 'src/Space_Invaders/simulation/Simulation.js' | ForEach-Object -Begin { $n = 1 } -Process { '{0,4}: {1}' -f $n, $_; $n++ }; Get-Content -Raw package.json"
+  },
+  {
+   "at": "1789566265723",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566271813",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "package.jso"
+  },
+  {
+   "at": "1789566271813",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/Simulation.js"
+  },
+  {
+   "at": "1789566273728",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566297440",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/shared/object-pool.test.js"
+  },
+  {
+   "at": "1789566297440",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/formation.test.js"
+  },
+  {
+   "at": "1789566297440",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/collision.test.js"
+  },
+  {
+   "at": "1789566297440",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/progression.test.js"
+  },
+  {
+   "at": "1789566297440",
+   "kind": "tool",
+   "tool": "write_file",
+   "args": "tests/space-invaders/projectile.test.js"
+  },
+  {
+   "at": "1789566299959",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566301361",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm install"
+  },
+  {
+   "at": "1789566305757",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566307380",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm test"
+  },
+  {
+   "at": "1789566319154",
+   "kind": "reasoning",
+   "text": "**Fixing formation sync logic****Adjusting collision test expectations**"
+  },
+  {
+   "at": "1789566322635",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/simulation/FormationSystem.js"
+  },
+  {
+   "at": "1789566322635",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "tests/space-invaders/collision.test.js"
+  },
+  {
+   "at": "1789566324159",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566325668",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm test; npm run build"
+  },
+  {
+   "at": "1789566329305",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566330246",
+   "kind": "assistant",
+   "text": "The simulation tests and production build now pass. I’m moving into a browser playtest pass next, including visual inspection of the Three.js canvas and the title-to-gameplay transition."
+  },
+  {
+   "at": "1789566332587",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "game-studio, game-playtest"
+  },
+  {
+   "at": "1789566336890",
+   "kind": "reasoning",
+   "text": "**Assessing Playwright usage options**"
+  },
+  {
+   "at": "1789566337619",
+   "kind": "assistant",
+   "text": "I’m using the browser-playtest guidance here because WebGL games need screenshots and interaction checks—not just a successful bundle—to count as done."
+  },
+  {
+   "at": "1789566339424",
+   "kind": "tool",
+   "tool": "use_skill",
+   "args": "playwright-cli"
+  },
+  {
+   "at": "1789566343787",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566345379",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm run dev -- --host 127.0.0.1"
+  },
+  {
+   "at": "1789566357427",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566359107",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli open http://127.0.0.1:4173/"
+  },
+  {
+   "at": "1789566370281",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566371932",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli console; playwright-cli snapshot; playwright-cli screenshot --filename=title.png"
+  },
+  {
+   "at": "1789566374401",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566376765",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw '.playwright-cli\\console-2026-09-16T13-46-12-292Z.log'; Get-Content -Raw '.playwright-cli\\page-2026-09-16T13-46-12-394Z.yml'"
+  },
+  {
+   "at": "1789566380128",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566381282",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\title.png"
+  },
+  {
+   "at": "1789566392133",
+   "kind": "reasoning",
+   "text": "**Diagnosing missing UI in black screenshot**"
+  },
+  {
+   "at": "1789566395101",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli eval \"() => ({app: document.querySelector('#app').getBoundingClientRect().toJSON(), ui: document.querySelector('.game-ui').getBoundingClientRect().toJSON(), canvas: document.querySelector('canvas').getBoundingClientRect().toJSON(), uiStyle: getComputedStyle(document.querySelector('.game-ui')).cssText, overlay: getComputedStyle(document.querySelector('.overlay')).opacity})\""
+  },
+  {
+   "at": "1789566398339",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566403860",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/styles.css"
+  },
+  {
+   "at": "1789566403860",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "index.html"
+  },
+  {
+   "at": "1789566408077",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566410868",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli reload; playwright-cli eval \"() => ({app: document.querySelector('#app').getBoundingClientRect().toJSON(), ui: document.querySelector('.game-ui').getBoundingClientRect().toJSON(), canvas: document.querySelector('canvas').getBoundingClientRect().toJSON()})\"; playwright-cli screenshot --filename=title-fixed.png; playwright-cli console"
+  },
+  {
+   "at": "1789566414334",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566416235",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw '.playwright-cli\\console-2026-09-16T13-46-52-835Z.log'"
+  },
+  {
+   "at": "1789566418877",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566419930",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\title-fixed.png"
+  },
+  {
+   "at": "1789566423131",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566425121",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli click e10; Start-Sleep -Seconds 2; playwright-cli snapshot; playwright-cli screenshot --filename=gameplay-start.png; playwright-cli console"
+  },
+  {
+   "at": "1789566432001",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566434545",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw '.playwright-cli\\page-2026-09-16T13-47-08-732Z.yml'; Get-Content -Raw '.playwright-cli\\console-2026-09-16T13-47-09-091Z.log'"
+  },
+  {
+   "at": "1789566437309",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566439343",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli click e11; Start-Sleep -Seconds 2; playwright-cli snapshot; playwright-cli screenshot --filename=gameplay-start.png; playwright-cli console"
+  },
+  {
+   "at": "1789566445386",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566446612",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\gameplay-start.png"
+  },
+  {
+   "at": "1789566455240",
+   "kind": "reasoning",
+   "text": "**Planning automated input and screenshot testing**"
+  },
+  {
+   "at": "1789566458014",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli keydown KeyD; Start-Sleep -Milliseconds 700; playwright-cli keyup KeyD; playwright-cli press Space; Start-Sleep -Milliseconds 120; playwright-cli screenshot --filename=gameplay-input.png; Start-Sleep -Seconds 1; playwright-cli press Escape; Start-Sleep -Milliseconds 200; playwright-cli snapshot; playwright-cli screenshot --filename=paused.png"
+  },
+  {
+   "at": "1789566463202",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566465544",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\gameplay-input.png"
+  },
+  {
+   "at": "1789566465544",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\paused.png"
+  },
+  {
+   "at": "1789566469379",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566471300",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw '.playwright-cli\\page-2026-09-16T13-47-41-022Z.yml'"
+  },
+  {
+   "at": "1789566482280",
+   "kind": "reasoning",
+   "text": "**Investigating missed pause on Escape keypress****Planning unified keydown edge latch fix**"
+  },
+  {
+   "at": "1789566487251",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/shared/input/UnifiedInput.js"
+  },
+  {
+   "at": "1789566490880",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566492627",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli reload; Start-Sleep -Milliseconds 300; playwright-cli snapshot"
+  },
+  {
+   "at": "1789566496261",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566498120",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw '.playwright-cli\\page-2026-09-16T13-48-13-639Z.yml'"
+  },
+  {
+   "at": "1789566500360",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566502972",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli click e11; Start-Sleep -Seconds 2; playwright-cli press Space; Start-Sleep -Milliseconds 100; playwright-cli screenshot --filename=gameplay-fire-fixed.png; playwright-cli press Escape; Start-Sleep -Milliseconds 250; playwright-cli snapshot; playwright-cli screenshot --filename=paused-fixed.png"
+  },
+  {
+   "at": "1789566510536",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566512444",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Get-Content -Raw '.playwright-cli\\page-2026-09-16T13-48-27-552Z.yml'"
+  },
+  {
+   "at": "1789566515393",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566517940",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\gameplay-fire-fixed.png"
+  },
+  {
+   "at": "1789566517940",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\paused-fixed.png"
+  },
+  {
+   "at": "1789566527992",
+   "kind": "reasoning",
+   "text": "**Verifying player beam visibility and collision timing**"
+  },
+  {
+   "at": "1789566529754",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli eval \"() => document.querySelector('link[rel=icon]').href\"; playwright-cli network"
+  },
+  {
+   "at": "1789566533620",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566536409",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "rg -n \"TODO|FIXME|\\.\\.\\.|gltf|\\.png|\\.jpg|\\.mp3|Cannon|Ammo|Rapier|MeshBasicMaterial|PointsMaterial|SpriteMaterial|ShaderMaterial|LineBasicMaterial\" -g '!node_modules' -g '!dist' .; rg --files -g '!node_modules' -g '!dist' | Sort-Object"
+  },
+  {
+   "at": "1789566545130",
+   "kind": "reasoning",
+   "text": "**Planning removal of temporary screenshots**"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "tests/space-invaders/progression.test.js"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "title.png"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "title-fixed.png"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "gameplay-start.png"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "gameplay-input.png"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "gameplay-fire-fixed.png"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "paused.png"
+  },
+  {
+   "at": "1789566552022",
+   "kind": "tool",
+   "tool": "delete_file",
+   "args": "paused-fixed.png"
+  },
+  {
+   "at": "1789566555001",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566560844",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "tests/space-invaders/progression.test.js"
+  },
+  {
+   "at": "1789566563060",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566570041",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Remove-Item -LiteralPath 'C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\title.png','C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\title-fixed.png','C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\gameplay-start.png','C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\gameplay-input.png','C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\gameplay-fire-fixed.png','C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\paused.png','C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\paused-fixed.png'"
+  },
+  {
+   "at": "1789566573058",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566574900",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm test; npm run build; git diff --check; git status --short -- . ':!node_modules' ':!dist'"
+  },
+  {
+   "at": "1789566581962",
+   "kind": "reasoning",
+   "text": "**Planning responsive mobile browser testing**"
+  },
+  {
+   "at": "1789566583093",
+   "kind": "assistant",
+   "text": "The browser pass caught and fixed a real layout/input issue: the app container had zero height in a fresh browser, and very short key presses could be missed between frames. The title, gameplay, fire input, and pause flow now render and respond correctly."
+  },
+  {
+   "at": "1789566585159",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli reload; playwright-cli resize 390 844; Start-Sleep -Milliseconds 300; playwright-cli screenshot --filename=mobile-check.png; playwright-cli snapshot; playwright-cli console"
+  },
+  {
+   "at": "1789566590062",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566591243",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\mobile-check.png"
+  },
+  {
+   "at": "1789566594701",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566597281",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Remove-Item -LiteralPath 'C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\mobile-check.png'; playwright-cli close"
+  },
+  {
+   "at": "1789566601278",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566602158",
+   "kind": "tool",
+   "tool": "write_stdin",
+   "args": ""
+  },
+  {
+   "at": "1789566608723",
+   "kind": "reasoning",
+   "text": "**Planning safe removal of .playwright-cli directory**"
+  },
+  {
+   "at": "1789566610938",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Resolve-Path -LiteralPath '.playwright-cli' | Select-Object -ExpandProperty Path; Get-ChildItem -LiteralPath '.playwright-cli' -Force | Select-Object -First 5 Name,Length"
+  },
+  {
+   "at": "1789566614077",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566616358",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Remove-Item -LiteralPath 'C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\.playwright-cli' -Recurse -Force"
+  },
+  {
+   "at": "1789566627884",
+   "kind": "reasoning",
+   "text": "**Deciding against forced directory deletion****Verifying build and workspace file status**"
+  },
+  {
+   "at": "1789566637758",
+   "kind": "reasoning",
+   "text": "**Deciding against forced directory deletion****Verifying build and workspace file status**"
+  },
+  {
+   "at": "1789566638149",
+   "kind": "assistant",
+   "text": "One visual adjustment remains before handoff: the player craft’s bloom is a little too hot in the browser capture, so I’m lowering only its emissive/light contribution to preserve the neon halo while keeping the ship’s silhouette legible."
+  },
+  {
+   "at": "1789566645152",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/shared/render/PostProcessing.js"
+  },
+  {
+   "at": "1789566645152",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/render/SceneFactory.js"
+  },
+  {
+   "at": "1789566645152",
+   "kind": "tool",
+   "tool": "edit_file",
+   "args": "src/Space_Invaders/render/PlayerRenderer.js"
+  },
+  {
+   "at": "1789566648719",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566652157",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm test; npm run build"
+  },
+  {
+   "at": "1789566657141",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566659124",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "npm run dev -- --host 127.0.0.1"
+  },
+  {
+   "at": "1789566671819",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566673568",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli open http://127.0.0.1:4173/; playwright-cli snapshot"
+  },
+  {
+   "at": "1789566677728",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566679643",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "playwright-cli click e11; Start-Sleep -Seconds 2; playwright-cli screenshot --filename=visual-final.png; playwright-cli console"
+  },
+  {
+   "at": "1789566685379",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566686631",
+   "kind": "tool",
+   "tool": "view_image",
+   "args": "C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\visual-final.png"
+  },
+  {
+   "at": "1789566691484",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566693699",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "Remove-Item -LiteralPath 'C:\\Data\\AI\\Projects\\LMStudioComparison\\Results\\_frontier-2026-09-15\\gpt-5.6-terra\\run1\\ws\\visual-final.png'; playwright-cli close"
+  },
+  {
+   "at": "1789566697057",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566698361",
+   "kind": "tool",
+   "tool": "write_stdin",
+   "args": ""
+  },
+  {
+   "at": "1789566706104",
+   "kind": "reasoning",
+   "text": ""
+  },
+  {
+   "at": "1789566708562",
+   "kind": "tool",
+   "tool": "run_command",
+   "args": "rg --files -g '!node_modules' -g '!dist' -g '!.playwright-cli/**' | Sort-Object; Get-ChildItem -LiteralPath . -File -Force | Select-Object Name,Length; git diff --check -- src tests package.json vite.config.js index.html"
+  },
+  {
+   "at": "1789566719587",
+   "kind": "reasoning",
+   "text": "**Planning final testing and verification****Documenting final test results and implementation details**"
+  },
+  {
+   "at": "1789566726382",
+   "kind": "reasoning",
+   "text": "**Planning final testing and verification****Documenting final test results and implementation details**"
+  },
+  {
+   "at": "1789566729011",
+   "kind": "assistant",
+   "text": "Implemented the complete playable Three.js Space Invaders game in [src/Space_Invaders](/C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-terra/run1/ws/src/Space_Invaders).\n\nIt includes procedural PBR assets, bloom, pooled entities/VFX, a hard 500-particle cap, keyboard/gamepad input, synthesized audio, glass HUD, three-wave win state, loss state, pause/restart, and explicit resource disposal.\n\nVerified:\n\n- `npm test` — 7 tests passing\n- `npm run build` — successful Vite production build\n- Browser playtest — title, gameplay, movement/fire, pause, desktop/mobile layout, and visual bloom pass\n\nKey entry point: [Game.js](/C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-terra/run1/ws/src/Space_Invaders/Game.js)\n\nRun it with:\n\n```bash\nnpm run dev\n```\n\nTemporary playtest screenshots were removed after verification."
+  }
+ ],
+ "stats": {
+  "turns": 99,
+  "in": 11177771,
+  "out": 105785
+ },
+ "threads": [
+  {
+   "id": "01a0a876-86dc-7e12-bea7-6e39f1aabad4",
+   "parent": null,
+   "agent": null,
+   "file": "rollout-2026-09-16T00-25-35-01a0a876-86dc-7e12-bea7-6e39f1aabad4.jsonl"
+  }
+ ]
+}

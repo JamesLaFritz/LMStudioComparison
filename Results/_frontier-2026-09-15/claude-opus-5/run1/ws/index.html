@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neon Arcade — Collection Hub</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 8' shape-rendering='crispEdges'%3E%3Cpath fill='%23ff2bd6' d='M2 0h1v1H2zM8 0h1v1H8zM3 1h1v1H3zM7 1h1v1H7zM2 2h7v1H2zM1 3h2v1H1zM4 3h3v1H4zM8 3h2v1H8zM0 4h11v1H0zM0 5h1v2H0zM2 5h7v1H2zM10 5h1v2h-1zM3 7h2v1H3zM6 7h2v1H6z'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/shared/ui/glass.css" />
+  <style>
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-ui); }
+    body { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hub-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(255, 43, 214, 0.25), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 50% -10%, rgba(25, 240, 255, 0.18), transparent 70%),
+        linear-gradient(rgba(25, 240, 255, 0.06) 1px, transparent 1px) 0 0 / 100% 40px,
+        linear-gradient(90deg, rgba(25, 240, 255, 0.06) 1px, transparent 1px) 0 0 / 40px 100%,
+        var(--bg);
+    }
+    .hub { position: relative; z-index: 1; padding: 40px 48px; max-width: 640px; text-align: center; }
+    .hub h1 { margin: 0 0 6px; font-size: 40px; letter-spacing: 0.3em; color: var(--neon-cyan); }
+    .hub p { margin: 0 0 28px; color: var(--text-dim); letter-spacing: 0.18em; font-size: 12px; text-transform: uppercase; }
+    .games { display: grid; gap: 10px; }
+    .game-link {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 20px; border-radius: 12px; text-decoration: none; color: var(--text);
+      border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.03);
+      letter-spacing: 0.2em; transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .game-link:hover { border-color: var(--neon-magenta); background: rgba(255, 43, 214, 0.08); transform: translateX(4px); }
+    .game-link .tag { font-size: 10px; color: var(--neon-lime); letter-spacing: 0.25em; }
+    .game-link.soon { opacity: 0.35; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div class="hub-bg"></div>
+  <main class="hub glass-panel">
+    <h1 class="neon-text">NEON ARCADE</h1>
+    <p>AAA retro-futurism · procedural · three.js</p>
+    <nav class="games">
+      <a class="game-link" href="/Space_Invaders/">SPACE INVADERS <span class="tag">PLAYABLE</span></a>
+    </nav>
+  </main>
+</body>
+</html>

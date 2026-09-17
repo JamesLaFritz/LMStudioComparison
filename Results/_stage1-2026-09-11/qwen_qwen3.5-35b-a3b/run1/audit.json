@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run1/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen_qwen3.5-35b-a3b/run1/ws",
  "files": 30,
  "lines": 5657,
  "placeholders": [],
@@ -567,12 +567,20 @@
   ],
   "shockwave rings": [
    [
+    "games/Space_Invaders/config.ts",
+    49
+   ],
+   [
+    "games/Space_Invaders/main.ts",
+    8
+   ],
+   [
     "games/Space_Invaders/entities/Enemy.ts",
-    135
+    4
    ],
    [
     "shared/vfx/ShockwaveRings.ts",
-    30
+    5
    ]
   ],
   "floating score text": [
@@ -583,6 +591,10 @@
    [
     "games/Space_Invaders/systems/GameManager.ts",
     6
+   ],
+   [
+    "shared/graphics/NeonMaterials.ts",
+    29
    ],
    [
     "shared/vfx/FloatingText.ts",
@@ -696,7 +708,7 @@
  },
  "particle_caps": [],
  "dispose_calls": 52,
- "three_allocations": 21,
+ "three_allocations": 35,
  "violations": [],
  "non_standard_materials": [
   [

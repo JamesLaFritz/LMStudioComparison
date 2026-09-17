@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-sol/run1/ws",
+ "port": 5921,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5921/index.html",
+ "start_clicked": "Begin campaignResume defenseRe",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 40,
+   "delta": 40
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 000000 LIVES 1 WAVE 1 / 9 INVADERS 55 HIGH SCORE 000000 AUDIO Online A / D MOVE · SPACE FIRES · ESC PAUSES",
+ "hud_after": "SCORE 000040 LIVES 1 WAVE 1 / 9 INVADERS 51 HIGH SCORE 000040 AUDIO Online A / D MOVE · SPACE FIRES · ESC PAUSES",
+ "score_before": 0,
+ "score_after": 40,
+ "score_delta": 40
+}

@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-6-astra/run1/ws",
+ "port": 5950,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5950/index.html",
+ "start_clicked": "START DEFENSE ↗ENTER",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 40,
+   "delta": 40
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "✣ SPACE INVADERS ORBITAL DEFENSE DIVISION SCORE 000000 PERSONAL BEST 000000 SYSTEM ONLINE ♫ Ⅱ SECTOR 01/CLEAR ALL THREE WAVES · HOLD THE LINE HULLS ▰ ▰ ▰ 01 / 03 N 037° · E 122° DEFENSE GRID // ACTIVE 55 HOSTILES RANGE: LOW ORBIT ▲ PLANETARY DEFENSE LINE SHIELD ARRAY 04 A D MOVE SPACE FIRE ESC PAUSE KEYBOARD READY NEON SIEGE 01.00",
+ "hud_after": "✣ SPACE INVADERS ORBITAL DEFENSE DIVISION SCORE 000040 PERSONAL BEST 000040 SYSTEM ONLINE ♫ Ⅱ SECTOR 01/CLEAR ALL THREE WAVES · HOLD THE LINE HULLS ▰ ▰ ▰ 01 / 03 N 037° · E 122° DEFENSE GRID // ACTIVE 51 HOSTILES RANGE: LOW ORBIT ▲ PLANETARY DEFENSE LINE SHIELD ARRAY 04 A D MOVE SPACE FIRE ESC PAUSE KEYBOARD READY NEON SIEGE 01.00",
+ "score_before": 0,
+ "score_after": 40,
+ "score_delta": 40
+}

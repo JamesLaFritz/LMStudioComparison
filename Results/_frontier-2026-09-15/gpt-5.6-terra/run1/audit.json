@@ -1,0 +1,257 @@
+{
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-terra/run1/ws",
+ "files": 50,
+ "lines": 3638,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "src/shared/render/PostProcessing.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "src/shared/render/PostProcessing.js",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "src/shared/vfx/CameraShake.js",
+    3
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    13
+   ]
+  ],
+  "particle bursts": [
+   [
+    "src/shared/vfx/ParticleManager.js",
+    31
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    15
+   ]
+  ],
+  "hit-stop": [
+   [
+    "src/shared/vfx/HitStop.js",
+    3
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    14
+   ]
+  ],
+  "motion trails": [
+   [
+    "src/shared/vfx/MotionTrailManager.js",
+    25
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    16
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "src/shared/vfx/ShockwaveManager.js",
+    21
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    17
+   ]
+  ],
+  "floating score text": [
+   [
+    "src/shared/vfx/ScoreTextManager.js",
+    5
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    18
+   ]
+  ],
+  "object pooling": [
+   [
+    "src/shared/core/ObjectPool.js",
+    1
+   ],
+   [
+    "src/shared/ui/DomPool.js",
+    20
+   ],
+   [
+    "src/shared/vfx/MotionTrailManager.js",
+    2
+   ],
+   [
+    "src/shared/vfx/ParticleManager.js",
+    2
+   ],
+   [
+    "src/shared/vfx/ScoreTextManager.js",
+    7
+   ],
+   [
+    "src/shared/vfx/ShockwaveManager.js",
+    2
+   ],
+   [
+    "src/Space_Invaders/GameConfig.js",
+    112
+   ],
+   [
+    "src/Space_Invaders/render/InvaderRenderer.js",
+    58
+   ],
+   [
+    "src/Space_Invaders/render/ProjectileRenderer.js",
+    23
+   ],
+   [
+    "src/Space_Invaders/render/RenderBridge.js",
+    30
+   ],
+   [
+    "src/Space_Invaders/simulation/CollisionSystem.js",
+    7
+   ],
+   [
+    "src/Space_Invaders/simulation/FormationSystem.js",
+    7
+   ],
+   [
+    "src/Space_Invaders/simulation/GameState.js",
+    2
+   ],
+   [
+    "src/Space_Invaders/simulation/ProjectileSystem.js",
+    20
+   ],
+   [
+    "src/Space_Invaders/simulation/UfoSystem.js",
+    15
+   ],
+   [
+    "src/Space_Invaders/simulation/WaveDirector.js",
+    16
+   ],
+   [
+    "tests/shared/object-pool.test.js",
+    2
+   ],
+   [
+    "tests/space-invaders/collision.test.js",
+    11
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "src/shared/vfx/MotionTrailManager.js",
+    39
+   ],
+   [
+    "src/shared/vfx/ParticleManager.js",
+    45
+   ],
+   [
+    "src/shared/vfx/ShockwaveManager.js",
+    41
+   ],
+   [
+    "src/Space_Invaders/render/BarrierRenderer.js",
+    17
+   ],
+   [
+    "src/Space_Invaders/render/EnvironmentRenderer.js",
+    69
+   ],
+   [
+    "src/Space_Invaders/render/InvaderRenderer.js",
+    58
+   ],
+   [
+    "src/Space_Invaders/render/ProjectileRenderer.js",
+    23
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "src/shared/procedural/CanvasTextureFactory.js",
+    12
+   ]
+  ],
+  "Web Audio": [
+   [
+    "src/shared/audio/SynthAudio.js",
+    12
+   ]
+  ],
+  "procedural noise": [],
+  "Gamepad API": [
+   [
+    "src/shared/input/UnifiedInput.js",
+    62
+   ]
+  ],
+  "keyboard input": [
+   [
+    "src/shared/input/UnifiedInput.js",
+    4
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "src/Space_Invaders/ui/space-invaders.css",
+    19
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "src/Space_Invaders/ui/space-invaders.css",
+    18
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "src/shared/vfx/ParticleManager.js",
+   5,
+   "MAX_PARTICLES",
+   500
+  ]
+ ],
+ "dispose_calls": 60,
+ "three_allocations": 31,
+ "violations": [],
+ "non_standard_materials": [],
+ "session": {
+  "model": "gpt-5.6-terra",
+  "turns": 99,
+  "tool_calls": 159,
+  "run_commands": 40,
+  "verification": {
+   "ran a build": 4,
+   "installed deps": 2,
+   "served the game": 0,
+   "looked for browser tools": 24,
+   "LAUNCHED a browser": 2,
+   "INTERACTED with it": 12,
+   "used playwright-cli": 24,
+   "wrote its own test": 10
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.5-27b/run2/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run2/ws",
  "files": 37,
  "lines": 8070,
  "placeholders": [],
@@ -145,19 +145,48 @@
   ],
   "shockwave rings": [
    [
+    "shared/rendering/GeometryPool.js",
+    137
+   ],
+   [
     "shared/rendering/PBRMaterialFactory.js",
     106
    ],
    [
+    "shared/vfx/ShockwaveRings.js",
+    2
+   ],
+   [
     "space-invaders/main.js",
-    143
+    17
+   ],
+   [
+    "space-invaders/entities/InvaderGrid.js",
+    6
    ],
    [
     "space-invaders/entities/Player.js",
-    199
+    191
    ]
   ],
-  "floating score text": [],
+  "floating score text": [
+   [
+    "shared/ui/FloatingText3D.js",
+    2
+   ],
+   [
+    "space-invaders/main.js",
+    18
+   ],
+   [
+    "space-invaders/entities/InvaderGrid.js",
+    6
+   ],
+   [
+    "space-invaders/entities/UFO.js",
+    5
+   ]
+  ],
   "object pooling": [
    [
     "shared/core/ObjectPool.js",

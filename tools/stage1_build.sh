@@ -12,6 +12,11 @@ for MDIR in "$ROOT"/*/; do
   M=$(basename "$MDIR"); [ "${M#_}" != "$M" ] && continue
   for R in run1 run2 run3; do
     WS="$MDIR$R/ws"; [ -d "$WS" ] || continue
+    # Only finished runs. A run is finished when its session has been recorded
+    # (the runner or codex_session.py writes session.json). Without this guard
+    # the pass walked into a Claude run that was still in progress and rebuilt
+    # its dist/ under it (2026-09-16).
+    [ -f "$MDIR$R/session.json" ] || continue
     SRC=$(find "$WS" -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.ts' \) -not -path '*/node_modules/*' -not -path '*/dist/*' | wc -l)
     OUT="$MDIR$R/build.json"
     if [ "$SRC" -lt "$MIN_SRC" ]; then

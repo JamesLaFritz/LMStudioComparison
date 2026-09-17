@@ -1,6 +1,6 @@
 # Stage 1 Results — 12 models × 3 seeds — prompt v2, nine axes
 
-> Scored 2026-09-14. 36 runs, all completed under the health-gated, resumable runner.
+> Scored 2026-09-14; re-audited 2026-09-15/16 after six audit patterns were widened while scoring the frontier line (floating-score text, shockwave, particle-cap names and config tables, named-import allocations, and npm-script expansion for axis 8) — eight medians moved +1 in total, no k/3 bucket changed. Pre-fix scorecards kept as `SCORECARD.before-*.json`. 36 runs, all completed under the health-gated, resumable runner.
 > One run (`bonsai` seed 2) was redone after a runner defect fed it 2,500 extra hops;
 > the contaminated original is quarantined as `run2.contaminated-3002hops/`.
 >
@@ -14,15 +14,15 @@
 
 | Model | **Plays** | Verified | PW-CLI | Built | Printed | Plan | Code | Bloom | VFX | Resrc | Proc | Juice | Verif | Proto | Median /45 |
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|---:|
-| `qwen3.8-27b-mtp` | **3/3** | 3/3 | 3/3 (147) | 3/3 | 0/3 | 4 (3-4) | 5 | 3 | 4 (3-5) | 4 (3-4) | 3 (2-3) | 2 | 5 | 5 (4-5) | **34** |
-| `qwen/qwen3.8-27b` | **2/3** | 3/3 | 2/3 (85) | 3/3 | 0/3 | 4 (3-4) | 5 (4-5) | 3 | 4 (3-5) | 4 (4-5) | 3 (2-3) | 2 | 3 (3-5) | 4 (4-5) | **31** |
-| `qwen3.6-35b-a3b-mtp@q3_k_m` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 4 | 2 (1-2) | 3 | 4 (3-5) | 4 (3-4) | 2 (2-3) | 2 | 1 (1-2) | 5 | **28** |
+| `qwen3.8-27b-mtp` | **3/3** | 3/3 | 3/3 (147) | 3/3 | 0/3 | 4 (3-4) | 5 | 3 | 5 | 4 (3-4) | 3 (2-3) | 2 | 5 | 5 (4-5) | **35** |
+| `qwen/qwen3.8-27b` | **2/3** | 3/3 | 2/3 (85) | 3/3 | 0/3 | 4 (3-4) | 5 (4-5) | 3 | 5 | 4 (4-5) | 3 (2-3) | 2 | 3 (3-5) | 4 (4-5) | **33** |
+| `qwen3.6-35b-a3b-mtp@q3_k_m` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 4 | 2 (1-2) | 3 | 5 | 4 | 2 (2-3) | 2 | 1 (1-2) | 5 | **29** |
 | `qwen/qwen3.5-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 5 (4-5) | 2 (1-2) | 3 | 5 | 3 | 3 (2-3) | 2 | 1 (0-2) | 4 (4-5) | **28** |
-| `qwen/qwen3.6-27b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 4 (3-5) | 2 (1-2) | 3 | 5 (3-5) | 5 (4-5) | 3 | 2 | 1 (1-2) | 5 (4-5) | **28** |
-| `qwen3.5-27b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 0/3 | 4 (4-5) | 1 (1-2) | 3 | 5 (4-5) | 3 (3-4) | 3 (2-3) | 2 | 2 (0-2) | 4 | **27** |
-| `prism-ml/bonsai-27b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 4 (3-5) | 1 (0-1) | 3 (0-3) | 4 (0-4) | 4 (0-5) | 1 (0-3) | 1 (0-2) | 0 | 4 (4-5) | **24** |
-| `qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 3 | 1 (0-1) | 3 (0-3) | 2 (0-3) | 3 (0-3) | 3 (0-3) | 0 (0-2) | 0 (0-1) | 4 (4-5) | **19** |
-| `qwen.qwen3.6-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 2/3 | 3 (3-5) | 0 (0-2) | 0 (0-3) | 0 (0-3) | 0 (0-4) | 0 (0-3) | 0 (0-2) | 0 | 1 (1-4) | **6** |
+| `qwen/qwen3.6-27b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 4 (3-5) | 2 (1-2) | 3 | 5 | 5 (4-5) | 3 | 2 | 1 (1-2) | 5 (4-5) | **30** |
+| `qwen3.5-27b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 0/3 | 4 (4-5) | 1 (1-2) | 3 | 5 | 3 (3-4) | 3 (2-3) | 2 | 2 (0-2) | 4 | **28** |
+| `prism-ml/bonsai-27b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 4 (3-5) | 1 (0-1) | 3 (0-3) | 5 (0-5) | 4 (0-5) | 1 (0-3) | 1 (0-2) | 0 | 4 (4-5) | **25** |
+| `qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 3 | 1 (0-1) | 3 (0-3) | 2 (0-3) | 3 (0-4) | 3 (0-3) | 0 (0-2) | 0 (0-1) | 4 (4-5) | **19** |
+| `qwen.qwen3.6-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 2/3 | 3 (3-5) | 0 (0-2) | 0 (0-3) | 0 (0-5) | 0 (0-4) | 0 (0-3) | 0 (0-2) | 0 | 1 (1-4) | **6** |
 | `qwen-agentworld-35b-a3b-apex` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 3/3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | **4** |
 | `google/gemma-4-26b-a4b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 2/3 | 2 | 0 (0-1) | 0 (0-3) | 0 (0-2) | 0 (0-4) | 0 (0-1) | 0 (0-2) | 0 | 1 (1-4) | **3** |
 | `liquid/lfm2-24b-a2b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 3/3 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | **3** |

@@ -1,0 +1,32 @@
+{
+ "model": "claude-opus-5",
+ "seed": 1,
+ "harness": "Claude Code 2.1.273",
+ "session": "5e555602-f0d4-459c-b4a9-ef6c9e9517f1",
+ "p1_seconds": 92,
+ "p2_seconds": 762,
+ "p3_seconds": 3351,
+ "continues": 0,
+ "resumes_after_limit": 2,
+ "idle_excluded_seconds": 46035,
+ "total_seconds": 4205,
+ "turns": 249,
+ "tokens_in": 78076048,
+ "tokens_out": 732295,
+ "tokens_cached": 75797013,
+ "reasoning_tokens": 331911,
+ "bails": [
+  "spend_limit",
+  "spend_limit"
+ ],
+ "compactions": 0,
+ "max_reasoning": 39983,
+ "seed_recorded": null,
+ "files": 88,
+ "threads": 1,
+ "subagents": 0,
+ "user_turns_recorded": 3,
+ "transcripts_in_folder": [
+  "5e555602-f0d4-459c-b4a9-ef6c9e9517f1.jsonl"
+ ]
+}

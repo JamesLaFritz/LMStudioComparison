@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-terra/run1/ws",
+ "port": 5977,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5977/index.html",
+ "start_clicked": null,
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 20,
+   "delta": 20
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 000000 HI 000000 ◈ ◈ ◈ WAVE 01 SOUND ON PAUSE A / D OR ◀ / ▶ TO MOVE · SPACE OR A TO FIRE",
+ "hud_after": "SCORE 000020 HI 000020 ◈ ◈ ◈ WAVE 01 SOUND ON PAUSE A / D OR ◀ / ▶ TO MOVE · SPACE OR A TO FIRE",
+ "score_before": 0,
+ "score_after": 20,
+ "score_delta": 20
+}

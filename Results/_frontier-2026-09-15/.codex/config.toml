@@ -1,0 +1,7 @@
+# Benchmark runs under this folder: no cross-session memory.
+# Codex layers this over ~/.codex/config.toml for any session whose cwd is beneath
+# this directory ("tree" layer). The global default stays memories = true.
+# Reason: on 2026-09-15 the memory summary carried the benchmark's own scoring rules
+# (browser verification, playwright-cli, "build is not playability") into two runs.
+[features]
+memories = false

@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/claude-sonnet-5/run1/ws",
+ "port": 5924,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "Space_Invaders/index.html",
+ "url": "http://127.0.0.1:5924/Space_Invaders/index.html",
+ "start_clicked": "START",
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 10,
+   "delta": 10
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 000000 LIVES 3 WAVE 1",
+ "hud_after": "SCORE 000010 LIVES 3 WAVE 1",
+ "score_before": 0,
+ "score_after": 10,
+ "score_delta": 10
+}

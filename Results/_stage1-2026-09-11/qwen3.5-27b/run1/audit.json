@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.5-27b/run1/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.5-27b/run1/ws",
  "files": 29,
  "lines": 5302,
  "placeholders": [],
@@ -74,12 +74,28 @@
    [
     "shared/vfx/ShockwaveSystem.js",
     4
+   ],
+   [
+    "Space_Invaders/config.js",
+    63
+   ],
+   [
+    "Space_Invaders/main.js",
+    13
+   ],
+   [
+    "Space_Invaders/SpaceInvadersGame.js",
+    25
    ]
   ],
   "floating score text": [
    [
+    "shared/vfx/FloatingText3D.js",
+    2
+   ],
+   [
     "Space_Invaders/main.js",
-    37
+    14
    ],
    [
     "Space_Invaders/SpaceInvadersGame.js",

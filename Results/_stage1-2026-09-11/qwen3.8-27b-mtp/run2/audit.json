@@ -1,5 +1,5 @@
 {
- "workspace": "Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run2/ws",
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_stage1-2026-09-11/qwen3.8-27b-mtp/run2/ws",
  "files": 30,
  "lines": 3533,
  "placeholders": [],
@@ -98,7 +98,16 @@
     17
    ]
   ],
-  "shockwave rings": [],
+  "shockwave rings": [
+   [
+    "shared/vfx/ShockwaveRings.js",
+    6
+   ],
+   [
+    "Space_Invaders/index.js",
+    16
+   ]
+  ],
   "floating score text": [
    [
     "shared/vfx/FloatingText.js",

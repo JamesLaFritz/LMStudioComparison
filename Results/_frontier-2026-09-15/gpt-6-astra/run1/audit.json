@@ -1,0 +1,324 @@
+{
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-6-astra/run1/ws",
+ "files": 33,
+ "lines": 4700,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "src/shared/rendering/RenderPipeline.js",
+    10
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "src/shared/rendering/RenderPipeline.js",
+    12
+   ]
+  ],
+  "camera shake": [
+   [
+    "src/shared/vfx/CameraShake.js",
+    4
+   ],
+   [
+    "src/shared/vfx/EffectsManager.js",
+    1
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    21
+   ]
+  ],
+  "particle bursts": [
+   [
+    "src/shared/vfx/EffectsManager.js",
+    3
+   ],
+   [
+    "src/shared/vfx/ParticleManager.js",
+    37
+   ],
+   [
+    "src/Space_Invaders/tests/collision-pool.test.js",
+    10
+   ]
+  ],
+  "hit-stop": [
+   [
+    "src/shared/vfx/EffectsManager.js",
+    2
+   ],
+   [
+    "src/shared/vfx/HitStop.js",
+    2
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    170
+   ],
+   [
+    "src/Space_Invaders/tests/collision-pool.test.js",
+    9
+   ]
+  ],
+  "motion trails": [
+   [
+    "src/shared/vfx/EffectsManager.js",
+    4
+   ],
+   [
+    "src/shared/vfx/MotionTrails.js",
+    2
+   ],
+   [
+    "src/shared/vfx/ParticleManager.js",
+    47
+   ],
+   [
+    "src/Space_Invaders/tests/collision-pool.test.js",
+    11
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "src/shared/vfx/EffectsManager.js",
+    5
+   ],
+   [
+    "src/shared/vfx/ShockwaveRings.js",
+    1
+   ],
+   [
+    "src/Space_Invaders/tests/collision-pool.test.js",
+    12
+   ]
+  ],
+  "floating score text": [
+   [
+    "src/shared/vfx/EffectsManager.js",
+    6
+   ],
+   [
+    "src/shared/vfx/FloatingText.js",
+    5
+   ]
+  ],
+  "object pooling": [
+   [
+    "artifacts/simulate.mjs",
+    35
+   ],
+   [
+    "src/shared/audio/AudioSystem.js",
+    1
+   ],
+   [
+    "src/shared/core/EventBuffer.js",
+    7
+   ],
+   [
+    "src/shared/core/ObjectPool.js",
+    1
+   ],
+   [
+    "src/shared/vfx/EffectsManager.js",
+    52
+   ],
+   [
+    "src/shared/vfx/FloatingText.js",
+    2
+   ],
+   [
+    "src/shared/vfx/ParticleManager.js",
+    11
+   ],
+   [
+    "src/Space_Invaders/Entities.js",
+    2
+   ],
+   [
+    "src/Space_Invaders/Game.js",
+    534
+   ],
+   [
+    "src/Space_Invaders/Gameplay.js",
+    74
+   ],
+   [
+    "src/Space_Invaders/World.js",
+    471
+   ],
+   [
+    "src/Space_Invaders/tests/collision-pool.test.js",
+    5
+   ],
+   [
+    "src/Space_Invaders/tests/gameplay.test.js",
+    21
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "src/shared/vfx/ParticleManager.js",
+    2
+   ],
+   [
+    "src/Space_Invaders/World.js",
+    11
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "src/shared/rendering/Procedural.js",
+    4
+   ]
+  ],
+  "Web Audio": [
+   [
+    "src/shared/audio/AudioSystem.js",
+    44
+   ]
+  ],
+  "procedural noise": [],
+  "Gamepad API": [
+   [
+    "src/shared/core/InputController.js",
+    27
+   ]
+  ],
+  "keyboard input": [
+   [
+    "src/shared/core/InputController.js",
+    5
+   ],
+   [
+    "src/Space_Invaders/tests/input.test.js",
+    31
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "src/shared/ui/glass.css",
+    67
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "src/shared/ui/glass.css",
+    63
+   ],
+   [
+    "src/Space_Invaders/game.css",
+    36
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "src/Space_Invaders/config.js",
+   45,
+   "budgets.particles",
+   500
+  ]
+ ],
+ "dispose_calls": 40,
+ "three_allocations": 21,
+ "violations": [
+  [
+   "external asset file",
+   "artifacts/combat-wave-three.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/countdown.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/current-loss-test.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/portrait-combat.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/production-victory.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/respawn-impact.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/score-impact.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/title-1024x768.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/title-1280x720.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/title-1920x1080.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/title-390x844.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/title.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/victory.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "artifacts/wave-clear.png",
+   ".png"
+  ]
+ ],
+ "non_standard_materials": [],
+ "session": {
+  "model": "gpt-6-astra",
+  "turns": 96,
+  "tool_calls": 151,
+  "run_commands": 37,
+  "verification": {
+   "ran a build": 5,
+   "installed deps": 2,
+   "served the game": 2,
+   "looked for browser tools": 1,
+   "LAUNCHED a browser": 10,
+   "INTERACTED with it": 49,
+   "used playwright-cli": 0,
+   "wrote its own test": 5
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 1
+ }
+}

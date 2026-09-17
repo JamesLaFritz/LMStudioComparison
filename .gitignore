@@ -22,3 +22,8 @@ playwright-report/
 # log in one case. audit.json records that they did it; the logs are noise.
 .playwright-mcp/
 .playwright-cli/
+
+# Raw Codex rollouts of the quarantined Sol run: 143 MB of a run that is not a reference.
+# Its derived session.json / run.json / RUN.md / CONTAMINATED.md are committed.
+Results/_frontier-2026-09-15/*/run1.contaminated-codex-memory/rollouts/
+tools/__pycache__/

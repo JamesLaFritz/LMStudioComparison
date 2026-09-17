@@ -1,0 +1,32 @@
+{
+ "model": "claude-sonnet-5",
+ "seed": 1,
+ "harness": "Claude Code 2.1.273",
+ "session": "2b229d96-bb4c-45d1-b111-cf01a4ee173e",
+ "p1_seconds": 36,
+ "p2_seconds": 120,
+ "p3_seconds": 2568,
+ "continues": 1,
+ "resumes_after_limit": 0,
+ "idle_excluded_seconds": 0,
+ "total_seconds": 2724,
+ "turns": 274,
+ "tokens_in": 56151781,
+ "tokens_out": 553280,
+ "tokens_cached": 55504801,
+ "reasoning_tokens": 365536,
+ "bails": [
+  "reasoning_overrun"
+ ],
+ "compactions": 0,
+ "max_reasoning": 64000,
+ "seed_recorded": null,
+ "files": 50,
+ "threads": 1,
+ "subagents": 0,
+ "user_turns_recorded": 3,
+ "transcripts_in_folder": [
+  "2b229d96-bb4c-45d1-b111-cf01a4ee173e.jsonl",
+  "fd806ae1-fef5-4643-84ce-5eccba4d59c4.jsonl"
+ ]
+}

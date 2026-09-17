@@ -1,0 +1,282 @@
+{
+ "workspace": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-sol/run1/ws",
+ "files": 42,
+ "lines": 4939,
+ "placeholders": [],
+ "broken_imports": [],
+ "broken_calls": [],
+ "signals": {
+  "EffectComposer": [
+   [
+    "shared/rendering/RenderPipeline.js",
+    2
+   ]
+  ],
+  "UnrealBloomPass": [
+   [
+    "shared/rendering/RenderPipeline.js",
+    4
+   ]
+  ],
+  "camera shake": [
+   [
+    "shared/vfx/CameraShake.js",
+    3
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    3
+   ]
+  ],
+  "particle bursts": [
+   [
+    "shared/vfx/ParticleManager.js",
+    5
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    4
+   ]
+  ],
+  "hit-stop": [
+   [
+    "Space_Invaders/Game.js",
+    24
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    93
+   ]
+  ],
+  "motion trails": [
+   [
+    "shared/vfx/MotionTrailPool.js",
+    5
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    5
+   ]
+  ],
+  "shockwave rings": [
+   [
+    "shared/vfx/ShockwavePool.js",
+    5
+   ],
+   [
+    "Space_Invaders/config.js",
+    126
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    6
+   ]
+  ],
+  "floating score text": [
+   [
+    "shared/vfx/FloatingTextManager.js",
+    5
+   ],
+   [
+    "Space_Invaders/config.js",
+    127
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    7
+   ]
+  ],
+  "object pooling": [
+   [
+    "shared/pooling/FixedPool.js",
+    13
+   ],
+   [
+    "shared/vfx/FloatingTextManager.js",
+    9
+   ],
+   [
+    "shared/vfx/MotionTrailPool.js",
+    8
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    9
+   ],
+   [
+    "shared/vfx/ShockwavePool.js",
+    8
+   ],
+   [
+    "Space_Invaders/rendering/ProjectileRenderer.js",
+    44
+   ],
+   [
+    "Space_Invaders/rendering/SpaceInvadersVfx.js",
+    175
+   ],
+   [
+    "Space_Invaders/simulation/CombatSystem.js",
+    22
+   ],
+   [
+    "Space_Invaders/simulation/EnemyFireSystem.js",
+    20
+   ],
+   [
+    "Space_Invaders/simulation/EntityPools.js",
+    6
+   ],
+   [
+    "Space_Invaders/simulation/SpaceInvadersSimulation.js",
+    15
+   ],
+   [
+    "Space_Invaders/tests/simulation.test.js",
+    48
+   ]
+  ],
+  "InstancedMesh": [
+   [
+    "shared/vfx/MotionTrailPool.js",
+    23
+   ],
+   [
+    "shared/vfx/ParticleManager.js",
+    31
+   ],
+   [
+    "shared/vfx/ShockwavePool.js",
+    21
+   ],
+   [
+    "Space_Invaders/rendering/DefenseRenderer.js",
+    10
+   ],
+   [
+    "Space_Invaders/rendering/EnvironmentRenderer.js",
+    37
+   ],
+   [
+    "Space_Invaders/rendering/FleetRenderer.js",
+    33
+   ],
+   [
+    "Space_Invaders/rendering/ProjectileRenderer.js",
+    31
+   ]
+  ],
+  "CanvasTexture": [
+   [
+    "Space_Invaders/rendering/ProceduralTextures.js",
+    17
+   ]
+  ],
+  "Web Audio": [
+   [
+    "shared/audio/SynthAudioEngine.js",
+    27
+   ]
+  ],
+  "procedural noise": [],
+  "Gamepad API": [
+   [
+    "shared/input/InputController.js",
+    57
+   ]
+  ],
+  "keyboard input": [
+   [
+    "shared/input/InputController.js",
+    4
+   ]
+  ]
+ },
+ "css": {
+  "glassmorphism (backdrop-filter)": [
+   [
+    "Space_Invaders/ui/styles.css",
+    84
+   ]
+  ],
+  "neon glow (text/box-shadow)": [
+   [
+    "Space_Invaders/ui/styles.css",
+    83
+   ]
+  ]
+ },
+ "particle_caps": [
+  [
+   "Space_Invaders/config.js",
+   122,
+   "pools.particles",
+   500
+  ]
+ ],
+ "dispose_calls": 37,
+ "three_allocations": 21,
+ "violations": [
+  [
+   "external asset file",
+   "test-results/smoke-boots-accepts-both-i-4adca-estarts-and-reaches-victory-desktop-chromium/active-combat.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-boots-accepts-both-i-4adca-estarts-and-reaches-victory-desktop-chromium/title.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-boots-accepts-both-i-4adca-estarts-and-reaches-victory-desktop-chromium/victory.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-boots-accepts-both-i-4adca-estarts-and-reaches-victory-narrow-chromium/active-combat.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-boots-accepts-both-i-4adca-estarts-and-reaches-victory-narrow-chromium/title.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-boots-accepts-both-i-4adca-estarts-and-reaches-victory-narrow-chromium/victory.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-renders-narrow-HUD-r-0c265-memory-stable-across-resets-desktop-chromium/narrow-game-over.png",
+   ".png"
+  ],
+  [
+   "external asset file",
+   "test-results/smoke-renders-narrow-HUD-r-0c265-memory-stable-across-resets-narrow-chromium/narrow-game-over.png",
+   ".png"
+  ]
+ ],
+ "non_standard_materials": [],
+ "session": {
+  "model": "gpt-5.6-sol",
+  "turns": 84,
+  "tool_calls": 63,
+  "run_commands": 19,
+  "verification": {
+   "ran a build": 2,
+   "installed deps": 1,
+   "served the game": 0,
+   "looked for browser tools": 5,
+   "LAUNCHED a browser": 4,
+   "INTERACTED with it": 88,
+   "used playwright-cli": 0,
+   "wrote its own test": 6
+  },
+  "step1_writes": [],
+  "step1_commands": [],
+  "bails": [],
+  "compactions": 0
+ }
+}

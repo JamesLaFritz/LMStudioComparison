@@ -1,0 +1,37 @@
+:root {
+  color-scheme: dark;
+  --void: #03050d;
+  --void-soft: #08101f;
+  --gunmetal: #111a2b;
+  --glass: rgb(9 18 35 / 66%);
+  --glass-solid: rgb(7 14 27 / 96%);
+  --glass-edge: rgb(104 235 255 / 35%);
+  --cyan: #35e8ff;
+  --cyan-hot: #a9f8ff;
+  --magenta: #ff3fcb;
+  --amber: #ffb84d;
+  --danger: #ff405f;
+  --text: #ecfbff;
+  --muted: #8ca4b8;
+  --success: #75ffb7;
+  --blur: 14px;
+  --radius: 14px;
+  --edge-glow: 0 0 18px rgb(53 232 255 / 18%);
+  --strong-glow: 0 0 28px rgb(53 232 255 / 34%);
+  --focus: 0 0 0 2px var(--void), 0 0 0 4px var(--cyan);
+  --fast: 120ms;
+  --normal: 240ms;
+  --slow: 520ms;
+}
+
+body.high-contrast {
+  --glass: rgb(2 7 15 / 96%);
+  --glass-edge: rgb(169 248 255 / 75%);
+  --muted: #c2d6e4;
+}
+
+body.reduced-motion {
+  --fast: 0ms;
+  --normal: 0ms;
+  --slow: 80ms;
+}

@@ -1,0 +1,26 @@
+{
+ "ws": "C:/Data/AI/Projects/LMStudioComparison/Results/_frontier-2026-09-15/gpt-5.6-sol/run1/ws",
+ "port": 5953,
+ "outcome": "plays",
+ "errors": [],
+ "notes": [],
+ "page": "index.html",
+ "url": "http://127.0.0.1:5953/index.html",
+ "start_clicked": null,
+ "has_canvas": true,
+ "attempts": [
+  {
+   "attempt": 1,
+   "idle": true,
+   "scoreBefore": 0,
+   "scoreAfter": 45,
+   "delta": 45
+  }
+ ],
+ "idle_bytes_differ": true,
+ "hud_before": "SCORE 000000 HI 000000 SECTOR 01 / 05 CANNONS ◆ ◆ AUDIO ON · KEYS Campaign initialized. Sector one.",
+ "hud_after": "SCORE 000045 HI 000045 SECTOR 01 / 05 CANNONS ◆ ◆ AUDIO ON · KEYS Campaign initialized. Sector one.",
+ "score_before": 0,
+ "score_after": 45,
+ "score_delta": 45
+}
