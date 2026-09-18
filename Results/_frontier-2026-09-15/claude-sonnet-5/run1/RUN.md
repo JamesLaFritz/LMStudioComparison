@@ -32,15 +32,15 @@
 | Build | `vite build` **passes** (3 s) |
 | **Plays** | **yes** — 0 → 10, 0 console errors, best of 1 pass |
 
-## Score — 35 / 45
+## Score — 36 / 45
 
 | Plan | Code | Bloom | VFX | Resrc | Proc | Juice | Verif | Proto |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| 3* | 5 | 3* | 5 | 5 | 3* | 2* | **5** | 4 |
+| 4 | 5 | 3* | 5 | 5 | 3* | 2* | **5** | 4 |
 
 `*` PROVISIONAL — evidence floors awaiting a human pass, same as Stage 1.
 
-- **Axis 1:** 14,882 chars is 118 short of the level-4 line. Rule, not judgement.
+- **Axis 1:** 4 under the content rule (2026-09-18): all five sections, 22 enhancements, 7/8 mechanics, win and loss — misses only the math-density point (81 constants).
 - **Axis 2:** placeholder syntax none; all imports resolve; all cross-module contracts resolve.
 - **Axis 4:** 6/6. **Axis 5:** `MAX_ACTIVE_PARTICLES = 500` (`Constants.js:1`), `ObjectPool.js`,
   InstancedMesh, 37 `dispose()` vs 27 allocations. **Axis 6:** the only frontier run so far with

@@ -2,9 +2,10 @@
 """stage1_score.py — the Stage 1 scorecard: 9 axes x 12 models x 3 seeds.
 
 Every axis is scored by a stated rule from recorded evidence (audit.json,
-build.json, play.json, run.json). Where the rubric calls for judgement -- axes
-1, 3 (tuning), 6, 7 -- the rule is a floor derived from evidence and the axis is
-marked PROVISIONAL for a human pass.
+build.json, play.json, run.json, and the plan itself via plan_audit.py). Where
+the rubric calls for judgement -- axes 3 (tuning), 6, 7 -- the rule is a floor
+derived from evidence and the axis is marked PROVISIONAL for a human pass. Axis 1
+was a size floor until 2026-09-18; it is now scored on the plan's content.
 
 Per N-DESIGN.md: n = 3 gives buckets, not a ranking. Playability and axis 8 are
 reported as k/3 and never averaged. Other axes report the median of three with
@@ -13,6 +14,8 @@ the range beside it, so a lucky seed cannot masquerade as a capability.
 Usage:  python stage1_score.py <stage1 dir> [--md]
 """
 import json, os, re, sys, statistics
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import plan_audit
 
 root = sys.argv[1].replace('\\', '/').rstrip('/')
 as_md = '--md' in sys.argv
@@ -68,9 +71,26 @@ def score_run(mdir, rdir):
     plays = outcome == 'plays'
 
     s = {}
-    # 1 Plan Diligence  (PROVISIONAL floor from size + structure)
+    # 1 Plan Diligence -- content, not size (2026-09-18; was a byte-count floor).
+    # One point each, read off the plan by tools/plan_audit.py against the directive:
+    #   all five mandatory sections present
+    #   at least 15 modern enhancements enumerated
+    #   >= 6 of 8 classic mechanics modelled (march, collision, bunkers, UFO, waves,
+    #     win, terminal win, loss)
+    #   both a win (or wave-clear) and a loss state defined
+    #   mathematically modelled: >= 100 numeric constants and >= 30 formula lines
     pc = plan_chars(rdir)
-    s[1] = 0 if pc < 500 else 1 if pc < 2000 else 2 if pc < 8000 else 3 if pc < 15000 else 4 if pc < 25000 else 5
+    pa = plan_audit.audit(rdir)
+    if pa.get('source') == 'none':
+        s[1] = 0
+    else:
+        s[1] = sum([
+            pa['sections_n'] == 5,
+            pa['enhancements_n'] >= 15,
+            pa['mechanics_n'] >= 6,
+            bool(pa['mechanics']['win state'] and pa['mechanics']['loss state']),
+            pa['numbers'] >= 100 and pa['formula_lines'] >= 30,
+        ])
 
     # 2 Code Completeness
     if printed or src < 10:           s[2] = 0

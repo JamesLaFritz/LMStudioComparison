@@ -154,6 +154,16 @@ under an eight-axis rubric that difference was scored as nothing at all.
 It is also the cheapest axis to score: `tools/audit.py --session` reads it straight off
 the transcript, because everything before the second user turn belongs to STEP 1.
 
+Scoring guide for axis 1 — added 2026-09-18, applied to every run retroactively (it had been a byte-count floor). One point each, read off the plan by `tools/plan_audit.py`; the plan is the union of `plan.md` on disk and the STEP 2 reply:
+
+| Point | Evidence |
+|---|---|
+| sections | all five mandatory sections present (core gameplay · enhancements · graphics pipeline · VFX · file architecture) |
+| enhancements | at least 15 enumerated (the directive asks for 15–20; exceeding is not an omission) |
+| mechanics | ≥ 6 of 8 classic elements modelled: formation march, collision, bunkers, UFO, waves, win (wave-clear counts), terminal win, loss |
+| states | both a win (or wave-clear) and a loss state defined |
+| math | "mathematically modelled": ≥ 100 numeric constants and ≥ 30 formula lines |
+
 Scoring guide for axis 9 — score what the transcript shows, not what the model said:
 
 | Score | Behavior |

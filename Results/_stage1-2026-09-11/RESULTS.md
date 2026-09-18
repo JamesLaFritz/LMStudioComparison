@@ -1,6 +1,6 @@
 # Stage 1 Results — 12 models × 3 seeds — prompt v2, nine axes
 
-> Scored 2026-09-14; re-audited 2026-09-15/16 after six audit patterns were widened while scoring the frontier line (floating-score text, shockwave, particle-cap names and config tables, named-import allocations, and npm-script expansion for axis 8) — eight medians moved +1 in total, no k/3 bucket changed. Pre-fix scorecards kept as `SCORECARD.before-*.json`. 36 runs, all completed under the health-gated, resumable runner.
+> Scored 2026-09-14; re-audited 2026-09-15/16 after six audit patterns were widened while scoring the frontier line (floating-score text, shockwave, particle-cap names and config tables, named-import allocations, and npm-script expansion for axis 8) — eight medians moved +1 in total, no k/3 bucket changed. Pre-fix scorecards kept as `SCORECARD.before-*.json`. **2026-09-18: axis 1 rescored on plan content** (`tools/plan_audit.py`, see `../PLAN-AUDIT.md`) instead of byte count — winners' plans 5/5/5, `deckard` 2/1/0; `SCORECARD.before-plan-content.json` kept. 36 runs, all completed under the health-gated, resumable runner.
 > One run (`bonsai` seed 2) was redone after a runner defect fed it 2,500 extra hops;
 > the contaminated original is quarantined as `run2.contaminated-3002hops/`.
 >
@@ -14,25 +14,25 @@
 
 | Model | **Plays** | Verified | PW-CLI | Built | Printed | Plan | Code | Bloom | VFX | Resrc | Proc | Juice | Verif | Proto | Median /45 |
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|---:|
-| `qwen3.8-27b-mtp` | **3/3** | 3/3 | 3/3 (147) | 3/3 | 0/3 | 4 (3-4) | 5 | 3 | 5 | 4 (3-4) | 3 (2-3) | 2 | 5 | 5 (4-5) | **35** |
-| `qwen/qwen3.8-27b` | **2/3** | 3/3 | 2/3 (85) | 3/3 | 0/3 | 4 (3-4) | 5 (4-5) | 3 | 5 | 4 (4-5) | 3 (2-3) | 2 | 3 (3-5) | 4 (4-5) | **33** |
-| `qwen3.6-35b-a3b-mtp@q3_k_m` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 4 | 2 (1-2) | 3 | 5 | 4 | 2 (2-3) | 2 | 1 (1-2) | 5 | **29** |
-| `qwen/qwen3.5-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 5 (4-5) | 2 (1-2) | 3 | 5 | 3 | 3 (2-3) | 2 | 1 (0-2) | 4 (4-5) | **28** |
-| `qwen/qwen3.6-27b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 4 (3-5) | 2 (1-2) | 3 | 5 | 5 (4-5) | 3 | 2 | 1 (1-2) | 5 (4-5) | **30** |
-| `qwen3.5-27b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 0/3 | 4 (4-5) | 1 (1-2) | 3 | 5 | 3 (3-4) | 3 (2-3) | 2 | 2 (0-2) | 4 | **28** |
+| `qwen3.8-27b-mtp` | **3/3** | 3/3 | 3/3 (147) | 3/3 | 0/3 | 5 | 5 | 3 | 5 | 4 (3-4) | 3 (2-3) | 2 | 5 | 5 (4-5) | **36** |
+| `qwen/qwen3.8-27b` | **2/3** | 3/3 | 2/3 (85) | 3/3 | 0/3 | 5 (4-5) | 5 (4-5) | 3 | 5 | 4 (4-5) | 3 (2-3) | 2 | 3 (3-5) | 4 (4-5) | **34** |
+| `qwen3.6-35b-a3b-mtp@q3_k_m` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 5 | 2 (1-2) | 3 | 5 | 4 | 2 (2-3) | 2 | 1 (1-2) | 5 | **30** |
+| `qwen/qwen3.5-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 5 (4-5) | 2 (1-2) | 3 | 5 | 3 | 3 (2-3) | 2 | 1 (0-2) | 4 (4-5) | **29** |
+| `qwen/qwen3.6-27b` | **0/3** | 0/3 | 0/3 (0) | 2/3 | 0/3 | 5 (4-5) | 2 (1-2) | 3 | 5 | 5 (4-5) | 3 | 2 | 1 (1-2) | 5 (4-5) | **30** |
+| `qwen3.5-27b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 0/3 | 4 (2-5) | 1 (1-2) | 3 | 5 | 3 (3-4) | 3 (2-3) | 2 | 2 (0-2) | 4 | **26** |
 | `prism-ml/bonsai-27b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 4 (3-5) | 1 (0-1) | 3 (0-3) | 5 (0-5) | 4 (0-5) | 1 (0-3) | 1 (0-2) | 0 | 4 (4-5) | **25** |
-| `qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 3 | 1 (0-1) | 3 (0-3) | 2 (0-3) | 3 (0-4) | 3 (0-3) | 0 (0-2) | 0 (0-1) | 4 (4-5) | **19** |
-| `qwen.qwen3.6-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 2/3 | 3 (3-5) | 0 (0-2) | 0 (0-3) | 0 (0-5) | 0 (0-4) | 0 (0-3) | 0 (0-2) | 0 | 1 (1-4) | **6** |
-| `qwen-agentworld-35b-a3b-apex` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 3/3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | **4** |
-| `google/gemma-4-26b-a4b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 2/3 | 2 | 0 (0-1) | 0 (0-3) | 0 (0-2) | 0 (0-4) | 0 (0-1) | 0 (0-2) | 0 | 1 (1-4) | **3** |
-| `liquid/lfm2-24b-a2b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 3/3 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | **3** |
+| `qwen3.6-40b-claude-4.6-opus-deckard-heretic-uncensored-thinking-neo-code-di-imatrix-max` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 0/3 | 1 (0-2) | 1 (0-1) | 3 (0-3) | 2 (0-3) | 3 (0-4) | 3 (0-3) | 0 (0-2) | 0 (0-1) | 4 (4-5) | **17** |
+| `qwen.qwen3.6-35b-a3b` | **0/3** | 0/3 | 0/3 (0) | 1/3 | 2/3 | 4 (4-5) | 0 (0-2) | 0 (0-3) | 0 (0-5) | 0 (0-4) | 0 (0-3) | 0 (0-2) | 0 | 1 (1-4) | **6** |
+| `qwen-agentworld-35b-a3b-apex` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 3/3 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | **3** |
+| `google/gemma-4-26b-a4b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 2/3 | 2 (2-4) | 0 (0-1) | 0 (0-3) | 0 (0-2) | 0 (0-4) | 0 (0-1) | 0 (0-2) | 0 | 1 (1-4) | **5** |
+| `liquid/lfm2-24b-a2b` | **0/3** | 0/3 | 0/3 (0) | 0/3 | 3/3 | 2 (1-3) | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | **3** |
 
 "Plays" means: served, opened in headless Chromium, START pressed, eight seconds of real
 key events, **and the HUD score went up** — fire, collision, scoring all wired. Best of
 three passes per run, because a single pass is noisy. Every claim is backed by
 `play.json` and a screenshot per run.
 
-`*` PROVISIONAL — Plan, Bloom (tuning), Proc, Juice are evidence floors, not judgement. **PW-CLI** = runs that invoked `playwright-cli`, with the total command count. It is the level-5 criterion on axis 8.
+`*` PROVISIONAL — Bloom (tuning), Proc, Juice are evidence floors, not judgement. Plan is scored on content since 2026-09-18 (five points: all mandatory sections · ≥15 enhancements · ≥6/8 classic mechanics · win and loss states · ≥100 constants and ≥30 formula lines). **PW-CLI** = runs that invoked `playwright-cli`, with the total command count. It is the level-5 criterion on axis 8.
 
 ## What separates the top two from everything else
 

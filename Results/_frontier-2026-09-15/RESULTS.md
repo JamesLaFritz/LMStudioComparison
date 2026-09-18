@@ -12,10 +12,10 @@
 | `gpt-5.6-terra` (Max) | Codex Desktop | **1/1** | 1/1 | 1/1 (24) | 1/1 | 0/1 | 5 | 5 | 3* | 5 | 5 | 2* | 2* | 5 | 4 | **36** |
 | `gpt-6-astra` (Max) | Codex Desktop | **1/1** | 1/1 | 0/1 (0) | 1/1 | 0/1 | 5 | 5 | 3* | 5 | 5 | 2* | 2* | 5 | 5 | **37** |
 | `claude-opus-5` (xhigh) | Claude Code | **1/1** | 1/1 | 0/1 (0) | 1/1 | 0/1 | 5 | 5 | 3* | 5 | 5 | 3* | 2* | 5 | 5 | **38** |
-| `claude-sonnet-5` (xhigh) | Claude Code | **1/1** | 1/1 | 0/1 (0) | 1/1 | 0/1 | 3* | 5 | 3* | 5 | 5 | 3* | 2* | 5 | 4 | **35** |
+| `claude-sonnet-5` (xhigh) | Claude Code | **1/1** | 1/1 | 0/1 (0) | 1/1 | 0/1 | 4 | 5 | 3* | 5 | 5 | 3* | 2* | 5 | 4 | **36** |
 
 `*` PROVISIONAL, same as Stage 1. Stage 1 leaders for scale (after the 09-15/16 audit fixes):
-`qwen3.8-27b-mtp` 35 (3/3 plays), `qwen/qwen3.8-27b` 33 (2/3). PW-CLI 0 for clean Sol is
+`qwen3.8-27b-mtp` 36 (3/3 plays), `qwen/qwen3.8-27b` 34 (2/3). Plan (axis 1) is scored on content since 2026-09-18 — see `../PLAN-AUDIT.md`. PW-CLI 0 for clean Sol is
 not "no browser": it verified through the Playwright *library* — a spec file and `playwright
 test` ×4 — which the audit now counts as a launch with the spec's interactions.
 
@@ -93,7 +93,7 @@ call under one label. Fixed; the other Codex runs reconverted, nothing moved. Fu
 | | Opus 5 | Sol | Astra | Terra | Sonnet 5 | `qwen3.8-27b-mtp` (best local, n=3) |
 |---|---|---|---|---|---|---|
 | Plays | 0→80 | 0→45 | 0→40 | 0→20 | 0→10 | 3/3 |
-| Score /45 | **38** | 37 | 37 | 36 | 35 | 35 |
+| Score /45 | **38** | 37 | 37 | 36 | 36 | 36 |
 | Model time | 70 m | 44 m | 84 m | 36 m | 45 m | 2–4 h |
 | Tokens in | 78M | 8M | 9M | 11M | 56M | 11M |
 | Lines | 7,906 | 4,939 | 4,700 | 3,638 | 4,119 | ~3,800 |
@@ -103,8 +103,8 @@ call under one label. Fixed; the other Codex runs reconverted, nothing moved. Fu
 | `plan.md` on disk | yes | yes | yes | no | no | yes |
 
 Five of five frontier runs play, five of five verified in a browser, five of five wrote every
-file with tools. The spread is 35–38 — three points — against a local field of 3–35 where the
-separator was whether the model ever ran its game. **The best local model sits at the bottom
+file with tools. The spread is 36–38 — two points — against a local field of 3–36 where the
+separator was whether the model ever ran its game. **The best local model ties the bottom
 of the frontier band, at four to six times the wall clock.** The provisional axes (Bloom, Proc,
 Juice) are the same floors for everyone and the human pass could move any row by a point or two.
 
