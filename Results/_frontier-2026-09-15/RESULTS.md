@@ -129,6 +129,12 @@ Get-Content in STEP 1 was the app's own paste-attachment mechanism, not a violat
 
 ## Method notes
 
+- **The probe's score is noise; its outcome is not.** Re-probed all five on 2026-09-18 (best of
+  three, same tool) while chasing a "the games don't work" report that turned out to be Chrome's
+  GPU process, not the games: Opus 80 → 40, Sol 45 → 60, Astra 40 → 30, Terra 20 → 20,
+  Sonnet 10 → 30. Five of five still `plays`, zero console errors. The tables keep the first
+  measurement, which is the one that was scored; do not read the score column as a ranking.
+
 - Four audit patterns were widened while scoring the two Sol runs — floating-score text,
   shockwave (both class names with a suffix), particle-cap names and config tables, and
   `npm run <script>` expansion through `package.json` so a `playwright test` behind an alias
