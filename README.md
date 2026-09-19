@@ -10,6 +10,40 @@ harness parity, the 09-04 → 09-07 diagnostic runs, `probe-context.sh`) moved t
 `C:\Data\AI\Projects\WorkbenchHardening\` on 2026-09-19; the harness itself is
 `C:\Data\Tools\ember-dashboard`.
 
+## What was run
+
+One game, three prompts, no hints. Every contestant got the same three files from `prompt-v2/`:
+the mission directive (`p1.txt`, 5,712 chars — Three.js + Vite, 100 % procedural,
+`MeshStandardMaterial` only, pooling, a 500-particle cap, `UnrealBloomPass`, six named VFX, dual
+input, a definition of done, a three-step protocol), then `Begin Space Invaders`, then
+`Plan approved`. The skill invocation was removed from the prompt so verification is unprompted.
+
+| | Local roster | Frontier line |
+|---|---|---|
+| Contestants | 12 models (`ROSTER.md`), chosen for coverage not ranking | Claude Opus 5, Claude Sonnet 5 (Claude Code, `xhigh`); GPT-5.6 Sol, GPT-5.6 Terra, GPT-6 Astra (ChatGPT app, Max) |
+| Runs | **n = 3, seeds 1/2/3**, after a Stage 0 screen on p1 + p2 (`N-DESIGN.md`) | n = 1, driven by hand (`Results/_frontier-2026-09-15/PROTOCOL.md`) |
+| Harness | EmberOS workbench, `auto` mode, Git Bash, 600 s timeout, 500-hop ceiling; continue only on reasoning-overrun / empty-turn bails | each model's own harness; transcripts converted by `tools/codex_session.py` / `claude_session.py` |
+| Model settings | loaded with **no parameters** on each model's own LM Studio config (47/58 at 128,512 ctx); reasoning budget 8,192 | Codex memory **off** for the folder (`.codex/config.toml`) after two runs were contaminated by it; Claude auto-memory off |
+| Workspace | empty | empty |
+
+**Scoring** is nine axes / 45 points, every axis a stated rule applied by a script to files on
+disk: `audit.py` (static + session evidence), `play_probe.mjs` (headless Chromium: START, eight
+seconds of real keys, HUD score delta, best of three), `plan_audit.py` (the plan against the
+directive), `stage1_score.py`. Axes 3, 6 and 7 are provisional evidence floors. Playability and
+axis 8 are reported as k/n and never averaged. The eleven games that play were also played by hand
+(`HUMAN-PASS.md`).
+
+**Headline:** two of twelve local models produce a playable game — `qwen3.8-27b-mtp` 3/3 (36/45),
+`qwen/qwen3.8-27b` 2/3 (34/45) — and they are the only two that ever ran their own game. All five
+frontier runs play, all verified in a browser, all wrote every file with tools, 36–38/45. The best
+local model ties the bottom of that band at four to six times the wall clock.
+
+This is not the plan the project started with — that was a Pong → checkpoint → full-14 gate ladder
+with a context-rot curve as the output. It became one game at n = 3 when two identical runs of one
+model produced a playable game once and nothing once: seed variance, not game count, was the
+unmeasured thing. The original plan and every dated decision are in the vault:
+`JamesMind/Projects/LM Studio Comparison/BRIEF (original plan, 2026-08-06).md`.
+
 ## Layout
 
 ```
