@@ -1,60 +1,60 @@
 # LM Studio Comparison
 
-Which **local** model on a 24 GB RTX 4090 gets closest to frontier quality on a full agentic coding loop — plan → code → tool-use → self-test → repair — without collapsing as the repo grows?
+Which **local** model on a 24 GB RTX 4090 gets closest to frontier quality on a full agentic
+coding loop — plan → code → tool-use → self-test → repair — without collapsing as the repo grows?
 
-Successor to the Game Creation Benchmark (`C:\Data\AI\Projects\Game Creation\`), rebuilt clean so old and new results never mix. Vault plan: `JamesMind/Projects/LM Studio Comparison/BRIEF.md`.
+Successor to the Game Creation Benchmark (`C:\Data\AI\Projects\Game Creation\`, whose v1
+results now live in `Game Creation\LMStudio-v1-results\`). Vault plan:
+`JamesMind/Projects/LM Studio Comparison/BRIEF.md`. Harness-hardening evidence (the gauntlet,
+harness parity, the 09-04 → 09-07 diagnostic runs, `probe-context.sh`) moved to
+`C:\Data\AI\Projects\WorkbenchHardening\` on 2026-09-19; the harness itself is
+`C:\Data\Tools\ember-dashboard`.
 
 ## Layout
 
 ```
 LMStudioComparison/
-├── README.md            # this file — orientation + run procedure
-├── BENCHMARK-SPEC.md    # FROZEN: mission directive prompt + 8-axis rubric. Never edit mid-benchmark
-├── ROSTER.md            # which models, which gate, what's excluded and why
-├── HARNESS-PARITY.md    # the confounds controlled, and how
-├── Template/            # pinned toolchain — vite 7.3.6 / three 0.182.0, npm ci
+├── README.md              # this file
+├── BENCHMARK-SPEC.md      # FROZEN 2026-09-08 at prompt v2: the 9-axis rubric + axis 1/8/9 guides
+├── N-DESIGN.md            # why n = 3, staged; k/n buckets, never averages
+├── ROSTER.md              # the 12-model Phase 1 roster and why
+├── CONTEXT.md             # glossary
+├── prompt-v2/             # the instrument: p1.txt (directive) · p2.txt · p3.txt · CHANGES.md
+├── tools/
+│   ├── stage0.sh · stage1.sh            # runners (LM Studio via the workbench API)
+│   ├── inventory_sweep.sh · inventory_report.py · roster_diff.py
+│   ├── stage1_build.sh                  # npm ci + vite build per finished run
+│   ├── play_probe.mjs                   # headless Chromium: START, 8 s of keys, HUD score delta
+│   ├── audit.py                         # static + session evidence per run
+│   ├── plan_audit.py · plan_fidelity.py # what the plan contains; did the build follow it
+│   ├── codex_session.py · claude_session.py   # frontier transcripts -> workbench session.json
+│   └── stage0_score.py · stage1_score.py · stage1_summary.py
 └── Results/
-    ├── _TEMPLATE.md     # the blank RUN.md
-    ├── FRONTIER-<n>-…/  # reference line, run FIRST — numbered by priority
-    ├── WILDCARD-…/      # severe-quant lane (James's call 2026-08-06)
-    └── <model>/         # one folder per local run
+    ├── _TEMPLATE.md                     # RUN.md header for hand-driven runs
+    ├── _inventory-2026-09-09/           # all 58 installed models, no parameters: ctx, VRAM, tok/s
+    ├── _stage0-*/                       # protocol screens (p1 + p2 only)
+    ├── _stage1-2026-09-11/              # 12 models x 3 seeds: RESULTS.md, SCORECARD, HUMAN-PASS.md
+    ├── _frontier-2026-09-15/            # Opus 5, Sonnet 5, Sol, Terra, Astra: RESULTS.md, PROTOCOL.md
+    ├── PLAN-AUDIT.md · PLAN-FIDELITY.md # the plans against the directive, and the builds against the plans
+    └── <run>/ws/                        # every workspace as the model left it; node_modules/dist ignored
 ```
 
-Every run folder is pre-staged with the pinned `package.json` + `package-lock.json`
-and a `RUN.md` whose config header is already filled in. All 13 local folders are
-allowlisted as workbench workspaces, so a run starts by loading the model and
-opening a session — no setup.
+Each run folder carries `run.json` · `session.json` · `audit.json` · `build.json` · `play.json` ·
+`play.png`, and the scorer reads only those — nothing in a scorecard is hand-entered.
 
-**Order:** the four `FRONTIER-*` folders first. A local score of 22/40 means nothing
-until Sonnet 5's number on the same rubric exists to read it against.
+## Reading the results
 
-## What changed from Game Creation
+- `Results/_stage1-2026-09-11/RESULTS.md` — the local roster. Two models play; ten do not.
+- `Results/_frontier-2026-09-15/RESULTS.md` — the reference line the local numbers are read against.
+- `Results/_stage1-2026-09-11/HUMAN-PASS.md` — the eleven playable games, played by hand.
+- `Results/PLAN-AUDIT.md`, `Results/PLAN-FIDELITY.md` — what was planned, what was built.
 
-| Change                                                                           | Why                                                                                                                                       |
-| -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| **8th rubric axis: Verification Behavior** (35 → 40 pts)                         | The research's core finding — local models stop at code that *looks* complete. The old rubric couldn't see that failure                   |
-| **Qualification ladder** (Pong gate → checkpoints → full 14)                     | 12 models × 14 games is a fantasy schedule. Most models will die at Gate 1 and that's the finding                                         |
-| **Frontier models re-run on the new rubric** (Sol · Sonnet 5 · Opus 4.8 · Terra) | Old frontier scores are 35-pt with no verification axis. Axis 8 is the thesis — it needs frontier data measured the same way, not assumed |
-| **VRAM + real usable context logged per run**                                    | Three top candidates are context-starved. Unlogged, that reads as context rot when it's an allocation failure                             |
-| **Fresh results tree**                                                           | Old runs predate the workbench sub-skill fix (2026-07-14) and used unpinned Vite — not comparable                                         |
+## Re-scoring
 
-## Before the first run — freeze the environment
+```
+python tools/audit.py <run>/ws --session <run>/session.json --json > <run>/audit.json
+python tools/stage1_score.py Results/_stage1-2026-09-11 --md > Results/_stage1-2026-09-11/SCORECARD.md
+```
 
-- [x] Pin `vite@^7` in the template `package.json` (old runs drifted 5.4 / 7.3 / 8.0 — a real confound)
-- [x] Fixed context length across every model; record the *loaded* value, not the advertised max
-- [x] Harness: **EmberOS Workbench** over LM Studio native `/v1/chat/completions` for all local runs (Claude-Code-direct is broken — LM Studio's Anthropic shim rejects `role:"system"` in `messages[]`)
-- [x] Confirm workbench `use_skill` side-file access works (fixed 2026-07-14) — pre-fix runs were sub-skill-starved and are not comparable
-- [ ] Log compaction events as data, not noise
-
-## Run procedure
-
-1. Copy `Results/_TEMPLATE.md` → `Results/<Model>/RUN.md`; fill the header **before** starting.
-2. Load the model in LM Studio. Record loaded context length + measured VRAM.
-3. Paste `BENCHMARK-SPEC.md`'s mission directive verbatim. Do not paraphrase or trim.
-4. Gate 1: Pong. Score all 8 axes. Advance only on ≥ 17/40 with axis 8 ≥ 2.
-5. Count interventions as you go (`continue` presses, manual bug reports, restarts) — autonomy went unmeasured last time.
-6. On failure, record *where* it broke, not just that it did.
-
-## Article angle
-
-Same as its predecessor: the run log is the draft. The story here is sharper — "the local model wrote 5,000 good lines and never once opened the game" is a better hook than a leaderboard.
+Every rule change so far has been re-applied to every run and the previous scorecard kept as
+`SCORECARD.before-<change>.json`.

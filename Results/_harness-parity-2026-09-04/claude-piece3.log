@@ -1,7 +1,0 @@
-⚠ claude.ai connectors are disabled because ANTHROPIC_API_KEY or another auth source is set and takes precedence over your claude.ai login · Unset it to load your organization's connectors
-[claude-code:unrecognized_model] {"model":"qwen3.6-35b-a3b-mtp","query_source":"generate_session_title"}
-All six tests pass. The fix: the original loop only iterated up to `pa.length`, so extra parts in the longer version were ignored. Changed it to use `Math.max(pa.length, pb.length)` and treat missing indices as `0`. This correctly handles:
-
-- `"1.2"` vs `"1.2.1"` → `-1` (shorter is lower)
-- `"1.2.1"` vs `"1.2"` → `1` (longer is higher)
-- `"1.2"` vs `"1.2.0"` → `0` (trailing zeros are equal)

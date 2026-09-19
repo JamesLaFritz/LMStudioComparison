@@ -7,7 +7,7 @@
 > Revised and re-frozen on 2026-09-07/08 while no scored run existed. The five Space
 > Invaders runs in `Results/` are harness diagnostics and prompt shakedowns, not
 > contestants; each carries a banner saying so. `prompt-v2/CHANGES.md` ties every edit
-> to something one of them did. Shakedown result: `Results/_v2-shakedown-2026-09-07/`.
+> to something one of them did. Shakedown result: `C:/Data/AI/Projects/WorkbenchHardening/Results/_v2-shakedown-2026-09-07/` (moved out of this repo 2026-09-19).
 > The v1 text is kept below for provenance only — **do not run it.**
 
 ## The Prompt — v1, ARCHIVED (superseded by `prompt-v2/`)

@@ -59,7 +59,7 @@
 
 **Did it re-run verification after repairing?** yes / no — *the sharpest local-vs-frontier discriminator so far. The calibration model built, found a real bug, fixed it, and stopped without rebuilding, so it never found the identical bug in a second file. One build + one fix + stop is axis 8 = 3, not 5.*
 
-**Did any command time out?** no / yes → *check it against HARNESS-PARITY Fix 7 before charging it to the model.*
+**Did any command time out?** no / yes → *check it against HARNESS-PARITY Fix 7 (`C:/Data/AI/Projects/WorkbenchHardening/HARNESS-PARITY.md`) before charging it to the model.*
 
 **Compactions reported as 0?** ⚠️ *pre-2026-08-21 runs: compaction crashed before recording itself (Fix 12), so 0 may be false. Check `messages[1]` in the session JSON for a handoff note — if one is there the run WAS compacted and its regressions cannot be attributed.*
 

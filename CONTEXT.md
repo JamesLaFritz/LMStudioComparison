@@ -13,7 +13,7 @@ already taken. "The directive" always means this text, never a model's reading o
 
 One replayable sequence of prompts fed to a contestant. The Space Invaders workload
 is three prompts — directive, "Begin Space Invaders", "Plan approved" — captured in
-`Results/_SpaceInvaders-bench-2026-09-04/_evidence/mission.txt`. A workload is held
+`prompt-v2/p1.txt` (v1 text: `C:/Data/AI/Projects/WorkbenchHardening/Results/_SpaceInvaders-bench-2026-09-04/_evidence/mission.txt`). A workload is held
 constant across models; a *directive* can appear in many workloads.
 
 ## Contestant
@@ -21,7 +21,7 @@ constant across models; a *directive* can appear in many workloads.
 A model under measurement, together with the harness driving it. `qwen3.6-35b-a3b-mtp@q3_k_m`
 over EmberOS Workbench is a different contestant from the same weights over another
 harness — the harness is part of what is being measured, which is why
-`HARNESS-PARITY.md` exists.
+`HARNESS-PARITY.md` exists (now at `C:/Data/AI/Projects/WorkbenchHardening/HARNESS-PARITY.md`).
 
 ## Build
 
